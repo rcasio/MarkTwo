@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Resque</id>
+    <version>0.2.6</version>
+    <title>Resque</title>
+    <authors>Scott Brown</authors>
+    <owners>Scott Brown</owners>
+    <projectUrl>https://github.com/scobrown/Resque.NET</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Resque .net implimentation</description>
+    <dependencies>
+      <dependency id="Newtonsoft.Json" version="4.5.6" />
+    </dependencies>
+    <references>
+      <reference file="Resque.dll" />
+    </references>
+  </metadata>
+</package>
