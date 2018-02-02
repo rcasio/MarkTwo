@@ -59,6 +59,11 @@
             this.Server_ProgressBar = new System.Windows.Forms.ProgressBar();
             this.Server_Target_Data = new System.Windows.Forms.Label();
             this.Server_ProgressText = new System.Windows.Forms.Label();
+            this.IsTextFile = new System.Windows.Forms.Label();
+            this.IsBinary = new System.Windows.Forms.Label();
+            this.IsJson = new System.Windows.Forms.Label();
+            this.IsXML = new System.Windows.Forms.Label();
+            this.IsCSV = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // Client_ProgressText
@@ -366,12 +371,64 @@
             this.Server_ProgressText.TabIndex = 31;
             this.Server_ProgressText.Text = "진행 테이블 : ";
             // 
+            // IsTextFile
+            // 
+            this.IsTextFile.AutoSize = true;
+            this.IsTextFile.Location = new System.Drawing.Point(333, 431);
+            this.IsTextFile.Name = "IsTextFile";
+            this.IsTextFile.Size = new System.Drawing.Size(66, 12);
+            this.IsTextFile.TabIndex = 33;
+            this.IsTextFile.Text = "Text문서 : ";
+            this.IsTextFile.Click += new System.EventHandler(this.label3_Click);
+            // 
+            // IsBinary
+            // 
+            this.IsBinary.AutoSize = true;
+            this.IsBinary.Location = new System.Drawing.Point(332, 453);
+            this.IsBinary.Name = "IsBinary";
+            this.IsBinary.Size = new System.Drawing.Size(85, 12);
+            this.IsBinary.TabIndex = 34;
+            this.IsBinary.Text = "바이너리파일 :";
+            // 
+            // IsJson
+            // 
+            this.IsJson.AutoSize = true;
+            this.IsJson.Location = new System.Drawing.Point(332, 474);
+            this.IsJson.Name = "IsJson";
+            this.IsJson.Size = new System.Drawing.Size(40, 12);
+            this.IsJson.TabIndex = 35;
+            this.IsJson.Text = "Json :";
+            // 
+            // IsXML
+            // 
+            this.IsXML.AutoSize = true;
+            this.IsXML.Location = new System.Drawing.Point(550, 450);
+            this.IsXML.Name = "IsXML";
+            this.IsXML.Size = new System.Drawing.Size(39, 12);
+            this.IsXML.TabIndex = 36;
+            this.IsXML.Text = "XML :";
+            this.IsXML.Click += new System.EventHandler(this.label3_Click_1);
+            // 
+            // IsCSV
+            // 
+            this.IsCSV.AutoSize = true;
+            this.IsCSV.Location = new System.Drawing.Point(551, 431);
+            this.IsCSV.Name = "IsCSV";
+            this.IsCSV.Size = new System.Drawing.Size(38, 12);
+            this.IsCSV.TabIndex = 37;
+            this.IsCSV.Text = "CSV :";
+            // 
             // ConverterWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ClientSize = new System.Drawing.Size(1174, 545);
+            this.Controls.Add(this.IsCSV);
+            this.Controls.Add(this.IsXML);
+            this.Controls.Add(this.IsJson);
+            this.Controls.Add(this.IsBinary);
+            this.Controls.Add(this.IsTextFile);
             this.Controls.Add(this.Server_Target_Data);
             this.Controls.Add(this.Server_ProgressText);
             this.Controls.Add(this.Server_ProgressBar);
@@ -444,6 +501,11 @@
         private System.Windows.Forms.ProgressBar Server_ProgressBar;
         private System.Windows.Forms.Label Server_Target_Data;
         private System.Windows.Forms.Label Server_ProgressText;
+        private System.Windows.Forms.Label IsTextFile;
+        private System.Windows.Forms.Label IsBinary;
+        private System.Windows.Forms.Label IsJson;
+        private System.Windows.Forms.Label IsXML;
+        private System.Windows.Forms.Label IsCSV;
     }
 }
 

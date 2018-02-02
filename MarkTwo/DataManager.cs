@@ -120,5 +120,15 @@ namespace MarkTwo
                 Environment.Exit(0);
             }
         }
+
+        /// <summary>
+        /// 창을 닫는 메세지 박스를 호출한다.
+        /// </summary>
+        /// <param name="msg"></param>
+        public void ShowCloseMSB(string msg)
+        {
+            MessageBox.Show(msg);
+            Environment.Exit(0);
+        }
     }
 }

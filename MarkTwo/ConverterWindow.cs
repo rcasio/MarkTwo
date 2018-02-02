@@ -86,7 +86,7 @@ namespace MarkTwo
         int totalDataCounClient;
         int totalDataCountForServer;
 
-        static public List<string> clientSheetNames = new List<string>(); /// 클라이언트에서 사용하는 시트의 이름
+        static public List<string> clientSheetNames = new List<string>(); // 클라이언트에서 사용하는 시트의 이름
         static public List<string> serverSheetNames = new List<string>(); // 서버에서 사용하는 시트 이름
 
         public List<string> clientDataTypes; // 클라이언트에서 사용하는 데이터 타입
@@ -96,7 +96,7 @@ namespace MarkTwo
         public TableData tableDataClient;
         public TableData tableDataServer;
         
-        DataManager dataManagement;  // 데이터를 관리한다.(오류 등)
+        DataManager dataManager;  // 데이터를 관리한다.(오류 등)
 
         Dictionary<string, TableData> tableDataClientDictionary = new Dictionary<string, TableData>();    // 테이블 클라이언트시트를 클래스를 저장하는 딕셔너리
         Dictionary<string, TableData> tableDataServerDictionary = new Dictionary<string, TableData>();    // 테이블 서버시트를 저장하는 딕셔너리
@@ -127,8 +127,6 @@ namespace MarkTwo
         System.Timers.Timer m_ProgressbarTimer = new System.Timers.Timer(); // 프로그래스바 업데이트를 위한 타이머
         System.Timers.Timer m_Timer_ConvertEndCheck = new System.Timers.Timer(1000);
 
-        // 테스트 모드
-        // TODO : 테스트모드는 차후 독립적인 쓰레드로 구현해야 한다.
         bool isExtractionText = false; // 텍스트 파일을 추출할 것인가?(바이너리 파일로 변환된 파일을 텍스트로)
         bool isExtractionBinary = false;
         bool isExtractionJson = false;
@@ -136,34 +134,35 @@ namespace MarkTwo
 
         public ConverterWindow()
         {
-            dataManagement = new DataManager();
-            dataManagement.converterWindow = this; 
+            dataManager = new DataManager();
+            dataManager.converterWindow = this;
 
+            InitializeComponent(); // 컴포넌트를 초기화 한다.
+            this.SetProgressbar(); // 프로그래스바를 설정한다.
+            
             this.FormClosed += this.ClostMarkTwo; // 죵료 시 실행되는 콜백함수 설정
+            AppDomain.CurrentDomain.ProcessExit += (s, e) => this.CloseExcel();
 
-            InitializeComponent();
+            this.GetExcelSheets(); // 엑셀 시트를 추출한다.
+            this.GetClientSheetNames(); // 클라이언트 관련 시트이름을 추출한다.
+            this.GetServerSheetNames(); // 서버 관련 시트 이름을 추출한다.
+            this.GetRuleInfo(); // 규칙관련 정보를 추출한다.
 
-            this.InitializeFieldValue(); // 엑셀 관련 필드값을 초기화 한다.
+            this.ConnectRedisServer(); // 레디스 서버 접속
+            this.CreateFilePath(); // 텍스트 추출할 바이너리 파일을 복사한다.
 
-            this.Connect_RedisServer(); // 레디스 서버 접속
-
-            // 프로그래스바를 설정한다.
-            this.Set_Progressbar();
-
-            this.Create_FilePath(); // 텍스트 추출할 바이너리 파일을 복사한다.
+            
 
             // 이동할 파일 경로를 만든다.
             //this.Create_TargetPathForClientDB(CLIENT_BINARY_FILE_EXENAME_FORUNITY);
 
-            
+
             //this.Initialize_FieldValue();
 
-            // 시트 이름을 추출한다.
-            this.Get_ClientSheetNames();
-            this.Get_ServerSheetNames();
 
-            this.Get_SheetComment();
-            
+
+
+
             // 이동할 파일 경로를 만든다.
             this.Create_TargetPathForClientDB(CLIENT_BINARY_FILE_EXENAME_FORUNITY);
 
@@ -179,11 +178,11 @@ namespace MarkTwo
             this.CheckTagetFolder();
 
             // 각각의 타입을 추출한다.
-            this.Get_ClientCSharpType();
+            this.GetClientCSharpType();
             this.Get_ServerPHPType();
 
             // 서버 시트를 추출한다.
-            this.Get_ServerSheetNames();
+            this.GetServerSheetNames();
 
             this.VersionChecker();
 
@@ -192,7 +191,7 @@ namespace MarkTwo
         }
 
         // DB 테이블 업데이트를 위해 레디스 서버에 접속한다.
-        private void Connect_RedisServer() 
+        private void ConnectRedisServer() 
         {
             workSheet = sheets["테이블_규칙"] as Excel.Worksheet;
 
@@ -214,7 +213,7 @@ namespace MarkTwo
         }
 
         // 텍스트 추출할 바이너리 파일을 복사한다.
-        private void Create_FilePath()
+        private void CreateFilePath()
         {
             clientDBFilePathAndName = Application.StartupPath + "\\" + CLIENT_BINARY_FILENAME + "." + CLIENT_BINARY_FILE_EXENAME_FORUNITY;  // 생성할 클라이언트의 바이너리 파일 경로를 만든다.
             serverDBFilePathAndName = Application.StartupPath + "\\" + SERVER_BINARY_FILENAME + "." + SERVER_BINARY_FILE_EXENAME_FORUNITY;  // 생성할 서버 바이너리 파일의 경로를 만든다.
@@ -310,7 +309,7 @@ namespace MarkTwo
         }
 
         //  프로그래스바를 설정한다.
-        private void Set_Progressbar()
+        private void SetProgressbar()
         {
             Client_ProgressBar.Style = ProgressBarStyle.Continuous;
             Client_ProgressBar.Minimum = 0;
@@ -369,7 +368,7 @@ namespace MarkTwo
                         this.Create_ClientBinaryFile(CLIENT_BINARY_FILE_EXENAME_FORUNITY); // 클라이언트 바이너리 파일을 최초 생성한다.
 
                         // 클라이언트의 바이너리 파일을 읽을 때 사용한다.
-                        this.Set_ReadBinaryFile_Client(); 
+                        //this.SetReadBinaryFileClient(); 
 
                         break;
                     }
@@ -389,15 +388,15 @@ namespace MarkTwo
                 if (sheetType == SheetType.Client)
                 {
                     tableData = tableDataClientDictionary[SheetsName];
-                    dataManagement.tableData = tableData;
+                    dataManager.tableData = tableData;
 
                     // 현재 진행 시트의 이름을 폼에 보여준다.
-                    this.EditFormLabel_ClientThread( Client_ProgressText, "진행 테이블 : " + tableData.m_Name);
+                    this.EditFormLabel_ClientThread(Client_ProgressText, "진행 테이블 : " + tableData.m_Name);
                 }
                 else if (sheetType == SheetType.Server)
                 {
                     tableData = tableDataServerDictionary[SheetsName];
-                    dataManagement.tableData = tableData;
+                    dataManager.tableData = tableData;
 
                     // 현재 진행 시트의 이름을 폼에 보여준다.
                     this.EditFormLabel_ServerThread(Server_ProgressText, "진행 테이블 : " + tableData.m_Name);
@@ -418,7 +417,7 @@ namespace MarkTwo
                     object data_FieldType = (tableData.m_WorkSheet.Cells[DATATYPE_LINE, i] as Excel.Range).Value;
 
                     // 해당 데이터의 오류를 검색한다.
-                    dataManagement.CheckData(tableData.m_Name, FIELD_COMMENTLINE, i, data_FieldComment);
+                    dataManager.CheckData(tableData.m_Name, FIELD_COMMENTLINE, i, data_FieldComment);
 
                     // 클라이언트 주석필드가 아닐경우 데이터를 처리한다.
                     if (!data_FieldComment.ToString().StartsWith(commentField))
@@ -429,8 +428,8 @@ namespace MarkTwo
                         {
                             break;
                         }
-                        dataManagement.CheckData(tableData.m_Name, FIELDNAME_LINE, i, data_FieldName);
-                        dataManagement.CheckData(tableData.m_Name, DATATYPE_LINE, i, data_FieldType);
+                        dataManager.CheckData(tableData.m_Name, FIELDNAME_LINE, i, data_FieldName);
+                        dataManager.CheckData(tableData.m_Name, DATATYPE_LINE, i, data_FieldType);
 
                         // 필드 이름을 리스트에 담는다.
                         tableData.m_FieldNameList.Add(data_FieldName.ToString());
@@ -452,7 +451,7 @@ namespace MarkTwo
                     object data_RowComment = (tableData.m_WorkSheet.Cells[i, ROW_COMMENTFIELD] as Excel.Range).Value;
 
                     // 행 주석문이 Null인지 검사한다.
-                    dataManagement.CheckData_RowComment_IfNull(tableData.m_Name, i, data_RowComment);
+                    dataManager.CheckData_RowComment_IfNull(tableData.m_Name, i, data_RowComment);
 
                     // 행 주석문을 검사하고 주석문을 리스트에 담는다.
                     if (data_RowComment.ToString().StartsWith(commentRow))
@@ -469,7 +468,7 @@ namespace MarkTwo
                 if (sheetType == SheetType.Client)
                 {
                     // 테스트 텍스트 파일에 변경된 파일 뿌려본다.
-                    this.ReadBinaryFile_ForClient(tableData);
+                    //this.ReadBinaryFileForClient(tableData);
 
                     Create_CSharpCode.Instance.WriteCode_TableConverter(tableData);
                     Create_CSharpCode.Instance.WriteCode_TableClassList(tableData);
@@ -677,7 +676,7 @@ namespace MarkTwo
             }
         }
 
-        public void Quite_Excel()
+        public void CloseExcel()
         {
             workBook.Close(0);
             excelApp.Quit();
@@ -775,8 +774,8 @@ namespace MarkTwo
             //this.Start_Convert();
         }
 
-        // 엑셀 관련 필드값을 초기화 한다.
-        private void InitializeFieldValue()
+        // 엑셀 시트를 추출한다.
+        private void GetExcelSheets()
         {
             this.excelApp = new Excel.Application();
             this.workBook = this.excelApp.Workbooks.Open(this.Excel_FilePath(), 0, true, 5, "", "", true, Microsoft.Office.Interop.Excel.XlPlatform.xlWindows, "\t", false, false, 0, true, 1, 0);
@@ -797,7 +796,7 @@ namespace MarkTwo
         }
 
         // 클라이언트에서 사용할 시트 이름을 추출한다.
-        private void Get_ClientSheetNames()
+        private void GetClientSheetNames()
         {
             workSheet = sheets["테이블관리"] as Excel.Worksheet;
 
@@ -810,7 +809,7 @@ namespace MarkTwo
         }
 
         // 서버에서 사용될 시트 이름을 추출한다.
-        public void Get_ServerSheetNames()
+        public void GetServerSheetNames()
         {
             foreach (string ServerSheets_Name in workSheet.get_Range("C8", "C50").Value)
             {
@@ -820,8 +819,8 @@ namespace MarkTwo
             }
         }
 
-        // 시트의 주석문을 추출한다.
-        private void Get_SheetComment()
+        // 규칙 관련 정보를 추출한다.
+        private void GetRuleInfo()
         {
             workSheet = sheets["테이블_규칙"] as Excel.Worksheet;
 
@@ -838,9 +837,39 @@ namespace MarkTwo
             Field_Comment.Text = "필드 주석 : " + commentField + "&"; // "&"만 하면 표시되지 않는다.
             Field_Comment_ClientOnly.Text = "필드 주석(클라이언트 사용) : " + commentFieldClientOnly;
             Row_Comment.Text = "행 주석 : " + commentRow;
+            
+            try
+            {
+                string isTextFile = workSheet.Range["H23"].Value;
+                string isBinary = workSheet.Range["H24"].Value;
+                string isJson = workSheet.Range["H25"].Value;
+                string isCSV = workSheet.Range["H26"].Value;
+                string isXML = workSheet.Range["H27"].Value;
+
+                // 무결성 검사를 한다.
+                if (isTextFile.Equals("On") || isTextFile.Equals("Off"))
+                {
+                    this.isExtractionText = (isTextFile.Equals("On")) ? true : false;
+                }
+                else
+                {
+                    dataManager.ShowCloseMSB("[테이블 규칙]에서 추출할 파일형식 [Text문서]의 데이터가 잘못 입력되어 있습니다. \n\n(On/Off 로 입력하시기 바랍니다.)");
+                }
+                
+                // Form에 표시한다.
+                IsTextFile.Text = "Text 문서 : " + isTextFile;
+                IsBinary.Text = "바이너리파일 : " + isBinary;
+                IsJson.Text = "Json : " + isJson;
+                IsCSV.Text = "CSV : " + isCSV;
+                IsXML.Text = "XML : " + isXML;
+            }
+            catch (Exception)
+            {
+                dataManager.ShowCloseMSB("[테이블 규칙]에서 [※ 추출할 파일 형식]의 양식이 잘못 입력되어 있습니다.\n\n(On/Off 로 입력하시기 바랍니다.)");
+            }
         }
 
-        private void Get_ClientCSharpType()
+        private void GetClientCSharpType()
         {
             clientDataTypes = new List<string>();
             ClientTypeList.Text = null;
@@ -1076,7 +1105,7 @@ namespace MarkTwo
 
         }
 
-        void Set_ReadBinaryFile_Client()
+        void SetReadBinaryFileClient()
         {
             if (!isExtractionText) return;  // 텍스트 추출 모드인가?
 
@@ -1088,7 +1117,7 @@ namespace MarkTwo
         }
 
         // TODO : 잘못된 코드 수저할 것(쓰레드를 돌려서 처리할 것)
-        void ReadBinaryFile_ForClient(TableData tableData)
+        void ReadBinaryFileForClient(TableData tableData)
         {
             if (!isExtractionText) return;  // 텍스트 추출 모드인가?
 
@@ -1126,18 +1155,18 @@ namespace MarkTwo
 
         // 프로그램이 닫힐 때 실행된다.
         private void ClostMarkTwo(object sender, FormClosedEventArgs e)
-        {   
+        {
             switch(e.CloseReason)
             {
-                case CloseReason.WindowsShutDown : this.Quite_Excel(); break;
-                case CloseReason.FormOwnerClosing : this.Quite_Excel(); break;
-                case CloseReason.MdiFormClosing : this.Quite_Excel(); break;
-                case CloseReason.TaskManagerClosing : this.Quite_Excel(); break;
-                case CloseReason.UserClosing : this.Quite_Excel(); break;
-                case CloseReason.None: this.Quite_Excel(); break;
+                case CloseReason.WindowsShutDown : this.CloseExcel(); break;
+                case CloseReason.FormOwnerClosing : this.CloseExcel(); break;
+                case CloseReason.MdiFormClosing : this.CloseExcel(); break;
+                case CloseReason.TaskManagerClosing : this.CloseExcel(); break;
+                case CloseReason.UserClosing : this.CloseExcel(); break;
+                case CloseReason.None: this.CloseExcel(); break;
                 case CloseReason.ApplicationExitCall:
                     {
-                        this.Quite_Excel();
+                        this.CloseExcel();
 
                         if (isEnd_ClientConvert && isEnd_ServerConvert) // 변환 작업이 정상적으로 종료되었는가?
                         {
@@ -1172,6 +1201,16 @@ namespace MarkTwo
         }
 
         private void ConverterWindow_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label3_Click_1(object sender, EventArgs e)
         {
 
         }
