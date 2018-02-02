@@ -37,7 +37,7 @@ namespace MarkTwo
         // 클라이언트 바이너리 파일 만들기
         public const string CLIENT_BINARY_FILENAME = "TableDB"; // 클라이언트에서 사용하는 바이너리 파일 이름
         public const string CLIENT_BINARY_FILENAME_ForText = "TableDB_ForText"; // 바이너리 파일을 텍스트 파일로 추출하기 위한 파일이름
-        const string CLIENT_BINARY_FILE_EXENAME_FORUNITY = "bytes"; // 유니티에서 사용하는 바이너리 파일 확장자명
+        const string CLIENT_BINARY_FILE_EXENAME_FOR_UNITY = "bytes"; // 유니티에서 사용하는 바이너리 파일 확장자명
         const string CLIENT_TEXT_FILE_EXTENSION = "txt"; // 텍스트 파일 확장자
         const int CLIENT_TYPE_COUNT = 8; // 클라이언트의 자료형 개수를 나타낸다. 만약 자료형이 추가 및 삭제된다면 이부분을 수정한다.
 
@@ -46,22 +46,21 @@ namespace MarkTwo
         const string SERVER_BINARY_FILE_EXENAME_FORUNITY = "ksk"; // 서버에서 사용되는 바이너리 파일 확장자명
         const int SERVER_TYPE_COUNT = 8; // 서버의 자료형 개수를 나타낸다. 만약 자료형이 추가 및 삭제된다면 이부분을 수정한다.
        
-        static public string clientDBFilePathAndName; //  클라이언트 바이너리 파일 경로를 나타낸다.
-        static public string targetPathForClientDB;   // 클라이언트 바이너리 파일이 이동할 곳의 경로를 나타낸다.
-        static public string targetPathForClientDB_Text;   // 텍스트 파일을 추출하기 위한 경로 및 파일이름.
-        static public string downloadForClinetDB;    // 다운로드를 위한 클라이언트 DB를 위치를 나타낸다.
+        static public string originalPathClientDB_Binary; //  클라이언트 바이너리 파일 경로를 나타낸다.
+        static public string targetPathClientDB_Text;   // 텍스트 파일을 추출하기 위한 경로 및 파일이름.
+        static public string targetPathClientDB_Binary;    // 다운로드를 위한 클라이언트 DB를 위치를 나타낸다.
 
-        static public string createdPathNameForTableClassList; // TableClassList 클래스 생성위치 파일의 위치
-        static public string createdPathNameForTableConverter; // TableConverter 클래스 생성위치 파일의 위치
+        static public string originalPathTableClassList_Unity; // TableClassList 클래스 생성위치 파일의 위치
+        static public string originalPathTableConverter; // TableConverter 클래스 생성위치 파일의 위치
         static public string createdPathNameForTableTagList; // TableTagList 클래스 생성위치 파일의 위치
 
-        static public string targetPathForTableClassList; // 유니티에서 사용된는 TableClassList의 클래스 파일의 위치
-        static public string targetPathForTableConverter; // 유니티에서 사용된는 TableConverter의 클래스 파일의 위치
+        static public string targetPathTableClassList_Unity; // 유니티에서 사용된는 TableClassList의 클래스 파일의 위치
+        static public string targetPathTableConverter; // 유니티에서 사용된는 TableConverter의 클래스 파일의 위치
         static public string targetPathForTableTagList; // 유니티에서 사용된는 TableTagList의 클래스 파일의 위치
 
-        static public string serverDBFilePathAndName; //  바이너리 파일 경로를 나타낸다.
-        static public string targetPathForServerDB;   // 서버의 바이너리 파일이 이동할 곳의 경로를 나타낸다.
-        static public string targetPathForPHPFile;   // 서버의 PHP파일이 이동할 곳의 경로를 나타낸다.
+        static public string originalPathSeverDB_Binary; //  바이너리 파일 경로를 나타낸다.
+        static public string targetPathServerDB_Binary;   // 서버의 바이너리 파일이 이동할 곳의 경로를 나타낸다.
+        static public string targetPathSeverDB_PHP;   // 서버의 PHP파일이 이동할 곳의 경로를 나타낸다.
 
         FileStream clientFileStream;    // 클라이언트 바이너리 파일
         FileStream serverFileStream;    // 서버 바이너리 파일
@@ -83,7 +82,7 @@ namespace MarkTwo
         string commentRow;
 
         // DB의 기본 구성
-        int totalDataCounClient;
+        int totalDataCountClient;
         int totalDataCountForServer;
 
         static public List<string> clientSheetNames = new List<string>(); // 클라이언트에서 사용하는 시트의 이름
@@ -92,14 +91,14 @@ namespace MarkTwo
         public List<string> clientDataTypes; // 클라이언트에서 사용하는 데이터 타입
         public List<string> serverDataType;  // 서버에서 사용하는 데이터 타입                                                
 
-        /// 테이블 데이터
+        // 테이블 데이터
         public TableData tableDataClient;
         public TableData tableDataServer;
         
         DataManager dataManager;  // 데이터를 관리한다.(오류 등)
 
-        Dictionary<string, TableData> tableDataClientDictionary = new Dictionary<string, TableData>();    // 테이블 클라이언트시트를 클래스를 저장하는 딕셔너리
-        Dictionary<string, TableData> tableDataServerDictionary = new Dictionary<string, TableData>();    // 테이블 서버시트를 저장하는 딕셔너리
+        Dictionary<string, TableData> tableDatasClient = new Dictionary<string, TableData>();    // 테이블 클라이언트시트를 클래스를 저장하는 딕셔너리
+        Dictionary<string, TableData> tableDatasServer = new Dictionary<string, TableData>();    // 테이블 서버시트를 저장하는 딕셔너리
 
         SoundPlayer endFileConvert = new SoundPlayer(Properties.Resources._416631__alpersez__acoustic_guitar); // 변환이 종료되었을 때 나오는 사운드
 
@@ -107,13 +106,13 @@ namespace MarkTwo
         bool isEnd_ServerConvert = false; // 서버 데이터 변환 작업이 끝났는가?
 
         Thread client_DataControl;    // 클라이언트의 데이터 변환 쓰레드
-        Thread server_DataControl;    // 클라이언트의 데이터 변환 쓰레드
+        Thread server_DataControl;    // 서버 데이터 변환 쓰레드
 
         // 레디스 접속
         bool IsConnectServer = true; // 서버에 접속할 것인가? (엑셀 테이블에서 IP주소를 입력하지 않으면 false가 된다.)
         string RedisConnect_Ip;
         int RedisConnect_Port;
-        string RedisConnect_PassWord = "wjstprPaocnf1dnl";
+        string RedisConnect_PassWord = "passWord";
         static RedisConnection conn;
 
         string m_Reids_Num; // 레디스에 Num을 할당하기 위해 사용되는 변수
@@ -124,12 +123,13 @@ namespace MarkTwo
         delegate void callBackServer_SheetName(System.Windows.Forms.Label formLabel, string txt);
         delegate void callBackServer_Progress(System.Windows.Forms.ProgressBar formProgressbar, int para);
 
-        System.Timers.Timer m_ProgressbarTimer = new System.Timers.Timer(); // 프로그래스바 업데이트를 위한 타이머
-        System.Timers.Timer m_Timer_ConvertEndCheck = new System.Timers.Timer(1000);
+        //System.Timers.Timer progressbarTimer = new System.Timers.Timer(); // 프로그래스바 업데이트를 위한 타이머
+        System.Timers.Timer timerConvertChecker = new System.Timers.Timer(200); //0.2초마다 한번씩 체크한다.
 
         bool isExtractionText = false; // 텍스트 파일을 추출할 것인가?(바이너리 파일로 변환된 파일을 텍스트로)
         bool isExtractionBinary = false;
         bool isExtractionJson = false;
+        bool isExtractionCSV = false;
         bool isExtractionXML = false;
 
         public ConverterWindow()
@@ -141,7 +141,7 @@ namespace MarkTwo
             this.SetProgressbar(); // 프로그래스바를 설정한다.
             
             this.FormClosed += this.ClostMarkTwo; // 죵료 시 실행되는 콜백함수 설정
-            AppDomain.CurrentDomain.ProcessExit += (s, e) => this.CloseExcel();
+            AppDomain.CurrentDomain.ProcessExit += (s, e) => this.CloseExcel(); // 종료 시 호출되는 
 
             this.GetExcelSheets(); // 엑셀 시트를 추출한다.
             this.GetClientSheetNames(); // 클라이언트 관련 시트이름을 추출한다.
@@ -149,45 +149,16 @@ namespace MarkTwo
             this.GetRuleInfo(); // 규칙관련 정보를 추출한다.
 
             this.ConnectRedisServer(); // 레디스 서버 접속
-            this.CreateFilePath(); // 텍스트 추출할 바이너리 파일을 복사한다.
 
+            this.CreateFilePath(); // 파일경로를 만든다.
+            this.CheckTagetFolder(); // 엑셀에서 설정한 타겟 폴더가 존재하는지 체크한다.
             
+            this.GetClientCSharpType(); // C샵 타입을 추출한다.
+            this.GetServerMySQLType(); // MYSQL 타입을 추가한다.
 
-            // 이동할 파일 경로를 만든다.
-            //this.Create_TargetPathForClientDB(CLIENT_BINARY_FILE_EXENAME_FORUNITY);
-
-
-            //this.Initialize_FieldValue();
-
-
-
-
-
-            // 이동할 파일 경로를 만든다.
-            this.Create_TargetPathForClientDB(CLIENT_BINARY_FILE_EXENAME_FORUNITY);
-
-            this.Create_TargetPathForServerDB(SERVER_BINARY_FILE_EXENAME_FORUNITY);
-            this.Create_TargetPathForClientDB_Update(CLIENT_BINARY_FILE_EXENAME_FORUNITY);
-            this.Create_TargetPathForPHP("php");
-
-            this.Create_CreateAndTargetPathForTableClassList();
-            this.Create_CreatedAndTargetPathForTableConverter();
-            this.Create_CreatedAndTargetPathForTableTagList();
-
-            // 엑셀에서 설정한 타겟 폴더가 존재하는지 체크한다.
-            this.CheckTagetFolder();
-
-            // 각각의 타입을 추출한다.
-            this.GetClientCSharpType();
-            this.Get_ServerPHPType();
-
-            // 서버 시트를 추출한다.
-            this.GetServerSheetNames();
-
-            this.VersionChecker();
-
-            // 클라이어트와 서버 시트의 클래스를 만들어 딕셔너리에 저장한다.
-            this.Set_ClassInformation_TableSheets();
+            this.DisplayVersion(); // 버전을 표시한다.
+            
+            this.SetTableDatas(); // 클라이어트와 서버 시트의 클래스를 만들어 딕셔너리에 저장한다.
         }
 
         // DB 테이블 업데이트를 위해 레디스 서버에 접속한다.
@@ -211,29 +182,39 @@ namespace MarkTwo
                 conn.Server.FlushDb(1); // 기존 데이터를 지운다.
             }
         }
-
-        // 텍스트 추출할 바이너리 파일을 복사한다.
-        private void CreateFilePath()
+        
+        private void CreateFilePath() // 파일경로를 만든다.
         {
-            clientDBFilePathAndName = Application.StartupPath + "\\" + CLIENT_BINARY_FILENAME + "." + CLIENT_BINARY_FILE_EXENAME_FORUNITY;  // 생성할 클라이언트의 바이너리 파일 경로를 만든다.
-            serverDBFilePathAndName = Application.StartupPath + "\\" + SERVER_BINARY_FILENAME + "." + SERVER_BINARY_FILE_EXENAME_FORUNITY;  // 생성할 서버 바이너리 파일의 경로를 만든다.
+            originalPathClientDB_Binary = Application.StartupPath + "\\" + CLIENT_BINARY_FILENAME + "." + CLIENT_BINARY_FILE_EXENAME_FOR_UNITY;  // 생성할 클라이언트의 바이너리 파일 경로를 만든다.
+            originalPathSeverDB_Binary = Application.StartupPath + "\\" + SERVER_BINARY_FILENAME + "." + SERVER_BINARY_FILE_EXENAME_FORUNITY;  // 생성할 서버 바이너리 파일의 경로를 만든다.
+            
+            targetPathServerDB_Binary = Application.StartupPath.Replace("\\ADDesign", "") + "\\" + workSheet.Range["Q14"].Value + "\\" + SERVER_BINARY_FILENAME + "." + SERVER_BINARY_FILE_EXENAME_FORUNITY;
+            targetPathClientDB_Binary = Application.StartupPath.Replace("\\ADDesign", "") + "\\" + workSheet.Range["Q15"].Value + "\\" + CLIENT_BINARY_FILENAME + "." + CLIENT_TEXT_FILE_EXTENSION;
 
-            targetPathForClientDB_Text = Application.StartupPath + "\\" + CLIENT_BINARY_FILENAME_ForText + "." + CLIENT_TEXT_FILE_EXTENSION; // 텍스트 파일 경로를 만든다.
+            targetPathClientDB_Text = Application.StartupPath.Replace("\\ADDesign", "") + "\\" + workSheet.Range["Q15"].Value + "\\" + CLIENT_BINARY_FILENAME_ForText + "." + CLIENT_TEXT_FILE_EXTENSION; // 텍스트 파일 경로를 만든다.
+            // TODO : Json, CSV, XML 등의 파일 경로를 만들도록 한다.
+            
+            targetPathSeverDB_PHP = workSheet.Range["Q5"].Value + "\\" + Create_PHPCode.TABLECONVERTER_FILENAME; // PHP를 위한 서버 DB경로
 
-            //if (isExtractionText)  // 텍스트 파일을 추출할 것인가?
-            //{
-            //    if (File.Exists(targetPathForClientDB_Text)) File.Delete(targetPathForClientDB_Text); // 파일이 존재한다면 삭제한다.
+            if (isExtractionText)  // 텍스트 파일을 추출할 것인가?
+            {
+                if (File.Exists(targetPathClientDB_Text)) File.Delete(targetPathClientDB_Text); // 파일이 존재한다면 삭제한다.
 
-            //    File.Copy(clientDBFilePathAndName, targetPathForClientDB_Text);  // 파일을 복사한다.
-            //}
+                //File.Copy(clientDBFilePathAndName, targetPathForClientDB_Text);  // 파일을 복사한다.
+            }
+
+            // 파일 경로 생성
+            this.CreatePathTableClassList(); // TableClassList.cs 파일 경로를 생성한다.
+            this.CreatePathTableConverter(); // TableTagList.cs 파일 경로를 생성한다.
+            this.CreatePathTableTagList(); // TableTagList.cs 파일 경로를 생성한다.
+
+            // 라벨표시
+            TargetPath.Text = "이동경로 : " + targetPathClientDB_Binary; // TODO : 상황별 이동경로를 만들도록 한다.
         }
 
         // 폼이 시작되고 실행된다.
         protected override void OnShown(EventArgs e)
         {
-            int a = 0;
-            Type type = a.GetType();
-
             base.OnShown(e);
 
             client_DataControl = new Thread(new ThreadStart(StartConvert_Client));
@@ -243,13 +224,13 @@ namespace MarkTwo
             server_DataControl.Start();
 
             // 변환작업 쓰레드 종료를 체크하는 타이머를 구동한다.
-            m_Timer_ConvertEndCheck.Elapsed += new System.Timers.ElapsedEventHandler(Check_EndConvertWork);
-            m_Timer_ConvertEndCheck.Start();
+            timerConvertChecker.Elapsed += new System.Timers.ElapsedEventHandler(Check_EndConvertWork); // 이벤트를 등록한다.
+            timerConvertChecker.Start();
         }
 
         // 쓰레드로 함수가 사용될 경우 인자를 넘기려면 object로 해야 하는데 편의상 함수를 랩핑하기로 함
-        private void StartConvert_Client() {this.Start_Convert(SheetType.Client);}
-        private void StartConvert_Server() {this.Start_Convert(SheetType.Server);}
+        private void StartConvert_Client() {this.StartConversion(SheetType.Client);}
+        private void StartConvert_Server() {this.StartConversion(SheetType.Server);}
 
         // 쓰레드로 폼을 제어하기 위한 델리게이트 함수 // 참조 : http://mrbongdal.tistory.com/9
         // 폼의 라벨을 제어한다.
@@ -341,17 +322,17 @@ namespace MarkTwo
             Application.Exit();
 
             // 쓰레드를 종료한다.
-            this.Abort_Threads();
+            this.AbortThreads();
         }
 
         // 쓰레드를 종료한다.
-        private void Abort_Threads()
+        private void AbortThreads()
         {
             client_DataControl.Abort();
             server_DataControl.Abort();
         }
 
-        private void Start_Convert(SheetType sheetType)
+        private void StartConversion(SheetType sheetType) // 변환을 시작한다.
         {
             List<string> sheetNames = null; // 시트이름들
             TableData tableData = new TableData();  // 데이터 테이블
@@ -365,7 +346,7 @@ namespace MarkTwo
                 case SheetType.Client: // 데이터 기반을 클라이언트로 구성한다.
                     {
                         sheetNames = clientSheetNames;   // 클라이언트시트이름 리스트를 준비한다.
-                        this.Create_ClientBinaryFile(CLIENT_BINARY_FILE_EXENAME_FORUNITY); // 클라이언트 바이너리 파일을 최초 생성한다.
+                        this.Create_ClientBinaryFile(CLIENT_BINARY_FILE_EXENAME_FOR_UNITY); // 클라이언트 바이너리 파일을 최초 생성한다.
 
                         // 클라이언트의 바이너리 파일을 읽을 때 사용한다.
                         //this.SetReadBinaryFileClient(); 
@@ -387,37 +368,37 @@ namespace MarkTwo
             {
                 if (sheetType == SheetType.Client)
                 {
-                    tableData = tableDataClientDictionary[SheetsName];
+                    tableData = tableDatasClient[SheetsName];
                     dataManager.tableData = tableData;
 
                     // 현재 진행 시트의 이름을 폼에 보여준다.
-                    this.EditFormLabel_ClientThread(Client_ProgressText, "진행 테이블 : " + tableData.m_Name);
+                    this.EditFormLabel_ClientThread(Client_ProgressText, "진행 테이블 : " + tableData.name);
                 }
                 else if (sheetType == SheetType.Server)
                 {
-                    tableData = tableDataServerDictionary[SheetsName];
+                    tableData = tableDatasServer[SheetsName];
                     dataManager.tableData = tableData;
 
                     // 현재 진행 시트의 이름을 폼에 보여준다.
-                    this.EditFormLabel_ServerThread(Server_ProgressText, "진행 테이블 : " + tableData.m_Name);
+                    this.EditFormLabel_ServerThread(Server_ProgressText, "진행 테이블 : " + tableData.name);
                 }
                 
                 // 현재 시트를 할당한다.
-                tableData.m_WorkSheet = sheets[SheetsName] as Excel.Worksheet;
+                tableData.workSheet = sheets[SheetsName] as Excel.Worksheet;
 
                 // 실제 사용되는 데이터 라인의 개수를 저장한다.(위의 3행(주석라인) 삭제된 행렬 개수)
-                tableData.m_Total_RowCount_DeleteComment = tableData.m_Total_RowCount - (tableData.m_Row_CommentList.Count + m_Default_RowComment_LineCount);
+                tableData.totalRowCountDeleteComment = tableData.totalRowCount - (tableData.rowCommentList.Count + m_Default_RowComment_LineCount);
 
                 //************** 1. 주석 필드 및 행을 찾는다. 2. 자료형을 리스트에 담는다.********************
-                for (int i = 1; i <= tableData.m_Total_ColumnCount; i++)
+                for (int i = 1; i <= tableData.totalColumnCount; i++)
                 {
                     // 필드 주석, 이름, 자료형을 저장한다.
-                    object data_FieldComment = (tableData.m_WorkSheet.Cells[FIELD_COMMENTLINE, i] as Excel.Range).Value;
-                    object data_FieldName = (tableData.m_WorkSheet.Cells[FIELDNAME_LINE, i] as Excel.Range).Value;
-                    object data_FieldType = (tableData.m_WorkSheet.Cells[DATATYPE_LINE, i] as Excel.Range).Value;
+                    object data_FieldComment = (tableData.workSheet.Cells[FIELD_COMMENTLINE, i] as Excel.Range).Value;
+                    object data_FieldName = (tableData.workSheet.Cells[FIELDNAME_LINE, i] as Excel.Range).Value;
+                    object data_FieldType = (tableData.workSheet.Cells[DATATYPE_LINE, i] as Excel.Range).Value;
 
                     // 해당 데이터의 오류를 검색한다.
-                    dataManager.CheckData(tableData.m_Name, FIELD_COMMENTLINE, i, data_FieldComment);
+                    dataManager.CheckData(tableData.name, FIELD_COMMENTLINE, i, data_FieldComment);
 
                     // 클라이언트 주석필드가 아닐경우 데이터를 처리한다.
                     if (!data_FieldComment.ToString().StartsWith(commentField))
@@ -428,41 +409,41 @@ namespace MarkTwo
                         {
                             break;
                         }
-                        dataManager.CheckData(tableData.m_Name, FIELDNAME_LINE, i, data_FieldName);
-                        dataManager.CheckData(tableData.m_Name, DATATYPE_LINE, i, data_FieldType);
+                        dataManager.CheckData(tableData.name, FIELDNAME_LINE, i, data_FieldName);
+                        dataManager.CheckData(tableData.name, DATATYPE_LINE, i, data_FieldType);
 
                         // 필드 이름을 리스트에 담는다.
-                        tableData.m_FieldNameList.Add(data_FieldName.ToString());
+                        tableData.fieldNameList.Add(data_FieldName.ToString());
 
                         // 필드 자료형을 리스트에 담는다.
-                        tableData.m_FieldDataType_CSharp.Add(this.ConvertToCSharpTypeFromExcel(data_FieldType.ToString()));
-                        tableData.m_FieldDataType_Table.Add(data_FieldType.ToString());
+                        tableData.fieldDataTypeCSharp.Add(this.ConvertToCSharpTypeFromExcel(data_FieldType.ToString()));
+                        tableData.fieldDataTypeTable.Add(data_FieldType.ToString());
                     }
                     else
                     {
                         // 주석 필드를 저장한다.
-                        tableData.m_Field_CommentList.Add(i); // TODO : 작동 확인해 볼 것
+                        tableData.fieldCommentList.Add(i); // TODO : 작동 확인해 볼 것
                     }
                 }
 
                 //************* 1. 행의 첫번째 필드를 검사하여 주석 행을 배열화 한다.
-                for (int i = 1; i <= tableData.m_Total_RowCount; i++)
+                for (int i = 1; i <= tableData.totalRowCount; i++)
                 {
-                    object data_RowComment = (tableData.m_WorkSheet.Cells[i, ROW_COMMENTFIELD] as Excel.Range).Value;
+                    object data_RowComment = (tableData.workSheet.Cells[i, ROW_COMMENTFIELD] as Excel.Range).Value;
 
                     // 행 주석문이 Null인지 검사한다.
-                    dataManager.CheckData_RowComment_IfNull(tableData.m_Name, i, data_RowComment);
+                    dataManager.CheckData_RowComment_IfNull(tableData.name, i, data_RowComment);
 
                     // 행 주석문을 검사하고 주석문을 리스트에 담는다.
                     if (data_RowComment.ToString().StartsWith(commentRow))
                     {
-                        tableData.m_Row_CommentList.Add(i);
-                        tableData.m_Total_RowCount_DeleteComment--;
+                        tableData.rowCommentList.Add(i);
+                        tableData.totalRowCountDeleteComment--;
                     }
                 }
 
                 // 주석처리 카운트(첫번째 3줄을 주석으로 처리한다)
-                totalCommentDataCount += tableData.m_Total_ColumnCount * m_Default_RowComment_LineCount;
+                totalCommentDataCount += tableData.totalColumnCount * m_Default_RowComment_LineCount;
 
                 // C# 코드에 해당 테이블 코드를 작성한다.
                 if (sheetType == SheetType.Client)
@@ -480,14 +461,14 @@ namespace MarkTwo
 
                 //*****데이터를 클라이언트 및 서버의 바이너리 파일로 변환한다.****************************************
                 // 행을 검사한다.
-                for (int row = m_Default_RowComment_LineCount + 1; row <= tableData.m_Total_RowCount; row++)
+                for (int row = m_Default_RowComment_LineCount + 1; row <= tableData.totalRowCount; row++)
                 {
                     int dataCount = 0; // 데이터 타입 저장시 필요한 카운트(데이터 타입은 리스트화 되어 있다.)
 
                     // 주석 행이라면 다음 행으로 넘어간다.
-                    if (tableData.m_Row_CommentList.Contains(row))
+                    if (tableData.rowCommentList.Contains(row))
                     {
-                        totalCommentDataCount += tableData.m_Total_ColumnCount; // 주석처리 카운트를 센다.
+                        totalCommentDataCount += tableData.totalColumnCount; // 주석처리 카운트를 센다.
 
                         if (sheetType == SheetType.Client) EditFormLabel_ClientThread(Client_Count_CommentData, "주석처리 데이터 : " + (totalCommentDataCount).ToString("#,###") + " 개");
                         else if (sheetType == SheetType.Server) EditFormLabel_ClientThread(Server_Count_CommentData, "주석처리 데이터 : " + (totalCommentDataCount).ToString("#,###") + " 개");
@@ -496,10 +477,10 @@ namespace MarkTwo
                     }
 
                     // 필드를 검사한다.
-                    for (int column = 1; column <= tableData.m_Total_ColumnCount; column++)
+                    for (int column = 1; column <= tableData.totalColumnCount; column++)
                     {
                         // 주석 필드라면 다음 필드로 넘어간다.
-                        if (tableData.m_Field_CommentList.Contains(column))
+                        if (tableData.fieldCommentList.Contains(column))
                         {
                             ++totalCommentDataCount; // 주석처리 카운를 1증가시킨다.
 
@@ -514,7 +495,7 @@ namespace MarkTwo
 
                             // 데이터를 넣는다.
                             //object data = (tableData.m_WorkSheet.Cells[row, column] as Excel.Range).Value2;
-                            object data = (tableData.m_WorkSheet.Cells[row, column] as Excel.Range).Text; // 엑셀에 있는 텍스트 그대로 읽어온다 만약 ###로 되어 있다면(자리가 부족해서 나타나는) ### 그대로 읽어온다.
+                            object data = (tableData.workSheet.Cells[row, column] as Excel.Range).Text; // 엑셀에 있는 텍스트 그대로 읽어온다 만약 ###로 되어 있다면(자리가 부족해서 나타나는) ### 그대로 읽어온다.
                             // 데이터의 수를 샌다.
                             ++accumulate_ConvertedData;
 
@@ -538,9 +519,9 @@ namespace MarkTwo
                             }
                             else
                             {
-                                if (!tableData.m_FieldDataType_CSharp[dataCount - 1].Equals("string"))
+                                if (!tableData.fieldDataTypeCSharp[dataCount - 1].Equals("string"))
                                 {
-                                    MessageBox.Show(tableData.m_FieldDataType_Table[dataCount - 1] + "의 자료형에 \"null\"값이 들어가 있습니다. [테이블 : " + tableData.m_Name + "] [행 : " + row + "] [열 : " + column + "]");
+                                    MessageBox.Show(tableData.fieldDataTypeTable[dataCount - 1] + "의 자료형에 \"null\"값이 들어가 있습니다. [테이블 : " + tableData.name + "] [행 : " + row + "] [열 : " + column + "]");
                                     Close();
                                 }
                                 else data_ExchangedString = null;
@@ -549,25 +530,25 @@ namespace MarkTwo
                             if (sheetType == SheetType.Client)
                             {
                                 // 데이터를 바이너리로 변한한다. (테이블 행과열은 1부터 시작하기 때문에 list 자료를 순서대로 차출하기 위해서 1을 뺀다.)
-                                this.Write_ToClientDB(tableData.m_FieldDataType_Table[dataCount - 1], data_ExchangedString, tableData, row, column);
+                                this.Write_ToClientDB(tableData.fieldDataTypeTable[dataCount - 1], data_ExchangedString, tableData, row, column);
 
                                 // PR 테이블일 경우
-                                if (tableData.m_Name.Equals("PR"))
+                                if (tableData.name.Equals("PR"))
                                 {
                                     // PR 태그 클래스를 만들기 위한 자료를 추출한다.
-                                    Create_CSharpCode.Instance.SetDicPR(tableData.m_FieldNameList[dataCount - 1], data_ExchangedString);
+                                    Create_CSharpCode.Instance.SetDicPR(tableData.fieldNameList[dataCount - 1], data_ExchangedString);
                                 }
 
                                 // Tag 테이블일 경우
-                                if (tableData.m_Name.Equals("Tag"))
+                                if (tableData.name.Equals("Tag"))
                                 {
-                                    Create_CSharpCode.Instance.SetDicTag(tableData.m_FieldNameList[dataCount - 1], data_ExchangedString);
+                                    Create_CSharpCode.Instance.SetDicTag(tableData.fieldNameList[dataCount - 1], data_ExchangedString);
                                 }
                             }
                             else if (sheetType == SheetType.Server)
                             {
                                 //this.Write_ToServerDB(tableData.m_FieldDataType_Table[dataTypeCount - 1], data_ExchangedString, tableData, row, column);
-                                this.Query_TableData(tableData.m_FieldDataType_Table[dataCount - 1], tableData.m_FieldNameList[dataCount - 1], data_ExchangedString, tableData, row, column); 
+                                this.Query_TableData(tableData.fieldDataTypeTable[dataCount - 1], tableData.fieldNameList[dataCount - 1], data_ExchangedString, tableData, row, column); 
                             }
                         }
 
@@ -575,11 +556,11 @@ namespace MarkTwo
                         if (sheetType == SheetType.Client)
                         {
                             // 진행도 계산
-                            convert_ProcessPercent = (double)(accumulate_ConvertedData + totalCommentDataCount) / totalDataCounClient;
+                            convert_ProcessPercent = (double)(accumulate_ConvertedData + totalCommentDataCount) / totalDataCountClient;
 
                             // 폼에서 나타나는 부분
                             EditFormLabel_ClientThread(Client_Target_Data, "데이터 : " + data_ExchangedString);
-                            EditFormLabel_ClientThread(Client_Leftover_Data, "남은 데이터 : " + (totalDataCounClient - (accumulate_ConvertedData + totalCommentDataCount)).ToString("0,###") + " 개");
+                            EditFormLabel_ClientThread(Client_Leftover_Data, "남은 데이터 : " + (totalDataCountClient - (accumulate_ConvertedData + totalCommentDataCount)).ToString("0,###") + " 개");
                             EditFormLabel_ClientThread(Client_Count_ConvertData, "변경된 데이터 : " + (accumulate_ConvertedData).ToString("#,###") + " 개");
                             EditFormLabel_ClientThread(Client_Total_ProcessPercent, "진행도 : " + convert_ProcessPercent.ToString("0.#####%"));
                              
@@ -601,11 +582,11 @@ namespace MarkTwo
                 }
 
                 // Multilingual, PR Tag 클래스를 만든다.
-                if (tableData.m_Name.Equals("PR"))
+                if (tableData.name.Equals("PR"))
                 {
                     Create_CSharpCode.Instance.WriteCode_TableTagMultilingualPR(tableData);
                 }
-                else if (tableData.m_Name.Equals("Tag")) // tag 테이블을 기반으로 Class를 작성한다.
+                else if (tableData.name.Equals("Tag")) // tag 테이블을 기반으로 Class를 작성한다.
                 {
                     Create_CSharpCode.Instance.WriteCode_TableTag(tableData);
                 }
@@ -625,16 +606,16 @@ namespace MarkTwo
                 */
 
                 // 바이너리 파일을 서버를 통한 버전 업데이트(최초 스토어의 업데이트 이후의 클라이언트의 테이블은 서버로부터 다운로드 시킨다)를 위한 복사
-                if (File.Exists(downloadForClinetDB)) File.Delete(downloadForClinetDB); // 파일이 존재한다면 삭제한다.
-                File.Move(clientDBFilePathAndName, downloadForClinetDB);  // 파일을 이동시킨다.
+                if (File.Exists(targetPathClientDB_Binary)) File.Delete(targetPathClientDB_Binary); // 파일이 존재한다면 삭제한다.
+                File.Move(originalPathClientDB_Binary, targetPathClientDB_Binary);  // 파일을 이동시킨다.
 
                 // TableConverter.cs 파일을 해당 위치로 복사한다.
-                if (File.Exists(targetPathForTableConverter)) File.Delete(targetPathForTableConverter);
-                File.Move(createdPathNameForTableConverter, targetPathForTableConverter);
+                if (File.Exists(targetPathTableConverter)) File.Delete(targetPathTableConverter);
+                File.Move(originalPathTableConverter, targetPathTableConverter);
 
                 // TableClassList.cs 파일을 해당 위치로 복사한다.
-                if (File.Exists(targetPathForTableClassList)) File.Delete(targetPathForTableClassList);
-                File.Move(createdPathNameForTableClassList, targetPathForTableClassList);
+                if (File.Exists(targetPathTableClassList_Unity)) File.Delete(targetPathTableClassList_Unity);
+                File.Move(originalPathTableClassList_Unity, targetPathTableClassList_Unity);
 
                 // TableTagList.cs 파일을 해당 위치로 복사한다.
                 if (File.Exists(targetPathForTableTagList)) File.Delete(targetPathForTableTagList);
@@ -676,10 +657,19 @@ namespace MarkTwo
             }
         }
 
-        public void CloseExcel()
+        public void CloseExcel() // 엑셀을 닫는다.
         {
-            workBook.Close(0);
-            excelApp.Quit();
+            // TODO : 실행 완료 후 정상 종료일 때 두번 호출되는 부분 수정할 것
+
+            try
+            {   
+                workBook.Close(0);
+                excelApp.Quit();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
 
         string ConvertToCSharpTypeFromExcel(string tableDataType)
@@ -697,7 +687,7 @@ namespace MarkTwo
             else if (tableDataType.StartsWith("VarChar")) cSharpDataType = "string";
             else
             {
-                MessageBox.Show("정의되지 않는 자료형이 입력되었습니다. [테이블 : " + tableDataClient.m_Name + "] [자료형 : " + tableDataType + "]");
+                MessageBox.Show("정의되지 않는 자료형이 입력되었습니다. [테이블 : " + tableDataClient.name + "] [자료형 : " + tableDataType + "]");
                 Close();
             }
 
@@ -705,62 +695,60 @@ namespace MarkTwo
         }
 
         // 버전을 표시 합니다.
-        void VersionChecker()
+        void DisplayVersion()
         {
             // 버전 표시
-            this.Text = "VisualDesign For Excelion v" + Assembly.GetEntryAssembly().GetName().Version.ToString();
+            this.Text = "MarkTwo v" + Assembly.GetEntryAssembly().GetName().Version.ToString();
         }
 
-        private void Set_ClassInformation_TableSheets()
+        private void SetTableDatas() // 데이터 테이블(딕셔너리)를 설정한다.
         {
             // 클라이언트 테이블 정보를 설정한다.
             foreach (string clientSheetName in clientSheetNames)
             {
-                TableData tableData_Client = new TableData();
+                TableData tableDataClient = new TableData();
 
                 Excel.Worksheet clientDB_Sheet = sheets[clientSheetName] as Excel.Worksheet;
 
-                // tableData 객체에 정보를 할당한다
-                tableData_Client.m_Name = clientSheetName;
-                tableData_Client.m_Total_ColumnCount = clientDB_Sheet.Cells.Find("*", Type.Missing, Excel.XlFindLookIn.xlValues, Excel.XlLookAt.xlWhole, Excel.XlSearchOrder.xlByColumns, Excel.XlSearchDirection.xlPrevious, false, false, Type.Missing).Column;
-                tableData_Client.m_Total_RowCount = clientDB_Sheet.Cells.Find("*", Type.Missing, Excel.XlFindLookIn.xlValues, Excel.XlLookAt.xlWhole, Excel.XlSearchOrder.xlByColumns, Excel.XlSearchDirection.xlPrevious, false, false, Type.Missing).Row;
-
-                // 설정된 테이블 클래스를 딕셔너리에 할당한다.
-                 tableDataClientDictionary.Add(tableData_Client.m_Name, tableData_Client);
-
-                // 총 데이터의 개수를 구한다.
-                totalDataCounClient = totalDataCounClient + (tableData_Client.m_Total_ColumnCount * tableData_Client.m_Total_RowCount);
+                // tableData 객체에 테이블 시트의 기본 정보를 할당한다
+                tableDataClient.name = clientSheetName;
+                tableDataClient.totalColumnCount = clientDB_Sheet.Cells.Find("*", Type.Missing, Excel.XlFindLookIn.xlValues, Excel.XlLookAt.xlWhole, Excel.XlSearchOrder.xlByColumns, Excel.XlSearchDirection.xlPrevious, false, false, Type.Missing).Column;
+                tableDataClient.totalRowCount = clientDB_Sheet.Cells.Find("*", Type.Missing, Excel.XlFindLookIn.xlValues, Excel.XlLookAt.xlWhole, Excel.XlSearchOrder.xlByColumns, Excel.XlSearchDirection.xlPrevious, false, false, Type.Missing).Row;
+                
+                tableDatasClient.Add(tableDataClient.name, tableDataClient); // 설정된 테이블 클래스를 딕셔너리에 할당한다.
+                
+                totalDataCountClient = totalDataCountClient + (tableDataClient.totalColumnCount * tableDataClient.totalRowCount); // 총 데이터의 개수를 구한다.
             }
 
             // 서버 테이블 정보를 설정한다.
             foreach (string serverSheetName in serverSheetNames)
             {
-                TableData tableData_Server = new TableData();
+                TableData tableDataServer = new TableData();
 
                 Excel.Worksheet serverDB_Sheet = sheets[serverSheetName] as Excel.Worksheet;
 
                 // tableData 객체에 정보를 할당한다
-                tableData_Server.m_Name = serverSheetName;
-                tableData_Server.m_Total_ColumnCount = serverDB_Sheet.Cells.Find("*", Type.Missing, Excel.XlFindLookIn.xlValues, Excel.XlLookAt.xlWhole, Excel.XlSearchOrder.xlByColumns, Excel.XlSearchDirection.xlPrevious, false, false, Type.Missing).Column;
-                tableData_Server.m_Total_RowCount = serverDB_Sheet.Cells.Find("*", Type.Missing, Excel.XlFindLookIn.xlValues, Excel.XlLookAt.xlWhole, Excel.XlSearchOrder.xlByColumns, Excel.XlSearchDirection.xlPrevious, false, false, Type.Missing).Row;
+                tableDataServer.name = serverSheetName;
+                tableDataServer.totalColumnCount = serverDB_Sheet.Cells.Find("*", Type.Missing, Excel.XlFindLookIn.xlValues, Excel.XlLookAt.xlWhole, Excel.XlSearchOrder.xlByColumns, Excel.XlSearchDirection.xlPrevious, false, false, Type.Missing).Column;
+                tableDataServer.totalRowCount = serverDB_Sheet.Cells.Find("*", Type.Missing, Excel.XlFindLookIn.xlValues, Excel.XlLookAt.xlWhole, Excel.XlSearchOrder.xlByColumns, Excel.XlSearchDirection.xlPrevious, false, false, Type.Missing).Row;
 
                 // 설정된 테이블 클래스를 딕셔너리에 할당한다.
-                tableDataServerDictionary.Add(tableData_Server.m_Name, tableData_Server);
+                tableDatasServer.Add(tableDataServer.name, tableDataServer);
 
                 // 총 데이터의 개수를 구한다.
-                totalDataCountForServer = totalDataCountForServer + (tableData_Server.m_Total_ColumnCount * tableData_Server.m_Total_RowCount);
+                totalDataCountForServer = totalDataCountForServer + (tableDataServer.totalColumnCount * tableDataServer.totalRowCount);
             }
 
             // 폼의 클라이언트 진행도 부분을 초기화 한다.
-            Client_TotalCount_Table.Text = "전체 테이블 : " + tableDataClientDictionary.Count.ToString() + " 개";
-            Client_TotalCount_Data.Text = "전체 데이터 : " + totalDataCounClient.ToString("#,###") + " 개";
-            Client_Leftover_Data.Text = "남은 데이터 : " + totalDataCounClient.ToString("#,###") + " 개";
+            Client_TotalCount_Table.Text = "전체 테이블 : " + tableDatasClient.Count.ToString() + " 개";
+            Client_TotalCount_Data.Text = "전체 데이터 : " + totalDataCountClient.ToString("#,###") + " 개";
+            Client_Leftover_Data.Text = "남은 데이터 : " + totalDataCountClient.ToString("#,###") + " 개";
             Client_Count_CommentData.Text = "주석처리 데이터 : " + "0 개";
             Client_Count_ConvertData.Text = "변경된 데이터 : " + "0 개";
             Client_Total_ProcessPercent.Text = "진행도 :  " + "0%";
 
             // 폼의 서버 진행도 부분을 초기화 한다.
-            Server_TotalCount_Table.Text = "전체 테이블 : " + tableDataServerDictionary.Count.ToString() + " 개";
+            Server_TotalCount_Table.Text = "전체 테이블 : " + tableDatasServer.Count.ToString() + " 개";
             Server_TotalCount_Data.Text = "전체 데이터 : " + totalDataCountForServer.ToString("#,###") + " 개";
             Server_Leftover_Data.Text = "남은 데이터 : " + totalDataCountForServer.ToString("#,###") + " 개";
             Server_Count_CommentData.Text = "주석처리 데이터 : " + "0 개";
@@ -778,19 +766,17 @@ namespace MarkTwo
         private void GetExcelSheets()
         {
             this.excelApp = new Excel.Application();
-            this.workBook = this.excelApp.Workbooks.Open(this.Excel_FilePath(), 0, true, 5, "", "", true, Microsoft.Office.Interop.Excel.XlPlatform.xlWindows, "\t", false, false, 0, true, 1, 0);
+            this.workBook = this.excelApp.Workbooks.Open(this.ExcelFilePath(), 0, true, 5, "", "", true, Microsoft.Office.Interop.Excel.XlPlatform.xlWindows, "\t", false, false, 0, true, 1, 0);
             this.sheets = workBook.Sheets;
         }
 
         // 엑셀의 파일경로를 기록한다.
-        private string Excel_FilePath()
+        private string ExcelFilePath()
         {
             string Current_FilePath;
 
             Current_FilePath = Application.StartupPath + "\\ExcelionDB.xlsm";
             Excel_Directory.Text = "엑셀 경로 : " + Current_FilePath;
-
-            TargetPath.Text = "이동경로 : " + targetPathForClientDB;
 
             return Current_FilePath;
         }
@@ -847,15 +833,21 @@ namespace MarkTwo
                 string isXML = workSheet.Range["H27"].Value;
 
                 // 무결성 검사를 한다.
-                if (isTextFile.Equals("On") || isTextFile.Equals("Off"))
-                {
-                    this.isExtractionText = (isTextFile.Equals("On")) ? true : false;
-                }
-                else
-                {
-                    dataManager.ShowCloseMSB("[테이블 규칙]에서 추출할 파일형식 [Text문서]의 데이터가 잘못 입력되어 있습니다. \n\n(On/Off 로 입력하시기 바랍니다.)");
-                }
-                
+                if (isTextFile.Equals("On") || isTextFile.Equals("Off")) this.isExtractionText = (isTextFile.Equals("On")) ? true : false;
+                else dataManager.ShowCloseMSB("[테이블 규칙] 시트에서 \n[※ 추출할 파일 형식]의 [Text 문서] 양식이 잘못 입력되어 있습니다.\n\n(On/Off 로 입력하시기 바랍니다.)");
+
+                if (isBinary.Equals("On") || isBinary.Equals("Off")) this.isExtractionBinary = (isBinary.Equals("On")) ? true : false;
+                else dataManager.ShowCloseMSB("[테이블 규칙] 시트에서 \n[※ 추출할 파일 형식]의 [바이너리파일] 양식이 잘못 입력되어 있습니다.\n\n(On/Off 로 입력하시기 바랍니다.)");
+
+                if (isJson.Equals("On") || isJson.Equals("Off")) this.isExtractionJson = (isJson.Equals("On")) ? true : false;
+                else dataManager.ShowCloseMSB("[테이블 규칙] 시트에서 \n[※ 추출할 파일 형식]의 [Json] 양식이 잘못 입력되어 있습니다.\n\n(On/Off 로 입력하시기 바랍니다.)");
+
+                if (isCSV.Equals("On") || isCSV.Equals("Off")) this.isExtractionCSV = (isCSV.Equals("On")) ? true : false;
+                else dataManager.ShowCloseMSB("[테이블 규칙] 시트에서 \n[※ 추출할 파일 형식]의 [CSV] 양식이 잘못 입력되어 있습니다.\n\n(On/Off 로 입력하시기 바랍니다.)");
+
+                if (isXML.Equals("On") || isXML.Equals("Off")) this.isExtractionXML = (isXML.Equals("On")) ? true : false;
+                else dataManager.ShowCloseMSB("[테이블 규칙] 시트에서 \n[※ 추출할 파일 형식]의 [XML] 양식이 잘못 입력되어 있습니다.\n\n(On/Off 로 입력하시기 바랍니다.)");
+
                 // Form에 표시한다.
                 IsTextFile.Text = "Text 문서 : " + isTextFile;
                 IsBinary.Text = "바이너리파일 : " + isBinary;
@@ -865,7 +857,7 @@ namespace MarkTwo
             }
             catch (Exception)
             {
-                dataManager.ShowCloseMSB("[테이블 규칙]에서 [※ 추출할 파일 형식]의 양식이 잘못 입력되어 있습니다.\n\n(On/Off 로 입력하시기 바랍니다.)");
+                dataManager.ShowCloseMSB("[테이블 규칙] 시트에서 [※ 추출할 파일 형식]의 양식이 잘못 입력되어 있습니다.\n\n(On/Off 로 입력하시기 바랍니다.)");
             }
         }
 
@@ -880,20 +872,20 @@ namespace MarkTwo
                 string range = "D" + (22 + i).ToString();
                 string type = workSheet.Range[range].Value;
 
-                clientDataTypes.Add(type);
+                clientDataTypes.Add(type); // 리스트에 자료형을 등록한다.
 
-                ClientTypeList.Text += type + "\n";
+                ClientTypeList.Text += type + "\n"; // 라벨에 표시한다.
             }
         }
 
-        // 서버의 타입을 추출한다.
-        private void Get_ServerPHPType()
+        // MySQL 자료형을 등록한다.
+        private void GetServerMySQLType()
         {
             serverDataType = new List<string>();
             ServerTypeList.Text = null;
 
             // 8개의 자료형을 가진다. 만약 엑셀에서 자료형을 추가한다면 이 부분을 수정해야 한다.
-            for (int i = 0; i < CLIENT_TYPE_COUNT; i++)
+            for (int i = 0; i < SERVER_TYPE_COUNT; i++)
             {
                 string range = "C" + (22 + i).ToString();
                 string type = workSheet.Range[range].Value;
@@ -907,41 +899,49 @@ namespace MarkTwo
         // 타겟 폴더가 존재하는지 체크한다.
         void CheckTagetFolder()
         {
-            string clientDBPaht = Application.StartupPath.Replace("\\ADDesign", "") + "\\" + workSheet.Range["Q15"].Value;
+            string severDBDirectory = Application.StartupPath.Replace("\\ADDesign", "") + "\\" + workSheet.Range["Q14"].Value;
+            string clientDBDirectory = Application.StartupPath.Replace("\\ADDesign", "") + "\\" + workSheet.Range["Q15"].Value;
             string csFile = Application.StartupPath.Replace("\\ADDesign", "") + "\\" + workSheet.Range["Q16"].Value;
 
-            // 바이너리 파일
-            if (!Directory.Exists(clientDBPaht))
+            // 서버 DB 저장경로
+            if (!Directory.Exists(severDBDirectory))
             {
-                MessageBox.Show("클라이언트 바이너리 파일이 위치할 폴더 경로가 존재하지 않습니다. " +
+                dataManager.ShowCloseMSB("서버관련 DB 파일이 위치할 폴더 경로가 존재하지 않습니다. " +
                     "\n" +
-                    "\n테이블_규칙에 설정된 폴더 : " + workSheet.Range["Q15"].Value + 
-                    "\n전체경로 : " + clientDBPaht + 
+                    "\n테이블_규칙에 설정된 폴더 : " + workSheet.Range["Q14"].Value +
+                    "\n전체경로 : " + severDBDirectory +
                     "\n " +
-                    "\n[ 테이블_규칙 ] 테이블에서 [ 클라이언트 ClientDB 저장경로 ]를 확인하시기 바랍니다.");
-                Close();
+                    "\n[ 테이블_규칙 ] 시트에서 [ 서버 ClientDB 저장경로 ]를 확인하시기 바랍니다.");
             }
 
-            // c# 파일
+            // 클라이언트 ClientDB 저장경로
+            if (!Directory.Exists(clientDBDirectory))
+            {
+                dataManager.ShowCloseMSB("클라이언트 바이너리 파일이 위치할 폴더 경로가 존재하지 않습니다. " +
+                    "\n" +
+                    "\n테이블_규칙에 설정된 폴더 : " + workSheet.Range["Q15"].Value +
+                    "\n전체경로 : " + clientDBDirectory +
+                    "\n " +
+                    "\n[ 테이블_규칙 ] 시트에서 [ 클라이언트 ClientDB 저장경로 ]를 확인하시기 바랍니다.");
+            }
+
+            // TableClass 및 TableConverter 등 파일 저장경로
             if (!Directory.Exists(csFile))
             {
-                MessageBox.Show("TableClass.cs, TableConverter.cs, TableTagList.cs 파일이 위치할 폴더 경로가 존재하지 않습니다. " +
+                dataManager.ShowCloseMSB("TableClass.cs, TableConverter.cs, TableTagList.cs 파일이 위치할 폴더 경로가 존재하지 않습니다. " +
                     "\n" +
                     "\n테이블_규칙에 설정된 폴더 : " + workSheet.Range["Q16"].Value +
                     "\n전체경로 : " + csFile +
                     "\n " +
-                    "\n[ 테이블_규칙 ] 테이블에서 [ TableClass 및 TableConverter 등 파일 저장경로 ]를 확인하시기 바랍니다.");
-                Close();
+                    "\n[ 테이블_규칙 ] 시트에서 [ TableClass 및 TableConverter 등 파일 저장경로 ]를 확인하시기 바랍니다.");
             }
-            
-            // TODO : 서보패스확인은 작업해야 함
         }
 
         // 클라이언트의 바이너리 파일을 생성한다.
         void Create_ClientBinaryFile(string exeName = "ksk")
         {
             //m_ClientDBFilePathAndName = Application.StartupPath + "\\" + CLIENT_BINARY_FILENAME + "." + exeName;
-            clientFileStream = new FileStream(clientDBFilePathAndName, FileMode.Create);
+            clientFileStream = new FileStream(originalPathClientDB_Binary, FileMode.Create);
             binaryWriter_ForClientDB = new BinaryWriter(clientFileStream);
         }
 
@@ -949,58 +949,58 @@ namespace MarkTwo
         void Create_ServerBinaryFile(string exeName = "ksk")
         {
             //m_ServerDBFilePathAndName = Application.StartupPath + "\\" + SERVER_BINARY_FILENAME + "." + exeName;
-            serverFileStream = new FileStream(serverDBFilePathAndName, FileMode.Create);
+            serverFileStream = new FileStream(originalPathSeverDB_Binary, FileMode.Create);
             binaryWriter_ForServerDB = new BinaryWriter(serverFileStream);
         }
 
         // 클라이언트의 바이너리 파일이 이동할 곳의 경로 및 파일이름을 만든다..
-        void Create_TargetPathForClientDB(string exeName = "dat")
-        {
-            targetPathForClientDB = Application.StartupPath.Replace("\\ADDesign", "") + "\\" + workSheet.Range["Q15"].Value + "\\" + CLIENT_BINARY_FILENAME + "." + exeName;
-        }
+        //void Create_TargetPathForClientDB(string exeName = "dat")
+        //{
+        //    targetPathForClientDB = Application.StartupPath.Replace("\\ADDesign", "") + "\\" + workSheet.Range["Q15"].Value + "\\" + CLIENT_BINARY_FILENAME + "." + exeName;
+        //}
 
         // 서버의 바이너리 파일이 이동할 곳의 경로 및 파일이름을 만든다.
-        void Create_TargetPathForServerDB(string exeName = "dat")
-        {
+        //void CreateTargetPathForServerDB(string exeName = "dat")
+        //{
             // TODO : 위치를 변경하도록 한다.
-            targetPathForServerDB = Application.StartupPath + workSheet.Range["Q14"].Value + "\\" + SERVER_BINARY_FILENAME + "." + exeName;
-        }
+            //targetPathForServerDB = Application.StartupPath + workSheet.Range["Q14"].Value + "\\" + SERVER_BINARY_FILENAME + "." + exeName;
+        //}
 
         // PHP 파일이 이동할 위치를 만든다.
-        void Create_TargetPathForPHP(string exeName = "dat")
-        {
-            targetPathForPHPFile = workSheet.Range["Q5"].Value + "\\" + Create_PHPCode.TABLECONVERTER_FILENAME;
-        }
+        //void Create_TargetPathForPHP(string exeName = "dat")
+        //{
+        //    targetPathForPHPFile = workSheet.Range["Q5"].Value + "\\" + Create_PHPCode.TABLECONVERTER_FILENAME;
+        //}
 
         // 클라이언트 dB의 업데이트를 위한 경로 및 파일이름을 만든다
-        void Create_TargetPathForClientDB_Update(string exeName = "dat")
+        //void Create_TargetPathForClientDB_Update(string exeName = "dat")
+        //{
+        //    targetPathClientDB_Binary = Application.StartupPath.Replace("\\ADDesign", "") + "\\" + workSheet.Range["Q15"].Value + "\\" + CLIENT_BINARY_FILENAME + "." + exeName;
+        //}
+
+        // 유니티에서 사용되는 TableClassList.cs 파일 경로를 생성한다.
+        private void CreatePathTableClassList()
         {
-            downloadForClinetDB = Application.StartupPath.Replace("\\ADDesign", "") + "\\" + workSheet.Range["Q15"].Value + "\\" + CLIENT_BINARY_FILENAME + "." + exeName;
+            originalPathTableClassList_Unity = Application.StartupPath + "\\" + Create_CSharpCode.TABLECLASSLIST_FILENAME; // 현재위치
+            targetPathTableClassList_Unity = Application.StartupPath.Replace("\\ADDesign", "") + "\\" + workSheet.Range["Q16"].Value + "\\" + Create_CSharpCode.TABLECLASSLIST_FILENAME; // 복사할 위치
         }
 
-        // 유니티에서 사용되는 TableClassList 클래스가 복사될 파일 경로를 나타낸다.
-        void Create_CreateAndTargetPathForTableClassList()
+        // 유니티에서 사용되는 TableConverter.cs 파일 경로를 생성한다.
+        private void CreatePathTableConverter()
         {
-            createdPathNameForTableClassList = Application.StartupPath + "\\" + Create_CSharpCode.TABLECLASSLIST_FILENAME; // 현재위치
-            targetPathForTableClassList = Application.StartupPath.Replace("\\ADDesign", "") + "\\" + workSheet.Range["Q16"].Value + "\\" + Create_CSharpCode.TABLECLASSLIST_FILENAME; // 복사할 위치
-        }
-
-        // 유니티에서 사용되는 TableConverter 클래스가 복사될 파일 경로를 나타낸다.
-        void Create_CreatedAndTargetPathForTableConverter()
-        {
-            createdPathNameForTableConverter = Application.StartupPath + "\\" + Create_CSharpCode.TABLECONVERTER_FILENAME; // 현재위치
-            targetPathForTableConverter = Application.StartupPath.Replace("\\ADDesign", "") + "\\" + workSheet.Range["Q16"].Value + "\\" + Create_CSharpCode.TABLECONVERTER_FILENAME; // 복사할 위치
+            originalPathTableConverter = Application.StartupPath + "\\" + Create_CSharpCode.TABLECONVERTER_FILENAME; // 현재위치
+            targetPathTableConverter = Application.StartupPath.Replace("\\ADDesign", "") + "\\" + workSheet.Range["Q16"].Value + "\\" + Create_CSharpCode.TABLECONVERTER_FILENAME; // 복사할 위치
         }
 
         // 유니티에서 사용되는 TableTagList 클래스가 복사될 파일 경로를 나타낸다.
-        void Create_CreatedAndTargetPathForTableTagList()
+        private void CreatePathTableTagList()
         {
             createdPathNameForTableTagList = Application.StartupPath + "\\" + Create_CSharpCode.TABLETAGLIST_FILENAME; // 현재위치
             targetPathForTableTagList = Application.StartupPath.Replace("\\ADDesign", "") + "\\" + workSheet.Range["Q16"].Value + "\\" + Create_CSharpCode.TABLETAGLIST_FILENAME; // 복사할 위치
         }
 
         // 클라이언트 DB에 바이너리 파일을 쓴다.
-        void Write_ToClientDB(string dataType, string data_ExchangedString, TableData tableData, int row, int column)
+        private void Write_ToClientDB(string dataType, string data_ExchangedString, TableData tableData, int row, int column)
         {
             try
             {
@@ -1018,13 +1018,13 @@ namespace MarkTwo
                 }
                 else
                 {
-                    MessageBox.Show("클라이언트DB시트에 정의되지 않는 자료형이 입력되었습니다. [테이블 : " + tableData.m_Name + "] [행 : " + row + "] [열 : " + column + "]");
+                    MessageBox.Show("클라이언트DB시트에 정의되지 않는 자료형이 입력되었습니다. [테이블 : " + tableData.name + "] [행 : " + row + "] [열 : " + column + "]");
                     Close();
                 }
             }
             catch (System.Exception ex)
             {
-                MessageBox.Show("클라이언트DB시트에 데이터 입력이 잘못되었습니다. [테이블 : " + tableData.m_Name + "] [필드 이름 : " + tableData.m_FieldNameList[column - 1] + "]" +"] [행 : " + row);
+                MessageBox.Show("클라이언트DB시트에 데이터 입력이 잘못되었습니다. [테이블 : " + tableData.name + "] [필드 이름 : " + tableData.fieldNameList[column - 1] + "]" +"] [행 : " + row);
                 Close();
             }
             EditFormLabel_ClientThread(Client_FileSize, "누적 바이트 : " + binaryWriter_ForClientDB.BaseStream.Length.ToString("###,###") + " Byte");
@@ -1049,13 +1049,13 @@ namespace MarkTwo
                 }
                 else
                 {
-                    MessageBox.Show("서버DB시트에 정의되지 않는 자료형이 입력되었습니다. [테이블 : " + tableData.m_Name + "] [행 : " + row + "] [열 : " + column + "]");
+                    MessageBox.Show("서버DB시트에 정의되지 않는 자료형이 입력되었습니다. [테이블 : " + tableData.name + "] [행 : " + row + "] [열 : " + column + "]");
                     Close();
                 }
             }
             catch (System.Exception ex)
             {
-                MessageBox.Show("서버DB시트에 데이터 입력이 잘못되었습니다. [테이블 : " + tableData.m_Name + "] [필드 이름 : " + tableData.m_FieldNameList[column - 1] + "]" + "] [행 : " + row);
+                MessageBox.Show("서버DB시트에 데이터 입력이 잘못되었습니다. [테이블 : " + tableData.name + "] [필드 이름 : " + tableData.fieldNameList[column - 1] + "]" + "] [행 : " + row);
                 Close();
             }
             EditFormLabel_ClientThread(Server_FileSize, "누적 바이트 : " + binaryWriter_ForServerDB.BaseStream.Length.ToString("###,###") + " Byte");
@@ -1073,13 +1073,13 @@ namespace MarkTwo
                 {
                     if (IsConnectServer) // 서버가 비활성일 경우 통신하지 않는다.
                     {
-                        conn.Hashes.Set(1, tableData.m_Name + ":" + m_Reids_Num, fieldName, data_ExchangedString); // 필드 번호와 함께 데이터를 전송한다.
+                        conn.Hashes.Set(1, tableData.name + ":" + m_Reids_Num, fieldName, data_ExchangedString); // 필드 번호와 함께 데이터를 전송한다.
                     }
                 }
             }
             catch (System.Exception ex)
             {
-                MessageBox.Show("서버DB시트에 데이터 입력이 잘못되었습니다. [테이블 : " + tableData.m_Name + "] [필드 이름 : " + tableData.m_FieldNameList[column - 1] + "]" + "] [행 : " + row);
+                MessageBox.Show("서버DB시트에 데이터 입력이 잘못되었습니다. [테이블 : " + tableData.name + "] [필드 이름 : " + tableData.fieldNameList[column - 1] + "]" + "] [행 : " + row);
                 Close();
             }
         }
@@ -1112,7 +1112,7 @@ namespace MarkTwo
             //m_ClientDBFilePathAndName = Application.StartupPath + "\\" + CLIENT_BINARY_FILENAME + "." + CLIENT_BINARY_FILE_EXENAME_FORUNITY;
             string textFile = Application.StartupPath + "\\" + CLIENT_BINARY_FILENAME + "." + "txt";
 
-            binaryReader = new BinaryReader(new FileStream(targetPathForClientDB_Text, FileMode.Open));
+            binaryReader = new BinaryReader(new FileStream(targetPathClientDB_Text, FileMode.Open));
             streamWriter = new StreamWriter(new FileStream(textFile, FileMode.Create));
         }
 
@@ -1121,16 +1121,16 @@ namespace MarkTwo
         {
             if (!isExtractionText) return;  // 텍스트 추출 모드인가?
 
-            for (int column = 0; column < tableData.m_Row_CommentList.Count; column++)
+            for (int column = 0; column < tableData.rowCommentList.Count; column++)
             {
                 int row = 0;
 
                 try
                 {
-                    for (row = 0; row < tableData.m_FieldDataType_CSharp.Count; row++)
+                    for (row = 0; row < tableData.fieldDataTypeCSharp.Count; row++)
                     {
-                        string fieldName = tableData.m_FieldNameList[row];
-                        string fieldType = tableData.m_FieldDataType_CSharp[row];
+                        string fieldName = tableData.fieldNameList[row];
+                        string fieldType = tableData.fieldDataTypeCSharp[row];
                         string data = null;
 
                         if (fieldType.Equals("bool")) data = binaryReader.ReadBoolean().ToString();
@@ -1147,7 +1147,7 @@ namespace MarkTwo
                 }
                 catch (System.Exception ex)
                 {
-                    MessageBox.Show("데이터 입력이 잘못되었습니다. [테이블 : " + tableData.m_Name + "] [필드 이름 : " + tableData.m_FieldNameList[column - 1] + "]" + "] [행 : " + row);
+                    MessageBox.Show("데이터 입력이 잘못되었습니다. [테이블 : " + tableData.name + "] [필드 이름 : " + tableData.fieldNameList[column - 1] + "]" + "] [행 : " + row);
                     Close();
                 }
             }
@@ -1219,19 +1219,19 @@ namespace MarkTwo
     /// 클라이언트 엑셀시트 데이터를 저장하는 클래스
     public class TableData
     {
-        public string m_Name;
-        public int m_Total_RowCount;
-        public int m_Total_RowCount_DeleteComment;
-        public int m_Total_ColumnCount;
+        public string name;
+        public int totalRowCount; // 테이블의 행 숫자
+        public int totalRowCountDeleteComment; // 테이블의
+        public int totalColumnCount; // 테이블의 모든 열 숫자
 
-        public List<int> m_Field_CommentList = new List<int>(); // 필드의 주석을 저장한다(필드 번호 순 ex) {2,7}이면 2열 7열이 주석필드)
-        public List<int> m_Row_CommentList = new List<int>(); // 행의 주석 번호를 저장한다.(행 번호 순 ex) {2,3}이면 2행 3행 주서행)
+        public List<int> fieldCommentList = new List<int>(); // 필드의 주석을 저장한다(필드 번호 순 ex) {2,7}이면 2열 7열이 주석필드)
+        public List<int> rowCommentList = new List<int>(); // 행의 주석 번호를 저장한다.(행 번호 순 ex) {2,3}이면 2행 3행 주서행)
 
-        public List<string> m_FieldDataType_Table = new List<string>();
-        public List<string> m_FieldDataType_CSharp = new List<string>();
-        public List<string> m_FieldNameList = new List<string>();
+        public List<string> fieldDataTypeTable = new List<string>();
+        public List<string> fieldDataTypeCSharp = new List<string>();
+        public List<string> fieldNameList = new List<string>();
 
-        public Excel.Worksheet m_WorkSheet;
+        public Excel.Worksheet workSheet;
 
         /*** 중요!!!
         //

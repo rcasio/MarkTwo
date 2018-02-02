@@ -83,7 +83,7 @@ namespace MarkTwo
         public void WriteCode_TableConverter_PHP(TableData tableData)
         {
             // 데이터를 생성하는 코드를 짠다.
-            m_TableConverter.WriteLine(AddString("    $Data_", tableData.m_Name, " = Query_SEND_TableData(\"", tableData.m_Name, "\");"));
+            m_TableConverter.WriteLine(AddString("    $Data_", tableData.name, " = Query_SEND_TableData(\"", tableData.name, "\");"));
         }
 
         // 파일 경로를 반환한다.

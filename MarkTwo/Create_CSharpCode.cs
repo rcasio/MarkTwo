@@ -191,24 +191,24 @@ namespace MarkTwo
         public void WriteCode_TableConverter(TableData tableData)
         {   
             // 각각의 리스트를 할당하도록 합니다.
-            m_TableConverter.WriteLine(AddString("      Table.Data_", tableData.m_Name, " = new Dictionary<int, ", tableData.m_Name, ">(", tableData.m_Total_RowCount_DeleteComment.ToString(),");"));
+            m_TableConverter.WriteLine(AddString("      Table.Data_", tableData.name, " = new Dictionary<int, ", tableData.name, ">(", tableData.totalRowCountDeleteComment.ToString(),");"));
             m_TableConverter.WriteLine("");
 
             // Table 클래스를 이어서 만든다.
             // 클래스의 행을 담도록 한다.
-            m_TableConverter.WriteLine(AddString("      for ( int i = 0; i < ", tableData.m_Total_RowCount_DeleteComment.ToString(), " ; i++ )"));
+            m_TableConverter.WriteLine(AddString("      for ( int i = 0; i < ", tableData.totalRowCountDeleteComment.ToString(), " ; i++ )"));
             m_TableConverter.WriteLine("      {");
 
             // 리스트에 담을 클래스를 생성한다.(리스트는 참조 형식이라 각각의 클래스가 존재해야 한다.)
-            m_TableConverter.WriteLine(AddString("          row_", tableData.m_Name, " = new ", tableData.m_Name, "();"));
+            m_TableConverter.WriteLine(AddString("          row_", tableData.name, " = new ", tableData.name, "();"));
             m_TableConverter.WriteLine("");
 
             // 파일을 읽도록 한다.
-            for (int i = 0; i < tableData.m_FieldNameList.Count; i++)
+            for (int i = 0; i < tableData.fieldNameList.Count; i++)
             {
                 string readBinaryFunction = null;
-                string fieldName = tableData.m_FieldNameList[i];
-                string fieldType = tableData.m_FieldDataType_CSharp[i];
+                string fieldName = tableData.fieldNameList[i];
+                string fieldType = tableData.fieldDataTypeCSharp[i];
 
                 if (fieldType.Equals("bool")) readBinaryFunction = "m_TableDataBinary.ReadBoolean();";
                 else if (fieldType.Equals("byte")) readBinaryFunction = "m_TableDataBinary.ReadByte();";
@@ -219,10 +219,10 @@ namespace MarkTwo
                 else if (fieldType.Equals("long")) readBinaryFunction = "m_TableDataBinary.ReadInt64();";
                 else if (fieldType.Equals("string")) readBinaryFunction = "m_TableDataBinary.ReadString();";
 
-                m_TableConverter.WriteLine(AddString("          row_", tableData.m_Name, ".", fieldName, " = ", readBinaryFunction));
+                m_TableConverter.WriteLine(AddString("          row_", tableData.name, ".", fieldName, " = ", readBinaryFunction));
 
                 // ******* 다국어 Tag를 위한 Multilingual 필드 추출
-                if (tableData.m_Name.Equals("Multilingual")  // 만약 Multilingual 테이블 이라면 현재 지원하지 않은 언어일 경우 주석처리한다.
+                if (tableData.name.Equals("Multilingual")  // 만약 Multilingual 테이블 이라면 현재 지원하지 않은 언어일 경우 주석처리한다.
                     && !fieldName.Equals("Num")) // 그리고 필드가 Num이 아닐 경우
                 {
                     multilingual.Add(fieldName); // 다국어 리스트를 추가한다.
@@ -253,7 +253,7 @@ namespace MarkTwo
 
             // 리스트에 클래스를 참조값을 담는다.
             m_TableConverter.WriteLine("");
-            m_TableConverter.WriteLine(AddString("          Table.Data_", tableData.m_Name, ".Add(row_",tableData.m_Name,".Num, row_", tableData.m_Name, ");"));
+            m_TableConverter.WriteLine(AddString("          Table.Data_", tableData.name, ".Add(row_",tableData.name,".Num, row_", tableData.name, ");"));
             m_TableConverter.WriteLine("");
 
             m_TableConverter.WriteLine("      }");
@@ -265,14 +265,14 @@ namespace MarkTwo
         {   
             // 테이블 단위의 개별 클래스를 만든다.
             m_TableClassList.WriteLine("  [System.Serializable] "); // 에디터에서 확인할 수 있게 [System.Serializable]을 하도록 한다.
-            m_TableClassList.WriteLine("  public class " + tableData.m_Name);
+            m_TableClassList.WriteLine("  public class " + tableData.name);
             m_TableClassList.WriteLine("  {");
 
             int i = 0;
 
-            foreach (string fieldName in tableData.m_FieldNameList)
+            foreach (string fieldName in tableData.fieldNameList)
             {
-                string fieldType = tableData.m_FieldDataType_CSharp[i];
+                string fieldType = tableData.fieldDataTypeCSharp[i];
 
                 m_TableClassList.WriteLine(AddString("    public ", fieldType, " ", fieldName, ";"));
 
@@ -319,7 +319,7 @@ namespace MarkTwo
             //****** PR 관련 태그
             // PR 클래스를 만든다.
             // PR 테이블은 변수 대응하기 위한 테이블이다.
-            if (tableData.m_Name.Equals("PR"))
+            if (tableData.name.Equals("PR"))
             {
                 m_TableTagList.WriteLine("        // PR 테이블 대응 클래스 입니다.");
                 m_TableTagList.WriteLine("        // PR 테이블은 개별 변수를 정의하기 위한 테이블입니다.");
