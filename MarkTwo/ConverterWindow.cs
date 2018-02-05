@@ -17,6 +17,8 @@ using System.Timers;
 // 참조 : https://code.google.com/p/booksleeve/ Redis 클라이언트
 using BookSleeve;
 
+using static MarkTwo.TagManager; // 태그 매니저
+
 namespace MarkTwo
 {
     /// <summary>
@@ -31,8 +33,10 @@ namespace MarkTwo
         Excel.Worksheet workSheet;
         Excel.Sheets sheets;
 
-        // 시트를 구분하기 위해서 사용된다.
-        enum SheetType  { Client, Server }
+        //// 시트를 구분하기 위해서 사용된다.
+        //enum SheetType  { Client, Server }
+
+        //TagManager.SheetType sheetType;
 
         // 클라이언트 바이너리 파일 만들기
         public const string CLIENT_BINARY_FILENAME = "TableDB"; // 클라이언트에서 사용하는 바이너리 파일 이름
@@ -77,9 +81,9 @@ namespace MarkTwo
         public const int ROW_COMMENTFIELD = 1; // 데이터 행이 주석행인지 판별하는 첫번째 행
         public const int m_Default_RowComment_LineCount = 3;
 
-        string commentField;
-        string commentFieldClientOnly;
-        string commentRow;
+        string commentFieldMark; // 코맨트 필드 마크
+        string commentFieldClientOnlyMark; // 코맨트 클라이언트 온리 마크
+        string commentRowMark; // 코멘트 로우 마크
 
         // DB의 기본 구성
         int totalDataCountClient;
@@ -143,6 +147,14 @@ namespace MarkTwo
             this.FormClosed += this.ClostMarkTwo; // 죵료 시 실행되는 콜백함수 설정
             AppDomain.CurrentDomain.ProcessExit += (s, e) => this.CloseExcel(); // 종료 시 호출되는 
 
+            #region 변경 부분
+;
+            this.InitializeForm(); // 폼을 초기화 한다.
+
+            dataManager.CreateExcelData((p) => SetFormDataRule(p)); // 엑셀 데이터를 생성한다.
+
+            #endregion
+
             this.GetExcelSheets(); // 엑셀 시트를 추출한다.
             this.GetClientSheetNames(); // 클라이언트 관련 시트이름을 추출한다.
             this.GetServerSheetNames(); // 서버 관련 시트 이름을 추출한다.
@@ -160,6 +172,31 @@ namespace MarkTwo
             
             this.SetTableDatas(); // 클라이어트와 서버 시트의 클래스를 만들어 딕셔너리에 저장한다.
         }
+        #region 리펙토링 부분
+
+        private void InitializeForm() // 폼을 초기화 한다.
+        {
+            Excel_Directory.Text = "엑셀 경로 : " + dataManager.ExcelFilePath(); // 엑셀 경로 표시
+        }
+
+        private void SetFormDataRule(DataRule dataRule) // 폼 데이터 룰 관련 세팅을 한다.
+        {
+            Console.WriteLine("===== 폼 데이터 룰 세팅");
+
+            Default_RowComment_LineCount.Text = "기본 주석 행 : " + DataRule.Default_RowComment_LineCount.ToString() + " 행";
+            Field_Comment.Text = "필드 주석 : " + dataRule.commentFieldMark + "&"; // "&"만 하면 표시되지 않는다.
+            Field_Comment_ClientOnly.Text = "필드 주석(클라이언트 사용) : " + dataRule.commentFieldClientOnlyMark;
+            Row_Comment.Text = "행 주석 : " + dataRule.commentRowMark;
+
+            // 추출 데이터 포멧을 여부를 표시한다.
+            IsTextFile.Text = "Text 문서 : " + dataRule.isSupportTextFile;
+            IsBinary.Text = "바이너리파일 : " + dataRule.isSupportBinary;
+            IsJson.Text = "Json : " + dataRule.isSupportJson;
+            IsCSV.Text = "CSV : " + dataRule.isSupprotCSV;
+            IsXML.Text = "XML : " + dataRule.isSupportXML;
+        }
+
+        #endregion
 
         // DB 테이블 업데이트를 위해 레디스 서버에 접속한다.
         private void ConnectRedisServer() 
@@ -196,13 +233,6 @@ namespace MarkTwo
             
             targetPathSeverDB_PHP = workSheet.Range["Q5"].Value + "\\" + Create_PHPCode.TABLECONVERTER_FILENAME; // PHP를 위한 서버 DB경로
 
-            if (isExtractionText)  // 텍스트 파일을 추출할 것인가?
-            {
-                if (File.Exists(targetPathClientDB_Text)) File.Delete(targetPathClientDB_Text); // 파일이 존재한다면 삭제한다.
-
-                //File.Copy(clientDBFilePathAndName, targetPathForClientDB_Text);  // 파일을 복사한다.
-            }
-
             // 파일 경로 생성
             this.CreatePathTableClassList(); // TableClassList.cs 파일 경로를 생성한다.
             this.CreatePathTableConverter(); // TableTagList.cs 파일 경로를 생성한다.
@@ -217,10 +247,10 @@ namespace MarkTwo
         {
             base.OnShown(e);
 
-            client_DataControl = new Thread(new ThreadStart(StartConvert_Client));
+            client_DataControl = new Thread(new ThreadStart(StartConvertClient));
             client_DataControl.Start();
 
-            server_DataControl = new Thread(new ThreadStart(StartConvert_Server));
+            server_DataControl = new Thread(new ThreadStart(StartConvertServer));
             server_DataControl.Start();
 
             // 변환작업 쓰레드 종료를 체크하는 타이머를 구동한다.
@@ -229,8 +259,9 @@ namespace MarkTwo
         }
 
         // 쓰레드로 함수가 사용될 경우 인자를 넘기려면 object로 해야 하는데 편의상 함수를 랩핑하기로 함
-        private void StartConvert_Client() {this.StartConversion(SheetType.Client);}
-        private void StartConvert_Server() {this.StartConversion(SheetType.Server);}
+        // TODO : 다국어 변환용 쓰레드 분리 (다국어 시간이 올래걸려 불편함이 있음)
+        private void StartConvertClient() {this.StartConversion(SheetType.Client);}
+        private void StartConvertServer() {this.StartConversion(SheetType.Server);}
 
         // 쓰레드로 폼을 제어하기 위한 델리게이트 함수 // 참조 : http://mrbongdal.tistory.com/9
         // 폼의 라벨을 제어한다.
@@ -334,19 +365,36 @@ namespace MarkTwo
 
         private void StartConversion(SheetType sheetType) // 변환을 시작한다.
         {
+            // ******** 이건 시간이 넉넉할 때 ********//
+            // TODO : ExcelData 클래스를 만들어 하위에 SheetData를 넣어서 처리하도록 한다. (SheetData는 현 Table 데이타)
+            // TODO : ExcelData는 Excel의 모든 정보를 담고 있는 데이터이다.
+            // TODO : 우선 ExcelData를 통해 모든 데이터를 읽고
+            // TODO : ExcelData 클래스를 기반으로 바이너리파일, txt, json등으로 변환시킨다.
+            // ***************************************//
+
+            // 20180205 작업할 것
+            // TODO : Tag에 설정되어 있는 Enum Type을 필드로 사용할 수 있게 변경한다. 
+
             List<string> sheetNames = null; // 시트이름들
             TableData tableData = new TableData();  // 데이터 테이블
             int totalCommentDataCount = 0;  // 전체 주석 개수
             int accumulate_ConvertedData = 0; // 누적된 데이터변환 개수
             double convert_ProcessPercent = 0; // 데이터 변경 진행도
-
+            
             // 각각을 구분해서 데이터를 넣는다.
             switch (sheetType)
             {
                 case SheetType.Client: // 데이터 기반을 클라이언트로 구성한다.
                     {
                         sheetNames = clientSheetNames;   // 클라이언트시트이름 리스트를 준비한다.
-                        this.Create_ClientBinaryFile(CLIENT_BINARY_FILE_EXENAME_FOR_UNITY); // 클라이언트 바이너리 파일을 최초 생성한다.
+                        this.CreateClientBinaryFile(CLIENT_BINARY_FILE_EXENAME_FOR_UNITY); // 클라이언트 바이너리 파일을 최초 생성한다.
+
+                        if (isExtractionText)  // 텍스트 파일을 추출할 것인가?
+                        {
+                            if (File.Exists(targetPathClientDB_Text)) File.Delete(targetPathClientDB_Text); // 파일이 존재한다면 삭제한다.
+
+                            //File.Copy(clientDBFilePathAndName, targetPathForClientDB_Text);  // 파일을 복사한다.
+                        }
 
                         // 클라이언트의 바이너리 파일을 읽을 때 사용한다.
                         //this.SetReadBinaryFileClient(); 
@@ -401,11 +449,11 @@ namespace MarkTwo
                     dataManager.CheckData(tableData.name, FIELD_COMMENTLINE, i, data_FieldComment);
 
                     // 클라이언트 주석필드가 아닐경우 데이터를 처리한다.
-                    if (!data_FieldComment.ToString().StartsWith(commentField))
+                    if (!data_FieldComment.ToString().StartsWith(commentFieldMark))
                     {
                         // 서버라면 클라이언트 온리일 경우를 제외한다.
                         if (sheetType == SheetType.Server &&
-                            data_FieldComment.ToString().StartsWith(commentFieldClientOnly))
+                            data_FieldComment.ToString().StartsWith(commentFieldClientOnlyMark))
                         {
                             break;
                         }
@@ -435,7 +483,7 @@ namespace MarkTwo
                     dataManager.CheckData_RowComment_IfNull(tableData.name, i, data_RowComment);
 
                     // 행 주석문을 검사하고 주석문을 리스트에 담는다.
-                    if (data_RowComment.ToString().StartsWith(commentRow))
+                    if (data_RowComment.ToString().StartsWith(commentRowMark))
                     {
                         tableData.rowCommentList.Add(i);
                         tableData.totalRowCountDeleteComment--;
@@ -810,19 +858,19 @@ namespace MarkTwo
         {
             workSheet = sheets["테이블_규칙"] as Excel.Worksheet;
 
-            commentField = workSheet.Range["B17"].Value;
-            commentFieldClientOnly = workSheet.Range["B18"].Value;
-            commentRow = workSheet.Range["B16"].Value;
-
+            commentRowMark = workSheet.Range["B16"].Value;
+            commentFieldMark = workSheet.Range["B17"].Value;
+            commentFieldClientOnlyMark = workSheet.Range["B18"].Value;
+            
             // 각 주석의 공백을 제거한다.
-            commentField = commentField.Trim();
-            commentFieldClientOnly = commentFieldClientOnly.Trim();
-            commentRow = commentRow.Trim();
+            commentFieldMark = commentFieldMark.Trim();
+            commentFieldClientOnlyMark = commentFieldClientOnlyMark.Trim();
+            commentRowMark = commentRowMark.Trim();
 
             Default_RowComment_LineCount.Text = "기본 주석 행 : " + m_Default_RowComment_LineCount.ToString() + " 행";
-            Field_Comment.Text = "필드 주석 : " + commentField + "&"; // "&"만 하면 표시되지 않는다.
-            Field_Comment_ClientOnly.Text = "필드 주석(클라이언트 사용) : " + commentFieldClientOnly;
-            Row_Comment.Text = "행 주석 : " + commentRow;
+            Field_Comment.Text = "필드 주석 : " + commentFieldMark + "&"; // "&"만 하면 표시되지 않는다.
+            Field_Comment_ClientOnly.Text = "필드 주석(클라이언트 사용) : " + commentFieldClientOnlyMark;
+            Row_Comment.Text = "행 주석 : " + commentRowMark;
             
             try
             {
@@ -938,7 +986,7 @@ namespace MarkTwo
         }
 
         // 클라이언트의 바이너리 파일을 생성한다.
-        void Create_ClientBinaryFile(string exeName = "ksk")
+        void CreateClientBinaryFile(string exeName = "ksk")
         {
             //m_ClientDBFilePathAndName = Application.StartupPath + "\\" + CLIENT_BINARY_FILENAME + "." + exeName;
             clientFileStream = new FileStream(originalPathClientDB_Binary, FileMode.Create);
@@ -1219,6 +1267,8 @@ namespace MarkTwo
     /// 클라이언트 엑셀시트 데이터를 저장하는 클래스
     public class TableData
     {
+        public Excel.Worksheet workSheet; // 시트 정보
+
         public string name;
         public int totalRowCount; // 테이블의 행 숫자
         public int totalRowCountDeleteComment; // 테이블의
@@ -1230,16 +1280,5 @@ namespace MarkTwo
         public List<string> fieldDataTypeTable = new List<string>();
         public List<string> fieldDataTypeCSharp = new List<string>();
         public List<string> fieldNameList = new List<string>();
-
-        public Excel.Worksheet workSheet;
-
-        /*** 중요!!!
-        //
-        // 소멸자를 호출하고 엑셀 어플리케이션과 시트를 종료하는 코드르 넣은 다음부터는 프로세스상에서 EXCEL.EXE가 제대로 소멸한다.
-        // 그리고 소멸자를 주석처리한 다음 부터는 EXCEL.EXE가 제대로 종료되고 있다.
-        // 이전에는 EXCEL.EXE가 항상 프로세스에 남아 있었다.
-        //
-        //~TableData_ForClient() { }
-        ***/
     }
 }

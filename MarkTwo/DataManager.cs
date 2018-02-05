@@ -4,17 +4,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Timers;
+// 참조 : http://msdn.microsoft.com/en-us/library/office/microsoft.office.interop.excel.aspx
+using Excel = Microsoft.Office.Interop.Excel;
+
+using static MarkTwo.TagManager;
 
 namespace MarkTwo
 {
     /// <summary>
     /// 정상적인 데이터인지 체크합니다.
     /// </summary>
-    class DataManager
+    public class DataManager
     {
         public ConverterWindow converterWindow { get; set; }
         public TableData tableData { get; set; }
-
+        
         static string tableName;
         static int columnNumber;
         static int rowNumber;
@@ -24,6 +31,47 @@ namespace MarkTwo
         /// 첫번째 행 데이터 중복 처리를 위한 리스트
         /// </summary>
         List<string> rowFirstColumns = new List<string>();
+
+        //======== 데이터 관리 부분 
+        Excel.Application excelApp; // 엑셀 어플리 케이션
+        Excel.Workbook workBook; // 워크 북
+        Excel.Sheets sheets; // 시트들
+        
+        Excel.Worksheet ruleSheet; // [테이블_규칙] 시트
+
+        public static ExcelData clientExcelData; // 클라이언트 엑셀 데이터
+        public static ExcelData serverExcelData; // 서버 엑셀 데이터
+
+        //TODO : 스레드 풀은 멀티랭귀어 테이블이 중점적으로 할당되는지(최우선 순위)를 테스트 한 다음에 진행하도록 한다.
+        List<Thread> threadSheets = new List<Thread>(6); // 최대 6개의 스레드를 지원하도록 한다.
+
+        DataRule dataRule; // [테이블_규칙] 시트
+        DataType dataType; // 데이터 타입
+
+        /// <summary>
+        /// 엑셀 데이터를 생성한다.
+        /// </summary>
+        /// <param name="sheetType"> 엑셀 타입 </param>
+        public void CreateExcelData(Action<DataRule> SetFormDataRule) 
+        {
+            Console.WriteLine("===== 엑셀 데이터 생성");
+            this.excelApp = new Excel.Application();
+            this.workBook = excelApp.Workbooks.Open(this.ExcelFilePath(), 0, true, 5, "", "", true, Microsoft.Office.Interop.Excel.XlPlatform.xlWindows, "\t", false, false, 0, true, 1, 0);
+            this.sheets = this.workBook.Sheets;
+
+            this.ruleSheet = sheets["테이블_규칙"] as Excel.Worksheet; // [테이블_규칙] 시트를 할당한다.
+
+            this.dataRule = new DataRule(this.ruleSheet, this);
+            this.dataType = new DataType(this.ruleSheet, this);
+
+            SetFormDataRule(dataRule); // 화면을 초기화 한다.
+        }
+
+        // 엑셀 파일 패스
+        public string ExcelFilePath()
+        {
+            return Application.StartupPath + "\\ExcelionDB.xlsm";
+        }
 
         /// <summary>
         /// 주석 데이터의 오류를 체크한다.
@@ -45,7 +93,7 @@ namespace MarkTwo
         /// 첫번째 데이터를 체크한다.
         /// 1. 셀에 데이터가 반드시 존재해야 한다.
         /// </summary>
-        void CheckFirstLineData()
+        public void CheckFirstLineData()
         {
             // 데이터가 없을 경우
             if (data == null)
@@ -60,7 +108,7 @@ namespace MarkTwo
         /// 두번째 데이터를 체크한다. (DB 이름필드)
         /// 1. 자료형이 입력되어 있는지 검사한다. (추출된 클래스에서 오류가 난다.)
         /// </summary>
-        void CheckSecondLineData()
+        public void CheckSecondLineData()
         {
             foreach (string type in converterWindow.clientDataTypes)
             {
@@ -85,7 +133,7 @@ namespace MarkTwo
         /// <summary>
         /// 세번째 데이터를 체크한다. (DB 자료형)
         /// </summary>
-        void CheckThirdLineData()
+        public void CheckThirdLineData()
         {
             foreach (string type in converterWindow.clientDataTypes)
             {
