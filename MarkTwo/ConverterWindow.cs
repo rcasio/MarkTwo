@@ -99,7 +99,7 @@ namespace MarkTwo
         public TableData tableDataClient;
         public TableData tableDataServer;
         
-        DataManager dataManager;  // 데이터를 관리한다.(오류 등)
+        GameData dataManager;  // 데이터를 관리한다.(오류 등)
 
         Dictionary<string, TableData> tableDatasClient = new Dictionary<string, TableData>();    // 테이블 클라이언트시트를 클래스를 저장하는 딕셔너리
         Dictionary<string, TableData> tableDatasServer = new Dictionary<string, TableData>();    // 테이블 서버시트를 저장하는 딕셔너리
@@ -138,7 +138,7 @@ namespace MarkTwo
 
         public ConverterWindow()
         {
-            dataManager = new DataManager();
+            dataManager = new GameData();
             dataManager.converterWindow = this;
 
             InitializeComponent(); // 컴포넌트를 초기화 한다.

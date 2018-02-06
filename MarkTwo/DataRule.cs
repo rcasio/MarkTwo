@@ -14,12 +14,12 @@ namespace MarkTwo
     public class DataRule
     {
         Excel.Worksheet ruleSheet; // [테이블_규칙] 시트
-        DataManager dataManager;
+        GameData dataManager;
 
         // 행과 열의 주석을 나타낸다.
-        public const int FIELD_COMMENTLINE = 1;    // 클라 및 서버에서 사용할 필드인지 나타내는 행
-        public const int FIELDNAME_LINE = 2;    // 필드 이름이 기록된 행
-        public const int DATATYPE_LINE = 3;    // 데이터 타입이 기록된 행
+        public const int FIELD_DESIGN_NAME = 1;    // 클라 및 서버에서 사용할 필드인지 나타내는 행
+        public const int FIELD_NAME = 2;    // 필드 이름이 기록된 행
+        public const int FIELD_DATA_TYPE = 3;    // 데이터 타입이 기록된 행
         public const int ROW_COMMENTFIELD = 1; // 데이터 행이 주석행인지 판별하는 첫번째 행
         public const int Default_RowComment_LineCount = 3;
 
@@ -45,7 +45,7 @@ namespace MarkTwo
         /// <summary>
         /// 테이블 률 설정
         /// </summary>
-        public DataRule(Excel.Worksheet ruleSheet, DataManager dataManager)
+        public DataRule(Excel.Worksheet ruleSheet, GameData dataManager)
         {
             this.ruleSheet = ruleSheet;
             this.dataManager = dataManager;

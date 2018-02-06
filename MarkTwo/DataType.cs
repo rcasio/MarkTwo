@@ -12,7 +12,9 @@ namespace MarkTwo
     public class DataType
     {
         Excel.Worksheet ruleSheet; // [테이블_규칙] 시트
-        DataManager dataManager;
+        Excel.Worksheet tagSheet; // [Tag] 시트
+        GameData dataManager;
+        DataRule dataRule;
 
         const int SUPPROT_TYPE_COUNT = 8; // 클라이언트의 자료형 개수를 나타낸다. 만약 자료형이 추가 및 삭제된다면 이부분을 수정한다.
 
@@ -21,10 +23,12 @@ namespace MarkTwo
 
         //enum item {Weapon, Armor, Etc }
 
-        public DataType(Excel.Worksheet ruleSheet, DataManager dataManager)
+        public DataType(Excel.Worksheet ruleSheet, Excel.Worksheet tagSheet, GameData dataManager, DataRule dataRule)
         {
             this.ruleSheet = ruleSheet;
             this.dataManager = dataManager;
+            this.tagSheet = tagSheet;
+            this.dataRule = dataRule;
 
             // 8개의 자료형을 가진다. 만약 엑셀에서 자료형을 추가한다면 이 부분을 수정해야 한다.
             for (int i = 0; i < SUPPROT_TYPE_COUNT; i++)
@@ -37,16 +41,40 @@ namespace MarkTwo
                 typeText = ruleSheet.Range[range].Value;
 
                 cSharpTypes.Add(typeText, this.GetCShapType(typeText)); // 리스트에 자료형을 등록한다.
-                //cSharpTypes.Add("Item", typeof(item));
-                // TODO : enum 을 등록한다.// TODO : enum 을 등록한다.
                 
-
                 // MYSQL 자료형 추출
                 range = "C" + (22 + i).ToString();
                 typeText = ruleSheet.Range[range].Value;
 
                 mySQLTypes.Add(typeText, this.GetMySQLType(typeText));
                 //ClientTypeList.Text += type + "\n"; // 라벨에 표시한다.
+            }
+
+            SheetData tagSheetData = new SheetData(dataManager.sheets, "Tag", this.dataRule); // 태그 시트 정보를 추출한다.
+
+            //this.ExtractionSheet(this.tagSheet);
+
+            foreach (var key in tagSheetData.fieldDatas.Keys)
+            {
+                FieldData fieldData = tagSheetData.fieldDatas[key]; // 필드 데이터(enum 자료형)를 추출한다.
+
+                List<string> net_List = fieldData.contents; // enum의 멤버를 추가한다.
+                
+                Type netListEnumType = this.GenerateEnumerations(net_List, key); // enum 을 생성한다.
+
+                Console.WriteLine("");
+                Console.WriteLine("========= 동적 생성 Enum 이름 : " + netListEnumType.Name);
+                Console.WriteLine("===== 실제 이름 : " + netListEnumType.GetType().Name);
+
+                foreach (var item in net_List)
+                {
+                    if (string.IsNullOrEmpty(item)) break;
+
+                    var enumValBoxed = Enum.Parse(netListEnumType, item);
+                    Console.WriteLine("=== 멤버 : " + enumValBoxed.ToString());
+                }
+
+                cSharpTypes.Add(netListEnumType.Name, netListEnumType);
             }
 
             Console.WriteLine("");
@@ -63,6 +91,8 @@ namespace MarkTwo
                 Console.WriteLine("엑셀 스트링 : " + mySQType + " => 시스템 자료형 : " + mySQLTypes[mySQType]);
             }
         }
+
+        
 
         /// <summary>
         /// MySQL 자료형을 추출한다.
@@ -106,17 +136,18 @@ namespace MarkTwo
             return type;
         }
 
-        // TODO : 동적 Enum 생성하는 부분 분석하고 정리할 것
-        // https://stackoverflow.com/questions/25173769/getting-enum-from-a-dynamically-created-enum
-        // https://stackoverflow.com/questions/725043/dynamic-enum-in-c-sharp/792332#792332
+        /// <summary>
+        /// enum을 동적으로 생성한다.
+        /// </summary>
+        /// <param name="lEnumItems"></param>
+        /// <param name="assemblyName"></param>
+        /// <returns></returns>
         public Type GenerateEnumerations(List<string> lEnumItems, string assemblyName)
-        {   
-            // Create Base Assembly Objects
+        {
             AppDomain appDomain = AppDomain.CurrentDomain;
             AssemblyName asmName = new AssemblyName(assemblyName);
             AssemblyBuilder asmBuilder = appDomain.DefineDynamicAssembly(asmName, AssemblyBuilderAccess.Run);
 
-            // Create Module and Enumeration Builder Objects
             ModuleBuilder modBuilder = asmBuilder.DefineDynamicModule(assemblyName + "_module");
             EnumBuilder enumBuilder = modBuilder.DefineEnum(assemblyName, TypeAttributes.Public, typeof(int));
             enumBuilder.DefineLiteral("None", 0);
@@ -125,12 +156,14 @@ namespace MarkTwo
 
             foreach (string fmtObj in lEnumItems)
             {
+                if (string.IsNullOrEmpty(fmtObj)) break;
+
                 enumBuilder.DefineLiteral(fmtObj, flagCnt);
                 flagCnt++;
             }
 
             var retEnumType = enumBuilder.CreateType();
-            //asmBuilder.Save(asmName.Name + ".dll");
+
             return retEnumType;
         }
     }

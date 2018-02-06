@@ -17,7 +17,7 @@ namespace MarkTwo
     /// <summary>
     /// 정상적인 데이터인지 체크합니다.
     /// </summary>
-    public class DataManager
+    public class GameData
     {
         public ConverterWindow converterWindow { get; set; }
         public TableData tableData { get; set; }
@@ -33,11 +33,11 @@ namespace MarkTwo
         List<string> rowFirstColumns = new List<string>();
 
         //======== 데이터 관리 부분 
-        Excel.Application excelApp; // 엑셀 어플리 케이션
-        Excel.Workbook workBook; // 워크 북
-        Excel.Sheets sheets; // 시트들
+        public Excel.Application excelApp; // 엑셀 어플리 케이션
+        public Excel.Workbook workBook; // 워크 북
+        public Excel.Sheets sheets; // 시트들
         
-        Excel.Worksheet ruleSheet; // [테이블_규칙] 시트
+        public Excel.Worksheet ruleSheet; // [테이블_규칙] 시트
 
         public static ExcelData clientExcelData; // 클라이언트 엑셀 데이터
         public static ExcelData serverExcelData; // 서버 엑셀 데이터
@@ -45,8 +45,8 @@ namespace MarkTwo
         //TODO : 스레드 풀은 멀티랭귀어 테이블이 중점적으로 할당되는지(최우선 순위)를 테스트 한 다음에 진행하도록 한다.
         List<Thread> threadSheets = new List<Thread>(6); // 최대 6개의 스레드를 지원하도록 한다.
 
-        DataRule dataRule; // [테이블_규칙] 시트
-        DataType dataType; // 데이터 타입
+        public DataRule dataRule; // [테이블_규칙] 시트
+        public DataType dataType; // 데이터 타입
 
         /// <summary>
         /// 엑셀 데이터를 생성한다.
@@ -61,8 +61,10 @@ namespace MarkTwo
 
             this.ruleSheet = sheets["테이블_규칙"] as Excel.Worksheet; // [테이블_규칙] 시트를 할당한다.
 
-            this.dataRule = new DataRule(this.ruleSheet, this);
-            this.dataType = new DataType(this.ruleSheet, this);
+            this.dataRule = new DataRule(this.ruleSheet, this); // [테이블_규칙] 시트를 기준으로 데이터 룰 객체를 만든다.
+            this.dataType = new DataType(this.ruleSheet, sheets["Tag"] as Excel.Worksheet, this , this.dataRule); // [테이블_규칙]과 [Tag] 시트를 기반으로 데이터 타입을 만든다.
+
+            // TODO : ExcelData 객체에 SheetData 객체를 기반으로 엑셀에서 데이터를 추출한다.
 
             SetFormDataRule(dataRule); // 화면을 초기화 한다.
         }
@@ -78,15 +80,15 @@ namespace MarkTwo
         /// </summary>
         public void CheckData(string tableName, int rowNumber, int columnNumber, object data)
         {
-            DataManager.tableName = tableName;
-            DataManager.columnNumber = columnNumber;
-            DataManager.rowNumber = rowNumber;
+            GameData.tableName = tableName;
+            GameData.columnNumber = columnNumber;
+            GameData.rowNumber = rowNumber;
 
-            DataManager.data = data;
+            GameData.data = data;
 
-            if (DataManager.rowNumber == ConverterWindow.FIELD_COMMENTLINE) this.CheckFirstLineData(); // 첫번째 행일 경우
-            if (DataManager.rowNumber == ConverterWindow.FIELDNAME_LINE) this.CheckSecondLineData(); // 두번째 행일 경우
-            if (DataManager.rowNumber == ConverterWindow.DATATYPE_LINE) this.CheckThirdLineData(); // 세번째 행일 경우
+            if (GameData.rowNumber == ConverterWindow.FIELD_COMMENTLINE) this.CheckFirstLineData(); // 첫번째 행일 경우
+            if (GameData.rowNumber == ConverterWindow.FIELDNAME_LINE) this.CheckSecondLineData(); // 두번째 행일 경우
+            if (GameData.rowNumber == ConverterWindow.DATATYPE_LINE) this.CheckThirdLineData(); // 세번째 행일 경우
         }
 
         /// <summary>
@@ -163,7 +165,7 @@ namespace MarkTwo
             // 데이터가 없을 경우
             if (data == null)
             {
-                MessageBox.Show("[" + DataManager.tableName + "] 테이블 첫번째 필드의 [" + DataManager.rowNumber + "] 번째 줄의 데이터가 입력되어 있지 않습니다.", "엑셀 행 오류");
+                MessageBox.Show("[" + GameData.tableName + "] 테이블 첫번째 필드의 [" + GameData.rowNumber + "] 번째 줄의 데이터가 입력되어 있지 않습니다.", "엑셀 행 오류");
                 converterWindow.Close();
                 Environment.Exit(0);
             }
