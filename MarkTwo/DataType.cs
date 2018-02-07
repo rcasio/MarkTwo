@@ -13,7 +13,7 @@ namespace MarkTwo
     {
         Excel.Worksheet ruleSheet; // [테이블_규칙] 시트
         Excel.Worksheet tagSheet; // [Tag] 시트
-        GameData gameData;
+        DataManager dataManager;
         DataRule dataRule;
 
         const int SUPPROT_TYPE_COUNT = 8; // 클라이언트의 자료형 개수를 나타낸다. 만약 자료형이 추가 및 삭제된다면 이부분을 수정한다.
@@ -21,13 +21,13 @@ namespace MarkTwo
         public Dictionary<string, Type> cSharpTypes = new Dictionary<string, Type>(); // c# 자료형
         public Dictionary<string, Type> mySQLTypes = new Dictionary<string, Type>(); // MySQL 자료형
         
-        public DataType(Excel.Worksheet ruleSheet, Excel.Worksheet tagSheet, GameData gameData, DataRule dataRule)
+        public DataType(Excel.Worksheet ruleSheet, Excel.Worksheet tagSheet, DataManager dataManager, DataRule dataRule)
         {
             Console.WriteLine("");
             Console.WriteLine("============ [테이블_규칙], [Tag] 시트에서 데이터 타입 설정을 시작합니다. : ");
 
             this.ruleSheet = ruleSheet;
-            this.gameData = gameData;
+            this.dataManager = dataManager;
             this.tagSheet = tagSheet;
             this.dataRule = dataRule;
 
@@ -51,7 +51,7 @@ namespace MarkTwo
                 //ClientTypeList.Text += type + "\n"; // 라벨에 표시한다.
             }
 
-            SheetData tagSheetData = new SheetData(gameData.sheets, "Tag", this.dataRule); // 태그 시트 정보를 추출한다.
+            SheetData tagSheetData = new SheetData(dataManager.sheets, "Tag", this.dataRule); // 태그 시트 정보를 추출한다.
             
             foreach (var key in tagSheetData.fieldDatas.Keys)
             {

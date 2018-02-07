@@ -86,6 +86,8 @@ namespace MarkTwo
                                 }
                                 else
                                 {
+                                    // TODO : 타입에 맞는 데이터 형인지 체크한다.
+
                                     fieldData.Add(data); // 데이터를 추가한다.
                                     Console.WriteLine(" - 필드 컨텐츠 [필드 : " +column + "] [레코드 : " + row + "] : "+ data);
                                 }
@@ -94,6 +96,8 @@ namespace MarkTwo
                             {
                                 if (!commentRowNums.Contains(row)) // 주석 행이 아닐 경우
                                 {
+                                    // TODO : 타입에 맞는 데이터 형인지 체크한다.
+
                                     fieldData.Add(data); // 데이터를 추가한다.
                                     Console.WriteLine(" - 필드 컨텐츠 [필드 : " + column + "] [레코드 : " + row + "] : " + data);
                                 }

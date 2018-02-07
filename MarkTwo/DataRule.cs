@@ -14,7 +14,7 @@ namespace MarkTwo
     public class DataRule
     {
         Excel.Worksheet ruleSheet; // [테이블_규칙] 시트
-        GameData dataManager;
+        DataManager dataManager;
 
         // 행과 열의 주석을 나타낸다.
         public const int FIELD_DESIGN_NAME = 1;    // 클라 및 서버에서 사용할 필드인지 나타내는 행
@@ -45,7 +45,7 @@ namespace MarkTwo
         /// <summary>
         /// 테이블 률 설정
         /// </summary>
-        public DataRule(Excel.Worksheet ruleSheet, GameData dataManager)
+        public DataRule(Excel.Worksheet ruleSheet, DataManager dataManager)
         {
             Console.WriteLine("");
             Console.WriteLine("============ [테이블_규칙] 테이블을 기준으로 데이터 룰을 설정합니다.");

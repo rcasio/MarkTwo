@@ -99,7 +99,7 @@ namespace MarkTwo
         public TableData tableDataClient;
         public TableData tableDataServer;
         
-        GameData dataManager;  // 데이터를 관리한다.(오류 등)
+        DataManager dataManager;  // 데이터를 관리한다.(오류 등)
 
         Dictionary<string, TableData> tableDatasClient = new Dictionary<string, TableData>();    // 테이블 클라이언트시트를 클래스를 저장하는 딕셔너리
         Dictionary<string, TableData> tableDatasServer = new Dictionary<string, TableData>();    // 테이블 서버시트를 저장하는 딕셔너리
@@ -138,7 +138,9 @@ namespace MarkTwo
 
         public ConverterWindow()
         {
-            dataManager = new GameData();
+            dataManager = new DataManager();
+            GenerateBinaryFile generateBinaryFile = new GenerateBinaryFile();
+
             dataManager.converterWindow = this;
 
             InitializeComponent(); // 컴포넌트를 초기화 한다.
@@ -152,9 +154,37 @@ namespace MarkTwo
             this.InitializeForm(); // 폼을 초기화 한다.
 
             dataManager.CreateExcelData((p) => SetFormDataRule(p)); // 엑셀 데이터를 생성한다.
+            
+            generateBinaryFile.Create(dataManager); // 바이너리 파일을 생성한다.
+
+            //if (sheetType == SheetType.Client)
+            //{
+            //    // 데이터를 바이너리로 변한한다. (테이블 행과열은 1부터 시작하기 때문에 list 자료를 순서대로 차출하기 위해서 1을 뺀다.)
+                //this.Write_ToClientDB(tableData.fieldDataTypeTable[dataCount - 1], data_ExchangedString, tableData, row, column);
+
+            //    // PR 테이블일 경우
+            //    if (tableData.name.Equals("PR"))
+            //    {
+            //        // PR 태그 클래스를 만들기 위한 자료를 추출한다.
+            //        Create_CSharpCode.Instance.SetDicPR(tableData.fieldNameList[dataCount - 1], data_ExchangedString);
+            //    }
+
+            //    // Tag 테이블일 경우
+            //    if (tableData.name.Equals("Tag"))
+            //    {
+            //        Create_CSharpCode.Instance.SetDicTag(tableData.fieldNameList[dataCount - 1], data_ExchangedString);
+            //    }
+            //}
+
+
+            //Create_CSharpCode.Instance.WriteCode_TableConverter(tableData);
+            //Create_CSharpCode.Instance.WriteCode_TableClassList(tableData);
+
 
             #endregion
 
+            // INFO : 기존코드 실행 부분
+            /*
             this.GetExcelSheets(); // 엑셀 시트를 추출한다.
             this.GetClientSheetNames(); // 클라이언트 관련 시트이름을 추출한다.
             this.GetServerSheetNames(); // 서버 관련 시트 이름을 추출한다.
@@ -171,6 +201,7 @@ namespace MarkTwo
             this.DisplayVersion(); // 버전을 표시한다.
             
             this.SetTableDatas(); // 클라이어트와 서버 시트의 클래스를 만들어 딕셔너리에 저장한다.
+            */
         }
         #region 리펙토링 부분
 
@@ -181,6 +212,7 @@ namespace MarkTwo
 
         private void SetFormDataRule(DataRule dataRule) // 폼 데이터 룰 관련 세팅을 한다.
         {
+            Console.WriteLine("");
             Console.WriteLine("===== 폼 데이터 룰 세팅");
 
             Default_RowComment_LineCount.Text = "기본 주석 행 : " + DataRule.Default_RowComment_LineCount.ToString() + " 행";
@@ -246,7 +278,10 @@ namespace MarkTwo
         protected override void OnShown(EventArgs e)
         {
             base.OnShown(e);
+            
+            // INFO : 기존 코드에서 폼이 시작될 때 실행되는 부분
 
+            /*
             client_DataControl = new Thread(new ThreadStart(StartConvertClient));
             client_DataControl.Start();
 
@@ -256,6 +291,7 @@ namespace MarkTwo
             // 변환작업 쓰레드 종료를 체크하는 타이머를 구동한다.
             timerConvertChecker.Elapsed += new System.Timers.ElapsedEventHandler(Check_EndConvertWork); // 이벤트를 등록한다.
             timerConvertChecker.Start();
+            */
         }
 
         // 쓰레드로 함수가 사용될 경우 인자를 넘기려면 object로 해야 하는데 편의상 함수를 랩핑하기로 함
@@ -499,8 +535,8 @@ namespace MarkTwo
                     // 테스트 텍스트 파일에 변경된 파일 뿌려본다.
                     //this.ReadBinaryFileForClient(tableData);
 
-                    Create_CSharpCode.Instance.WriteCode_TableConverter(tableData);
-                    Create_CSharpCode.Instance.WriteCode_TableClassList(tableData);
+                    //Create_CSharpCode.Instance.WriteCode_TableConverter(tableData);
+                    //Create_CSharpCode.Instance.WriteCode_TableClassList(tableData);
                 }
                 else if (sheetType == SheetType.Server) // PHP 코드를 작성한다.
                 {

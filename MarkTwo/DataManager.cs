@@ -17,7 +17,7 @@ namespace MarkTwo
     /// <summary>
     /// 정상적인 데이터인지 체크합니다.
     /// </summary>
-    public class GameData
+    public class DataManager
     {
         public ConverterWindow converterWindow { get; set; }
         public TableData tableData { get; set; }
@@ -39,6 +39,7 @@ namespace MarkTwo
         
         public Excel.Worksheet ruleSheet; // [테이블_규칙] 시트
         public Excel.Worksheet dataTableSheet; // 테이블 관리 시트
+        public Excel.Worksheet dataTypeSheet; // 테이블 관리 시트
 
         public static ExcelData clientExcelData; // 클라이언트 엑셀 데이터
         public static ExcelData serverExcelData; // 서버 엑셀 데이터
@@ -58,17 +59,18 @@ namespace MarkTwo
         public void CreateExcelData(Action<DataRule> SetFormDataRule)
         {
             Console.WriteLine("===== 엑셀 데이터 생성");
-            this.excelApp = new Excel.Application();
-            this.workBook = excelApp.Workbooks.Open(this.ExcelFilePath(), 0, true, 5, "", "", true, Microsoft.Office.Interop.Excel.XlPlatform.xlWindows, "\t", false, false, 0, true, 1, 0);
-            this.sheets = this.workBook.Sheets;
+            this.excelApp       = new Excel.Application();
+            this.workBook       = excelApp.Workbooks.Open(this.ExcelFilePath(), 0, true, 5, "", "", true, Microsoft.Office.Interop.Excel.XlPlatform.xlWindows, "\t", false, false, 0, true, 1, 0);
+            this.sheets         = this.workBook.Sheets;
 
-            this.ruleSheet = sheets["테이블_규칙"] as Excel.Worksheet; // [테이블_규칙] 시트를 할당한다.
+            this.ruleSheet      = sheets["테이블_규칙"] as Excel.Worksheet; // [테이블_규칙] 시트를 할당한다.
             this.dataTableSheet = sheets["테이블관리"] as Excel.Worksheet; // [테이블관리] 시트를 할당한다.
+            this.dataTypeSheet  = sheets["Tag"] as Excel.Worksheet; // [테이블관리] 시트를 할당한다.
 
-            this.dataRule = new DataRule(this.ruleSheet, this); // [테이블_규칙] 시트를 기준으로 데이터 룰 객체를 만든다.
-            this.dataType = new DataType(this.ruleSheet, sheets["Tag"] as Excel.Worksheet, this , this.dataRule); // [테이블_규칙]과 [Tag] 시트를 기반으로 데이터 타입을 만든다.
-            this.dataTableList = new DataTableList(this.dataTableSheet, this.sheets); // 테이블 리스트를 만든다.
-            this.excelData = new ExcelData(this);
+            this.dataRule       = new DataRule(this.ruleSheet, this); // [테이블_규칙] 시트를 기준으로 데이터 룰 객체를 만든다.
+            this.dataType       = new DataType(this.ruleSheet, dataTypeSheet, this , this.dataRule); // [테이블_규칙]과 [Tag] 시트를 기반으로 데이터 타입을 만든다.
+            this.dataTableList  = new DataTableList(this.dataTableSheet, this.sheets); // 테이블 리스트를 만든다.
+            this.excelData      = new ExcelData(this); // 엑셀 데이터를 추출한다.
 
             // TODO : ExcelData 객체에 SheetData 객체를 기반으로 엑셀에서 데이터를 추출한다.
             
@@ -87,15 +89,15 @@ namespace MarkTwo
         /// </summary>
         public void CheckData(string tableName, int rowNumber, int columnNumber, object data)
         {
-            GameData.tableName = tableName;
-            GameData.columnNumber = columnNumber;
-            GameData.rowNumber = rowNumber;
+            DataManager.tableName = tableName;
+            DataManager.columnNumber = columnNumber;
+            DataManager.rowNumber = rowNumber;
 
-            GameData.data = data;
+            DataManager.data = data;
 
-            if (GameData.rowNumber == ConverterWindow.FIELD_COMMENTLINE) this.CheckFirstLineData(); // 첫번째 행일 경우
-            if (GameData.rowNumber == ConverterWindow.FIELDNAME_LINE) this.CheckSecondLineData(); // 두번째 행일 경우
-            if (GameData.rowNumber == ConverterWindow.DATATYPE_LINE) this.CheckThirdLineData(); // 세번째 행일 경우
+            if (DataManager.rowNumber == ConverterWindow.FIELD_COMMENTLINE) this.CheckFirstLineData(); // 첫번째 행일 경우
+            if (DataManager.rowNumber == ConverterWindow.FIELDNAME_LINE) this.CheckSecondLineData(); // 두번째 행일 경우
+            if (DataManager.rowNumber == ConverterWindow.DATATYPE_LINE) this.CheckThirdLineData(); // 세번째 행일 경우
         }
 
         /// <summary>
@@ -172,7 +174,7 @@ namespace MarkTwo
             // 데이터가 없을 경우
             if (data == null)
             {
-                MessageBox.Show("[" + GameData.tableName + "] 테이블 첫번째 필드의 [" + GameData.rowNumber + "] 번째 줄의 데이터가 입력되어 있지 않습니다.", "엑셀 행 오류");
+                MessageBox.Show("[" + DataManager.tableName + "] 테이블 첫번째 필드의 [" + DataManager.rowNumber + "] 번째 줄의 데이터가 입력되어 있지 않습니다.", "엑셀 행 오류");
                 converterWindow.Close();
                 Environment.Exit(0);
             }
