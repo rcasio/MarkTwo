@@ -12,7 +12,7 @@ namespace MarkTwo
         public string name; // 시트 이름
         public Excel.Worksheet workSheet; // 워크 시트
 
-        public int totalRowCount; // 테이블의 행 숫자
+        public int totalRowCount; // 테이블 행 숫자
         public int totalRowCountDeleteComment; // 테이블의
         public int totalColumnCount; // 테이블의 모든 열 숫자
         public int totalDataCount; // 모든 데이터 개수

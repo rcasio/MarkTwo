@@ -57,23 +57,26 @@ namespace MarkTwo
             {
                 FieldData fieldData = tagSheetData.fieldDatas[key]; // 필드 데이터(enum 자료형)를 추출한다.
 
-                List<string> net_List = fieldData.contents; // enum의 멤버를 추가한다.
-                
-                Type netListEnumType = this.GenerateEnumerations(net_List, key); // enum 을 생성한다.
-
-                Console.WriteLine("");
-                Console.WriteLine("========= 동적 생성 Enum 이름 : " + netListEnumType.Name);
-                Console.WriteLine("===== 실제 이름 : " + netListEnumType.GetType().Name);
-
-                foreach (var item in net_List)
+                if (!fieldData.name.Equals("Num")) // Num 필드는 enum을 생성하지 않는다.
                 {
-                    if (string.IsNullOrEmpty(item)) break;
+                    List<string> net_List = fieldData.contents; // enum의 멤버를 추가한다.
 
-                    var enumValBoxed = Enum.Parse(netListEnumType, item);
-                    Console.WriteLine("=== 멤버 : " + enumValBoxed.ToString());
+                    Type netListEnumType = this.GenerateEnumerations(net_List, key); // enum 을 생성한다.
+
+                    Console.WriteLine("");
+                    Console.WriteLine("========= 동적 생성 Enum 이름 : " + netListEnumType.Name);
+                    Console.WriteLine("===== 실제 이름 : " + netListEnumType.GetType().Name);
+
+                    foreach (var item in net_List)
+                    {
+                        if (string.IsNullOrEmpty(item)) break;
+
+                        var enumValBoxed = Enum.Parse(netListEnumType, item);
+                        Console.WriteLine("=== 멤버 : " + enumValBoxed.ToString());
+                    }
+
+                    cSharpTypes.Add(netListEnumType.Name, netListEnumType);
                 }
-
-                cSharpTypes.Add(netListEnumType.Name, netListEnumType);
             }
 
             Console.WriteLine("");

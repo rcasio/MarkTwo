@@ -71,9 +71,7 @@ namespace MarkTwo
             this.excelData = new ExcelData(this);
 
             // TODO : ExcelData 객체에 SheetData 객체를 기반으로 엑셀에서 데이터를 추출한다.
-
-            //this.clientExcelData = new ExcelData();
-
+            
             SetFormDataRule(dataRule); // 데이터 룰 UI를 세팅한다.
             // TODO : 지원하는 타입( 사용자 enum을 포함 )을 폼에 표시한다.
         }
