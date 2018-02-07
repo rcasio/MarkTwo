@@ -38,6 +38,7 @@ namespace MarkTwo
         public Excel.Sheets sheets; // 시트들
         
         public Excel.Worksheet ruleSheet; // [테이블_규칙] 시트
+        public Excel.Worksheet dataTableSheet; // 테이블 관리 시트
 
         public static ExcelData clientExcelData; // 클라이언트 엑셀 데이터
         public static ExcelData serverExcelData; // 서버 엑셀 데이터
@@ -47,12 +48,14 @@ namespace MarkTwo
 
         public DataRule dataRule; // [테이블_규칙] 시트
         public DataType dataType; // 데이터 타입
-
+        public DataTableList dataTableList; // 데이터 리스트
+        public ExcelData excelData; // 엑셀 데이타
+        
         /// <summary>
         /// 엑셀 데이터를 생성한다.
         /// </summary>
         /// <param name="sheetType"> 엑셀 타입 </param>
-        public void CreateExcelData(Action<DataRule> SetFormDataRule) 
+        public void CreateExcelData(Action<DataRule> SetFormDataRule)
         {
             Console.WriteLine("===== 엑셀 데이터 생성");
             this.excelApp = new Excel.Application();
@@ -60,13 +63,19 @@ namespace MarkTwo
             this.sheets = this.workBook.Sheets;
 
             this.ruleSheet = sheets["테이블_규칙"] as Excel.Worksheet; // [테이블_규칙] 시트를 할당한다.
+            this.dataTableSheet = sheets["테이블관리"] as Excel.Worksheet; // [테이블관리] 시트를 할당한다.
 
             this.dataRule = new DataRule(this.ruleSheet, this); // [테이블_규칙] 시트를 기준으로 데이터 룰 객체를 만든다.
             this.dataType = new DataType(this.ruleSheet, sheets["Tag"] as Excel.Worksheet, this , this.dataRule); // [테이블_규칙]과 [Tag] 시트를 기반으로 데이터 타입을 만든다.
+            this.dataTableList = new DataTableList(this.dataTableSheet, this.sheets); // 테이블 리스트를 만든다.
+            this.excelData = new ExcelData(this);
 
             // TODO : ExcelData 객체에 SheetData 객체를 기반으로 엑셀에서 데이터를 추출한다.
 
-            SetFormDataRule(dataRule); // 화면을 초기화 한다.
+            //this.clientExcelData = new ExcelData();
+
+            SetFormDataRule(dataRule); // 데이터 룰 UI를 세팅한다.
+            // TODO : 지원하는 타입( 사용자 enum을 포함 )을 폼에 표시한다.
         }
 
         // 엑셀 파일 패스

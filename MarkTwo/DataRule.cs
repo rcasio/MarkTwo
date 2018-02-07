@@ -47,6 +47,9 @@ namespace MarkTwo
         /// </summary>
         public DataRule(Excel.Worksheet ruleSheet, GameData dataManager)
         {
+            Console.WriteLine("");
+            Console.WriteLine("============ [테이블_규칙] 테이블을 기준으로 데이터 룰을 설정합니다.");
+
             this.ruleSheet = ruleSheet;
             this.dataManager = dataManager;
 

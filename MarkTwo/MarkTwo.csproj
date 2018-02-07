@@ -73,6 +73,7 @@
     <Compile Include="ExcelData.cs" />
     <Compile Include="ExtractionExcel.cs" />
     <Compile Include="FieldData.cs" />
+    <Compile Include="DataTableList.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DataRule.cs" />

@@ -195,7 +195,7 @@ namespace MarkTwo
             IsCSV.Text = "CSV : " + dataRule.isSupprotCSV;
             IsXML.Text = "XML : " + dataRule.isSupportXML;
         }
-
+        
         #endregion
 
         // DB 테이블 업데이트를 위해 레디스 서버에 접속한다.

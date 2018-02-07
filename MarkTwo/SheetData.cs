@@ -51,15 +51,31 @@ namespace MarkTwo
             {
                 FieldData fieldData = new FieldData(); // 필드 데이터를 생성한다.
 
+                Console.WriteLine("");
+                Console.WriteLine("==== 필드 정보");
+
                 for (int row = 1; row <= this.totalRowCount; row++) // 로우 카운트
                 {
                     string data = (this.workSheet.Cells[row, column] as Excel.Range).Text; // 해당 레이블의 데이터를 추출한다.
 
                     if (!data.StartsWith(dataRule.commentFieldMark))  // 필드 주석 "&" 이 아닐 경우
                     {
-                        if (row.Equals(DataRule.FIELD_DESIGN_NAME)) fieldData.designName = data; // 필드 기획 이름설정일 경우
-                        else if (row.Equals(DataRule.FIELD_NAME)) fieldData.name = data; // 필드 이름일 경우
-                        else if (row.Equals(DataRule.FIELD_DATA_TYPE)) fieldData.dataType = data; // 필드 데이터 타입일 경우
+                        if (row.Equals(DataRule.FIELD_DESIGN_NAME))
+                        {
+                            fieldData.designName = data; // 필드 기획 이름설정일 경우
+                            Console.WriteLine(" 필드 기획 설정 이름 : " + fieldData.designName);
+                        }
+                        else if (row.Equals(DataRule.FIELD_NAME))
+                        {
+                            fieldData.name = data; // 필드 이름일 경우
+                            Console.WriteLine(" 필드 이름 : " + fieldData.name);
+                        }
+                        else if (row.Equals(DataRule.FIELD_DATA_TYPE))
+                        {
+                            fieldData.dataType = data; // 필드 데이터 타입일 경우
+                            Console.WriteLine(" 필드 타입 : " + fieldData.dataType);
+                            Console.WriteLine("");
+                        }
                         else
                         {
                             if (column.Equals(1)) // 첫번째 필드일 경우 행에 대한 주석처리를 한다.                            
@@ -71,6 +87,7 @@ namespace MarkTwo
                                 else
                                 {
                                     fieldData.Add(data); // 데이터를 추가한다.
+                                    Console.WriteLine(" - 필드 컨텐츠 [필드 : " +column + "] [레코드 : " + row + "] : "+ data);
                                 }
                             }
                             else // 두번째 필드
@@ -78,6 +95,7 @@ namespace MarkTwo
                                 if (!commentRowNums.Contains(row)) // 주석 행이 아닐 경우
                                 {
                                     fieldData.Add(data); // 데이터를 추가한다.
+                                    Console.WriteLine(" - 필드 컨텐츠 [필드 : " + column + "] [레코드 : " + row + "] : " + data);
                                 }
                             }
                         }
@@ -85,25 +103,14 @@ namespace MarkTwo
                     else // 주석 필드일 경우
                     {
                         commentColumnNums.Add(column); // 주석 필드 번호를 기록한다.
+                        Console.WriteLine(" --- & 주석 필드 [필드 : " + column + "]");
+                        break; // 루프틑 탈출해서 더이상 데이터를 읽지 못하게 한다.
                     }
                 }
 
                 if (!commentColumnNums.Contains(column)) // 주석 필드가 아니라면
                 {
                     fieldDatas.Add(fieldData.name, fieldData); // 필드 데이터스에 등록한다.
-                }
-            }
-            foreach (var key in fieldDatas.Keys)
-            {
-                Console.WriteLine("");
-                Console.WriteLine("==== 필드 정보");
-                Console.WriteLine(" 필드 기획 설정 이름 : " + fieldDatas[key].designName);
-                Console.WriteLine(" 필드 이름 : " + fieldDatas[key].name);
-                Console.WriteLine(" 필드 타입 : " + fieldDatas[key].dataType);
-
-                for (int i = 0; i < fieldDatas[key].contents.Count; i++)
-                {
-                    Console.WriteLine(" - 필드 컨텐츠 [" + (i +1) + "] : " + fieldDatas[key].contents[i]);
                 }
             }
         }

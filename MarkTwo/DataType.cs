@@ -13,20 +13,21 @@ namespace MarkTwo
     {
         Excel.Worksheet ruleSheet; // [테이블_규칙] 시트
         Excel.Worksheet tagSheet; // [Tag] 시트
-        GameData dataManager;
+        GameData gameData;
         DataRule dataRule;
 
         const int SUPPROT_TYPE_COUNT = 8; // 클라이언트의 자료형 개수를 나타낸다. 만약 자료형이 추가 및 삭제된다면 이부분을 수정한다.
 
         public Dictionary<string, Type> cSharpTypes = new Dictionary<string, Type>(); // c# 자료형
         public Dictionary<string, Type> mySQLTypes = new Dictionary<string, Type>(); // MySQL 자료형
-
-        //enum item {Weapon, Armor, Etc }
-
-        public DataType(Excel.Worksheet ruleSheet, Excel.Worksheet tagSheet, GameData dataManager, DataRule dataRule)
+        
+        public DataType(Excel.Worksheet ruleSheet, Excel.Worksheet tagSheet, GameData gameData, DataRule dataRule)
         {
+            Console.WriteLine("");
+            Console.WriteLine("============ [테이블_규칙], [Tag] 시트에서 데이터 타입 설정을 시작합니다. : ");
+
             this.ruleSheet = ruleSheet;
-            this.dataManager = dataManager;
+            this.gameData = gameData;
             this.tagSheet = tagSheet;
             this.dataRule = dataRule;
 
@@ -50,10 +51,8 @@ namespace MarkTwo
                 //ClientTypeList.Text += type + "\n"; // 라벨에 표시한다.
             }
 
-            SheetData tagSheetData = new SheetData(dataManager.sheets, "Tag", this.dataRule); // 태그 시트 정보를 추출한다.
-
-            //this.ExtractionSheet(this.tagSheet);
-
+            SheetData tagSheetData = new SheetData(gameData.sheets, "Tag", this.dataRule); // 태그 시트 정보를 추출한다.
+            
             foreach (var key in tagSheetData.fieldDatas.Keys)
             {
                 FieldData fieldData = tagSheetData.fieldDatas[key]; // 필드 데이터(enum 자료형)를 추출한다.
@@ -79,20 +78,20 @@ namespace MarkTwo
 
             Console.WriteLine("");
             Console.WriteLine("====== 엑셀 지원 자료형");
+            Console.WriteLine("");
             Console.WriteLine("===c# 자료형");
             foreach (var cSharpType in cSharpTypes.Keys)
             {
                 Console.WriteLine("엑셀 스트링 : " + cSharpType + " => 시스템 자료형 : " + cSharpTypes[cSharpType]);
             }
-            
+
+            Console.WriteLine("");
             Console.WriteLine("===MySQL 자료형");
             foreach (var mySQType in mySQLTypes.Keys)
             {
                 Console.WriteLine("엑셀 스트링 : " + mySQType + " => 시스템 자료형 : " + mySQLTypes[mySQType]);
             }
         }
-
-        
 
         /// <summary>
         /// MySQL 자료형을 추출한다.
