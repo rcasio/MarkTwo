@@ -32,7 +32,7 @@ namespace MarkTwo
             for (int i = 0; i < this.dataTableList.clientList.Count; i++)
             {
                 // TODO : 쓰레드 사용할 것
-                // TODO : 쓰레드는 다국어 2,  클라이언트2, 서버2 로 구성되도록 한다.
+                // TODO : 쓰레드는 다국어 2, 클라이언트2, 서버2 로 구성되도록 한다.
                 // TODO : 다국어는 언어별로 바이너리 파일로 쪼개도록 한다.
 
                 // TODO : 마지막 쓰레드가 종료되면
