@@ -153,6 +153,11 @@ namespace MarkTwo
 ;
             this.InitializeForm(); // 폼을 초기화 한다.
 
+            // TODO : 주석을 제외한 엑셀 오리지날 데이터를 추출한다.
+            // TODO : 쓰레드에서 Excel을 사용할 수 없기 떄문
+            // TODO : 추출한 데이터를 중심으로 ExcelData를 추출하고
+            // TODO : 바이너리 파일을 제작하도록 한다.
+
             dataManager.CreateExcelData((p) => SetFormDataRule(p)); // 엑셀 데이터를 생성한다.
             
             generateBinaryFile.Create(dataManager); // 바이너리 파일을 생성한다.

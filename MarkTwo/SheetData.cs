@@ -31,8 +31,9 @@ namespace MarkTwo
 
         public SheetData(Excel.Sheets sheets, string sheetName, DataRule dataRule)
         {
+            // TODO : 쓰레드를 사용기 위해서는 Excel 관련 클래스를 사용하면 안된다.
             this.name = sheetName;
-
+            
             this.workSheet = sheets[sheetName] as Excel.Worksheet; // 시트를 할당한다.
 
             this.totalColumnCount = this.workSheet.Cells.Find("*", Type.Missing, Excel.XlFindLookIn.xlValues, Excel.XlLookAt.xlWhole, Excel.XlSearchOrder.xlByColumns, Excel.XlSearchDirection.xlPrevious, false, false, Type.Missing).Column;

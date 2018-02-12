@@ -15,3 +15,20 @@ C:\Users\rcasio\Documents\MarkTwo\MarkTwo\obj\Debug\MarkTwo.Properties.Resources
 C:\Users\rcasio\Documents\MarkTwo\MarkTwo\obj\Debug\MarkTwo.csproj.GenerateResource.Cache
 C:\Users\rcasio\Documents\MarkTwo\MarkTwo\obj\Debug\MarkTwo.exe
 C:\Users\rcasio\Documents\MarkTwo\MarkTwo\obj\Debug\MarkTwo.pdb
+D:\002 Tool\MarkTwo\MarkTwo\bin\Debug\MarkTwo.exe.config
+D:\002 Tool\MarkTwo\MarkTwo\bin\Debug\MarkTwo.exe
+D:\002 Tool\MarkTwo\MarkTwo\bin\Debug\MarkTwo.pdb
+D:\002 Tool\MarkTwo\MarkTwo\bin\Debug\BookSleeve.dll
+D:\002 Tool\MarkTwo\MarkTwo\bin\Debug\Newtonsoft.Json.dll
+D:\002 Tool\MarkTwo\MarkTwo\bin\Debug\Resque.dll
+D:\002 Tool\MarkTwo\MarkTwo\bin\Debug\Resque.RedisClient.Booksleeve.dll
+D:\002 Tool\MarkTwo\MarkTwo\bin\Debug\BookSleeve.pdb
+D:\002 Tool\MarkTwo\MarkTwo\bin\Debug\BookSleeve.xml
+D:\002 Tool\MarkTwo\MarkTwo\bin\Debug\Newtonsoft.Json.xml
+D:\002 Tool\MarkTwo\MarkTwo\obj\Debug\MarkTwo.csprojResolveAssemblyReference.cache
+D:\002 Tool\MarkTwo\MarkTwo\obj\Debug\MarkTwo.csproj.ResolveComReference.cache
+D:\002 Tool\MarkTwo\MarkTwo\obj\Debug\MarkTwo.ConverterWindow.resources
+D:\002 Tool\MarkTwo\MarkTwo\obj\Debug\MarkTwo.Properties.Resources.resources
+D:\002 Tool\MarkTwo\MarkTwo\obj\Debug\MarkTwo.csproj.GenerateResource.Cache
+D:\002 Tool\MarkTwo\MarkTwo\obj\Debug\MarkTwo.exe
+D:\002 Tool\MarkTwo\MarkTwo\obj\Debug\MarkTwo.pdb

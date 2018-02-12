@@ -41,6 +41,10 @@ namespace MarkTwo
                 // TODO : 바이너리 파일은 테이블별로 개별적으로 만들며
                 // TODO : 쓰레드는 다국어 2,  클라이언트2, 서버2 로 구성되도록 한다.
                 // TODO : 다국어는 언어별로 바이너리 파일로 쪼개도록 한다.
+
+                // INFO : 쓰레드는 해당 객체에 동시 접근하면 안된다. 
+                // INFO : 만약 동시 접근하는 객체가 있다면 당연히 쓰레드는 동작하지 않는다.
+                // https://msdn.microsoft.com/ko-kr/library/3dasc8as(v=vs.80).aspx 참조로 쓰레드를 만들 것!
             }
 
             /*
