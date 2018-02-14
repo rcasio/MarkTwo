@@ -20,7 +20,7 @@ namespace MarkTwo
     public class DataManager
     {
         public ConverterWindow converterWindow { get; set; }
-        public TableData tableData { get; set; }
+        public TableDataS tableData { get; set; }
         
         static string tableName;
         static int columnNumber;
@@ -51,7 +51,8 @@ namespace MarkTwo
         public DataType dataType; // 데이터 타입
         public DataTableList dataTableList; // 데이터 리스트
         public ExcelData excelData; // 엑셀 데이타
-        
+        public DataExtraction dataExtraction; // 데이터 추출
+
         /// <summary>
         /// 엑셀 데이터를 생성한다.
         /// </summary>
@@ -71,6 +72,7 @@ namespace MarkTwo
             this.dataType       = new DataType(this.ruleSheet, dataTypeSheet, this , this.dataRule); // [테이블_규칙]과 [Tag] 시트를 기반으로 데이터 타입을 만든다.
             this.dataTableList  = new DataTableList(this.dataTableSheet, this.sheets); // 테이블 리스트를 만든다.
             this.excelData      = new ExcelData(this); // 엑셀 데이터를 추출한다.
+            this.dataExtraction = new DataExtraction(this); // 데이터 추출
 
             // TODO : ExcelData 객체에 SheetData 객체를 기반으로 엑셀에서 데이터를 추출한다.
             

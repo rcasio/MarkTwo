@@ -17,6 +17,4 @@ namespace MarkTwo
             public const string Multilingual = "Multilingual"; // 다국어 시트
         }
     }
-
-    
 }

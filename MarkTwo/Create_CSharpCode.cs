@@ -188,7 +188,7 @@ namespace MarkTwo
         }
 
         // 테이블의 시트 정보를 참조하여 테이블 변환용 코드를 만든다.
-        public void WriteCode_TableConverter(TableData tableData)
+        public void WriteCode_TableConverter(TableDataS tableData)
         {   
             // 각각의 리스트를 할당하도록 합니다.
             m_TableConverter.WriteLine(AddString("      Table.Data_", tableData.name, " = new Dictionary<int, ", tableData.name, ">(", tableData.totalRowCountDeleteComment.ToString(),");"));
@@ -261,7 +261,7 @@ namespace MarkTwo
         }
 
         // 테이블 시트를 참조하여 시트 클래스를 만든다.
-        public void WriteCode_TableClassList(TableData tableData)
+        public void WriteCode_TableClassList(TableDataS tableData)
         {   
             // 테이블 단위의 개별 클래스를 만든다.
             m_TableClassList.WriteLine("  [System.Serializable] "); // 에디터에서 확인할 수 있게 [System.Serializable]을 하도록 한다.
@@ -283,7 +283,7 @@ namespace MarkTwo
         }
 
         // 테이블 시트를 참조하여 Multilingual 및 PR 클래스를 만든다.
-        public void WriteCode_TableTagMultilingualPR(TableData tableData)
+        public void WriteCode_TableTagMultilingualPR(TableDataS tableData)
         {
             m_TableTagList.WriteLine("// 테이블 태그를 사용하기 위한 클래스입니다."); // 사용확인을 위한 주석
             m_TableTagList.WriteLine("// 툴에의해 자동으로 생성됩니다.");
@@ -411,7 +411,7 @@ namespace MarkTwo
         }
 
         // Tag 테이블을 참조하여 추가 Tag 클래스를 만든다.
-        public void WriteCode_TableTag(TableData tableData)
+        public void WriteCode_TableTag(TableDataS tableData)
         {
             // 테이블 Tag로 구성되도록 한다.
             m_TableTagList.WriteLine("        public class Tag");

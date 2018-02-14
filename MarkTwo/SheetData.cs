@@ -12,6 +12,8 @@ namespace MarkTwo
         public string name; // 시트 이름
         public Excel.Worksheet workSheet; // 워크 시트
 
+        public DataRule dataRule; // 데이터 룰
+
         public int totalRowCount; // 테이블 행 숫자
         public int totalRowCountDeleteComment; // 테이블의
         public int totalColumnCount; // 테이블의 모든 열 숫자
@@ -23,27 +25,35 @@ namespace MarkTwo
         public List<string> fieldDataTypeTable = new List<string>();
         public List<string> fieldDataTypeCSharp = new List<string>();
         public List<string> fieldNameList = new List<string>();
-
-        public Dictionary<string, FieldData> fieldDatas = new Dictionary<string, FieldData>(); // 필드 데이터 딕셔너리
         
         public List<int> commentColumnNums = new List<int>(); // 주석처리 열 번호 리스트
         public List<int> commentRowNums = new List<int>(); // 주석처리 행 번호 리스트
+
+        public Dictionary<string, FieldData> fieldDatas = new Dictionary<string, FieldData>(); // 필드 데이터 딕셔너리
 
         public SheetData(Excel.Sheets sheets, string sheetName, DataRule dataRule)
         {
             // TODO : 쓰레드를 사용기 위해서는 Excel 관련 클래스를 사용하면 안된다.
             this.name = sheetName;
-            
+
+            Console.WriteLine("");
+            Console.WriteLine("--- 테이블 정보 추출 : " + this.name);
+
             this.workSheet = sheets[sheetName] as Excel.Worksheet; // 시트를 할당한다.
+
+            this.dataRule = dataRule;
 
             this.totalColumnCount = this.workSheet.Cells.Find("*", Type.Missing, Excel.XlFindLookIn.xlValues, Excel.XlLookAt.xlWhole, Excel.XlSearchOrder.xlByColumns, Excel.XlSearchDirection.xlPrevious, false, false, Type.Missing).Column;
             this.totalRowCount = this.workSheet.Cells.Find("*", Type.Missing, Excel.XlFindLookIn.xlValues, Excel.XlLookAt.xlWhole, Excel.XlSearchOrder.xlByColumns, Excel.XlSearchDirection.xlPrevious, false, false, Type.Missing).Row;
 
             this.totalDataCount = this.totalColumnCount * this.totalRowCount; // 데이터 카운트
+        }
 
+        public void Create()
+        {
             Console.WriteLine("");
             Console.WriteLine("======== 테이블 정보");
-            Console.WriteLine("==== 테이블 이름 : " + sheetName);
+            Console.WriteLine("==== 테이블 이름 : " + this.name);
             Console.WriteLine("==== 테이블 필드 개수 : " + this.totalColumnCount);
             Console.WriteLine("==== 테이블 레코드 개수 : " + this.totalRowCount);
             Console.WriteLine("==== 테이블 데이터 총합 : " + this.totalDataCount.ToString("#,###"));
@@ -59,7 +69,7 @@ namespace MarkTwo
                 {
                     string data = (this.workSheet.Cells[row, column] as Excel.Range).Text; // 해당 레이블의 데이터를 추출한다.
 
-                    if (!data.StartsWith(dataRule.commentFieldMark))  // 필드 주석 "&" 이 아닐 경우
+                    if (!data.StartsWith(this.dataRule.commentFieldMark))  // 필드 주석 "&" 이 아닐 경우
                     {
                         if (row.Equals(DataRule.FIELD_DESIGN_NAME))
                         {

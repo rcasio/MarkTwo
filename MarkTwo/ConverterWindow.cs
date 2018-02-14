@@ -96,13 +96,13 @@ namespace MarkTwo
         public List<string> serverDataType;  // 서버에서 사용하는 데이터 타입                                                
 
         // 테이블 데이터
-        public TableData tableDataClient;
-        public TableData tableDataServer;
+        public TableDataS tableDataClient;
+        public TableDataS tableDataServer;
         
         DataManager dataManager;  // 데이터를 관리한다.(오류 등)
 
-        Dictionary<string, TableData> tableDatasClient = new Dictionary<string, TableData>();    // 테이블 클라이언트시트를 클래스를 저장하는 딕셔너리
-        Dictionary<string, TableData> tableDatasServer = new Dictionary<string, TableData>();    // 테이블 서버시트를 저장하는 딕셔너리
+        Dictionary<string, TableDataS> tableDatasClient = new Dictionary<string, TableDataS>();    // 테이블 클라이언트시트를 클래스를 저장하는 딕셔너리
+        Dictionary<string, TableDataS> tableDatasServer = new Dictionary<string, TableDataS>();    // 테이블 서버시트를 저장하는 딕셔너리
 
         SoundPlayer endFileConvert = new SoundPlayer(Properties.Resources._416631__alpersez__acoustic_guitar); // 변환이 종료되었을 때 나오는 사운드
 
@@ -165,7 +165,7 @@ namespace MarkTwo
             //if (sheetType == SheetType.Client)
             //{
             //    // 데이터를 바이너리로 변한한다. (테이블 행과열은 1부터 시작하기 때문에 list 자료를 순서대로 차출하기 위해서 1을 뺀다.)
-                //this.Write_ToClientDB(tableData.fieldDataTypeTable[dataCount - 1], data_ExchangedString, tableData, row, column);
+            //this.Write_ToClientDB(tableData.fieldDataTypeTable[dataCount - 1], data_ExchangedString, tableData, row, column);
 
             //    // PR 테이블일 경우
             //    if (tableData.name.Equals("PR"))
@@ -187,7 +187,7 @@ namespace MarkTwo
 
 
             #endregion
-
+            
             // INFO : 기존코드 실행 부분
             /*
             this.GetExcelSheets(); // 엑셀 시트를 추출한다.
@@ -220,17 +220,17 @@ namespace MarkTwo
             Console.WriteLine("");
             Console.WriteLine("===== 폼 데이터 룰 세팅");
 
-            Default_RowComment_LineCount.Text = "기본 주석 행 : " + DataRule.Default_RowComment_LineCount.ToString() + " 행";
-            Field_Comment.Text = "필드 주석 : " + dataRule.commentFieldMark + "&"; // "&"만 하면 표시되지 않는다.
-            Field_Comment_ClientOnly.Text = "필드 주석(클라이언트 사용) : " + dataRule.commentFieldClientOnlyMark;
-            Row_Comment.Text = "행 주석 : " + dataRule.commentRowMark;
+            //Default_RowComment_LineCount.Text = "기본 주석 행 : " + DataRule.Default_RowComment_LineCount.ToString() + " 행";
+            //Field_Comment.Text = "필드 주석 : " + dataRule.commentFieldMark + "&"; // "&"만 하면 표시되지 않는다.
+            //Field_Comment_ClientOnly.Text = "필드 주석(클라이언트 사용) : " + dataRule.commentFieldClientOnlyMark;
+            //Row_Comment.Text = "행 주석 : " + dataRule.commentRowMark;
 
-            // 추출 데이터 포멧을 여부를 표시한다.
-            IsTextFile.Text = "Text 문서 : " + dataRule.isSupportTextFile;
-            IsBinary.Text = "바이너리파일 : " + dataRule.isSupportBinary;
-            IsJson.Text = "Json : " + dataRule.isSupportJson;
-            IsCSV.Text = "CSV : " + dataRule.isSupprotCSV;
-            IsXML.Text = "XML : " + dataRule.isSupportXML;
+            //// 추출 데이터 포멧을 여부를 표시한다.
+            //IsTextFile.Text = "Text 문서 : " + dataRule.isSupportTextFile;
+            //IsBinary.Text = "바이너리파일 : " + dataRule.isSupportBinary;
+            //IsJson.Text = "Json : " + dataRule.isSupportJson;
+            //IsCSV.Text = "CSV : " + dataRule.isSupprotCSV;
+            //IsXML.Text = "XML : " + dataRule.isSupportXML;
         }
         
         #endregion
@@ -336,43 +336,43 @@ namespace MarkTwo
         // 프로그래스 바를 제어한다.
         private void EditFormPorgressBar_ClientThread(System.Windows.Forms.ProgressBar progressBar, int para)
         {
-            if (Client_ProgressBar.InvokeRequired)
-            {
-                callBackClient_Progress progress = new callBackClient_Progress(EditFormPorgressBar_ClientThread);
-                Invoke(progress, new object[] {progressBar, para});
-            }
-            else
-            {
-                progressBar.Value = para;
-            }
+            //if (Client_ProgressBar.InvokeRequired)
+            //{
+            //    callBackClient_Progress progress = new callBackClient_Progress(EditFormPorgressBar_ClientThread);
+            //    Invoke(progress, new object[] {progressBar, para});
+            //}
+            //else
+            //{
+            //    progressBar.Value = para;
+            //}
         }
 
         // 프로그래스 바를 제어한다.
         private void EditFormPorgressBar_ServerThread(System.Windows.Forms.ProgressBar progressBar, int para)
         {
-            if (Client_ProgressBar.InvokeRequired)
-            {
-                callBackServer_Progress progress = new callBackServer_Progress(EditFormPorgressBar_ServerThread);
-                Invoke(progress, new object[] { progressBar, para });
-            }
-            else
-            {
-                progressBar.Value = para;
-            }
+            //if (Client_ProgressBar.InvokeRequired)
+            //{
+            //    callBackServer_Progress progress = new callBackServer_Progress(EditFormPorgressBar_ServerThread);
+            //    Invoke(progress, new object[] { progressBar, para });
+            //}
+            //else
+            //{
+            //    progressBar.Value = para;
+            //}
         }
 
         //  프로그래스바를 설정한다.
         private void SetProgressbar()
         {
-            Client_ProgressBar.Style = ProgressBarStyle.Continuous;
-            Client_ProgressBar.Minimum = 0;
-            Client_ProgressBar.Maximum = 1000;
-            Client_ProgressBar.Value = 0;
+            //Client_ProgressBar.Style = ProgressBarStyle.Continuous;
+            //Client_ProgressBar.Minimum = 0;
+            //Client_ProgressBar.Maximum = 1000;
+            //Client_ProgressBar.Value = 0;
 
-            Server_ProgressBar.Style = ProgressBarStyle.Continuous;
-            Server_ProgressBar.Minimum = 0;
-            Server_ProgressBar.Maximum = 1000;
-            Server_ProgressBar.Value = 0;
+            //Server_ProgressBar.Style = ProgressBarStyle.Continuous;
+            //Server_ProgressBar.Minimum = 0;
+            //Server_ProgressBar.Maximum = 1000;
+            //Server_ProgressBar.Value = 0;
         }
 
         // 변환작업이 종료되었는지 체크한다.
@@ -417,7 +417,7 @@ namespace MarkTwo
             // TODO : Tag에 설정되어 있는 Enum Type을 필드로 사용할 수 있게 변경한다. 
 
             List<string> sheetNames = null; // 시트이름들
-            TableData tableData = new TableData();  // 데이터 테이블
+            TableDataS tableData = new TableDataS();  // 데이터 테이블
             int totalCommentDataCount = 0;  // 전체 주석 개수
             int accumulate_ConvertedData = 0; // 누적된 데이터변환 개수
             double convert_ProcessPercent = 0; // 데이터 변경 진행도
@@ -559,8 +559,8 @@ namespace MarkTwo
                     {
                         totalCommentDataCount += tableData.totalColumnCount; // 주석처리 카운트를 센다.
 
-                        if (sheetType == SheetType.Client) EditFormLabel_ClientThread(Client_Count_CommentData, "주석처리 데이터 : " + (totalCommentDataCount).ToString("#,###") + " 개");
-                        else if (sheetType == SheetType.Server) EditFormLabel_ClientThread(Server_Count_CommentData, "주석처리 데이터 : " + (totalCommentDataCount).ToString("#,###") + " 개");
+                        //if (sheetType == SheetType.Client) EditFormLabel_ClientThread(Client_Count_CommentData, "주석처리 데이터 : " + (totalCommentDataCount).ToString("#,###") + " 개");
+                        //else if (sheetType == SheetType.Server) EditFormLabel_ClientThread(Server_Count_CommentData, "주석처리 데이터 : " + (totalCommentDataCount).ToString("#,###") + " 개");
 
                         continue;
                     }
@@ -573,8 +573,8 @@ namespace MarkTwo
                         {
                             ++totalCommentDataCount; // 주석처리 카운를 1증가시킨다.
 
-                            if (sheetType == SheetType.Client) EditFormLabel_ClientThread(Client_Count_CommentData, "주석처리 데이터 : " + (totalCommentDataCount).ToString("#,###") + " 개");
-                            else if (sheetType == SheetType.Server) EditFormLabel_ClientThread(Server_Count_CommentData, "주석처리 데이터 : " + (totalCommentDataCount).ToString("#,###") + " 개");
+                            //if (sheetType == SheetType.Client) EditFormLabel_ClientThread(Client_Count_CommentData, "주석처리 데이터 : " + (totalCommentDataCount).ToString("#,###") + " 개");
+                            //else if (sheetType == SheetType.Server) EditFormLabel_ClientThread(Server_Count_CommentData, "주석처리 데이터 : " + (totalCommentDataCount).ToString("#,###") + " 개");
                         }
                         // 주석 필드가 아니라면
                         else
@@ -648,24 +648,24 @@ namespace MarkTwo
                             convert_ProcessPercent = (double)(accumulate_ConvertedData + totalCommentDataCount) / totalDataCountClient;
 
                             // 폼에서 나타나는 부분
-                            EditFormLabel_ClientThread(Client_Target_Data, "데이터 : " + data_ExchangedString);
-                            EditFormLabel_ClientThread(Client_Leftover_Data, "남은 데이터 : " + (totalDataCountClient - (accumulate_ConvertedData + totalCommentDataCount)).ToString("0,###") + " 개");
-                            EditFormLabel_ClientThread(Client_Count_ConvertData, "변경된 데이터 : " + (accumulate_ConvertedData).ToString("#,###") + " 개");
-                            EditFormLabel_ClientThread(Client_Total_ProcessPercent, "진행도 : " + convert_ProcessPercent.ToString("0.#####%"));
+                            //EditFormLabel_ClientThread(Client_Target_Data, "데이터 : " + data_ExchangedString);
+                            //EditFormLabel_ClientThread(Client_Leftover_Data, "남은 데이터 : " + (totalDataCountClient - (accumulate_ConvertedData + totalCommentDataCount)).ToString("0,###") + " 개");
+                            //EditFormLabel_ClientThread(Client_Count_ConvertData, "변경된 데이터 : " + (accumulate_ConvertedData).ToString("#,###") + " 개");
+                            //EditFormLabel_ClientThread(Client_Total_ProcessPercent, "진행도 : " + convert_ProcessPercent.ToString("0.#####%"));
                              
-                            EditFormPorgressBar_ClientThread(Client_ProgressBar, (int)(convert_ProcessPercent * 1000));
+                            //EditFormPorgressBar_ClientThread(Client_ProgressBar, (int)(convert_ProcessPercent * 1000));
                         }
                         else if (sheetType == SheetType.Server)
                         {
                             convert_ProcessPercent = (double)(accumulate_ConvertedData + totalCommentDataCount) / totalDataCountForServer;
 
                             // 폼에서 나타나는 부분
-                            EditFormLabel_ClientThread(Server_Target_Data, "데이터 : " + data_ExchangedString);
-                            EditFormLabel_ClientThread(Server_Leftover_Data, "남은 데이터 : " + (totalDataCountForServer - (accumulate_ConvertedData + totalCommentDataCount)).ToString("0,###") + " 개");
-                            EditFormLabel_ClientThread(Server_Count_ConvertData, "변경된 데이터 : " + (accumulate_ConvertedData).ToString("#,###") + " 개");
-                            EditFormLabel_ClientThread(Server_Total_ProcessPercent, "진행도 : " + convert_ProcessPercent.ToString("0.#####%"));
+                            //EditFormLabel_ClientThread(Server_Target_Data, "데이터 : " + data_ExchangedString);
+                            //EditFormLabel_ClientThread(Server_Leftover_Data, "남은 데이터 : " + (totalDataCountForServer - (accumulate_ConvertedData + totalCommentDataCount)).ToString("0,###") + " 개");
+                            //EditFormLabel_ClientThread(Server_Count_ConvertData, "변경된 데이터 : " + (accumulate_ConvertedData).ToString("#,###") + " 개");
+                            //EditFormLabel_ClientThread(Server_Total_ProcessPercent, "진행도 : " + convert_ProcessPercent.ToString("0.#####%"));
 
-                            EditFormPorgressBar_ServerThread(Server_ProgressBar, (int)(convert_ProcessPercent * 1000));
+                            //EditFormPorgressBar_ServerThread(Server_ProgressBar, (int)(convert_ProcessPercent * 1000));
                         }
                     }
                 }
@@ -795,7 +795,7 @@ namespace MarkTwo
             // 클라이언트 테이블 정보를 설정한다.
             foreach (string clientSheetName in clientSheetNames)
             {
-                TableData tableDataClient = new TableData();
+                TableDataS tableDataClient = new TableDataS();
 
                 Excel.Worksheet clientDB_Sheet = sheets[clientSheetName] as Excel.Worksheet;
 
@@ -812,7 +812,7 @@ namespace MarkTwo
             // 서버 테이블 정보를 설정한다.
             foreach (string serverSheetName in serverSheetNames)
             {
-                TableData tableDataServer = new TableData();
+                TableDataS tableDataServer = new TableDataS();
 
                 Excel.Worksheet serverDB_Sheet = sheets[serverSheetName] as Excel.Worksheet;
 
@@ -829,20 +829,20 @@ namespace MarkTwo
             }
 
             // 폼의 클라이언트 진행도 부분을 초기화 한다.
-            Client_TotalCount_Table.Text = "전체 테이블 : " + tableDatasClient.Count.ToString() + " 개";
-            Client_TotalCount_Data.Text = "전체 데이터 : " + totalDataCountClient.ToString("#,###") + " 개";
-            Client_Leftover_Data.Text = "남은 데이터 : " + totalDataCountClient.ToString("#,###") + " 개";
-            Client_Count_CommentData.Text = "주석처리 데이터 : " + "0 개";
-            Client_Count_ConvertData.Text = "변경된 데이터 : " + "0 개";
-            Client_Total_ProcessPercent.Text = "진행도 :  " + "0%";
+            //Client_TotalCount_Table.Text = "전체 테이블 : " + tableDatasClient.Count.ToString() + " 개";
+            //Client_TotalCount_Data.Text = "전체 데이터 : " + totalDataCountClient.ToString("#,###") + " 개";
+            //Client_Leftover_Data.Text = "남은 데이터 : " + totalDataCountClient.ToString("#,###") + " 개";
+            //Client_Count_CommentData.Text = "주석처리 데이터 : " + "0 개";
+            //Client_Count_ConvertData.Text = "변경된 데이터 : " + "0 개";
+            //Client_Total_ProcessPercent.Text = "진행도 :  " + "0%";
 
-            // 폼의 서버 진행도 부분을 초기화 한다.
-            Server_TotalCount_Table.Text = "전체 테이블 : " + tableDatasServer.Count.ToString() + " 개";
-            Server_TotalCount_Data.Text = "전체 데이터 : " + totalDataCountForServer.ToString("#,###") + " 개";
-            Server_Leftover_Data.Text = "남은 데이터 : " + totalDataCountForServer.ToString("#,###") + " 개";
-            Server_Count_CommentData.Text = "주석처리 데이터 : " + "0 개";
-            Server_Count_ConvertData.Text = "변경된 데이터 : " + "0 개";
-            Server_Total_ProcessPercent.Text = "진행도 :  " + "0%";
+            //// 폼의 서버 진행도 부분을 초기화 한다.
+            //Server_TotalCount_Table.Text = "전체 테이블 : " + tableDatasServer.Count.ToString() + " 개";
+            //Server_TotalCount_Data.Text = "전체 데이터 : " + totalDataCountForServer.ToString("#,###") + " 개";
+            //Server_Leftover_Data.Text = "남은 데이터 : " + totalDataCountForServer.ToString("#,###") + " 개";
+            //Server_Count_CommentData.Text = "주석처리 데이터 : " + "0 개";
+            //Server_Count_ConvertData.Text = "변경된 데이터 : " + "0 개";
+            //Server_Total_ProcessPercent.Text = "진행도 :  " + "0%";
         }
 
         // 시작 버튼을 눌렀을 시
@@ -908,10 +908,10 @@ namespace MarkTwo
             commentFieldClientOnlyMark = commentFieldClientOnlyMark.Trim();
             commentRowMark = commentRowMark.Trim();
 
-            Default_RowComment_LineCount.Text = "기본 주석 행 : " + m_Default_RowComment_LineCount.ToString() + " 행";
-            Field_Comment.Text = "필드 주석 : " + commentFieldMark + "&"; // "&"만 하면 표시되지 않는다.
-            Field_Comment_ClientOnly.Text = "필드 주석(클라이언트 사용) : " + commentFieldClientOnlyMark;
-            Row_Comment.Text = "행 주석 : " + commentRowMark;
+            //Default_RowComment_LineCount.Text = "기본 주석 행 : " + m_Default_RowComment_LineCount.ToString() + " 행";
+            //Field_Comment.Text = "필드 주석 : " + commentFieldMark + "&"; // "&"만 하면 표시되지 않는다.
+            //Field_Comment_ClientOnly.Text = "필드 주석(클라이언트 사용) : " + commentFieldClientOnlyMark;
+            //Row_Comment.Text = "행 주석 : " + commentRowMark;
             
             try
             {
@@ -938,11 +938,11 @@ namespace MarkTwo
                 else dataManager.ShowCloseMSB("[테이블 규칙] 시트에서 \n[※ 추출할 파일 형식]의 [XML] 양식이 잘못 입력되어 있습니다.\n\n(On/Off 로 입력하시기 바랍니다.)");
 
                 // Form에 표시한다.
-                IsTextFile.Text = "Text 문서 : " + isTextFile;
-                IsBinary.Text = "바이너리파일 : " + isBinary;
-                IsJson.Text = "Json : " + isJson;
-                IsCSV.Text = "CSV : " + isCSV;
-                IsXML.Text = "XML : " + isXML;
+                //IsTextFile.Text = "Text 문서 : " + isTextFile;
+                //IsBinary.Text = "바이너리파일 : " + isBinary;
+                //IsJson.Text = "Json : " + isJson;
+                //IsCSV.Text = "CSV : " + isCSV;
+                //IsXML.Text = "XML : " + isXML;
             }
             catch (Exception)
             {
@@ -953,7 +953,7 @@ namespace MarkTwo
         private void GetClientCSharpType()
         {
             clientDataTypes = new List<string>();
-            ClientTypeList.Text = null;
+            //ClientTypeList.Text = null;
 
             // 8개의 자료형을 가진다. 만약 엑셀에서 자료형을 추가한다면 이 부분을 수정해야 한다.
             for (int i = 0; i < CLIENT_TYPE_COUNT; i++)
@@ -963,7 +963,7 @@ namespace MarkTwo
 
                 clientDataTypes.Add(type); // 리스트에 자료형을 등록한다.
 
-                ClientTypeList.Text += type + "\n"; // 라벨에 표시한다.
+                //ClientTypeList.Text += type + "\n"; // 라벨에 표시한다.
             }
         }
 
@@ -971,7 +971,7 @@ namespace MarkTwo
         private void GetServerMySQLType()
         {
             serverDataType = new List<string>();
-            ServerTypeList.Text = null;
+            //ServerTypeList.Text = null;
 
             // 8개의 자료형을 가진다. 만약 엑셀에서 자료형을 추가한다면 이 부분을 수정해야 한다.
             for (int i = 0; i < SERVER_TYPE_COUNT; i++)
@@ -981,7 +981,7 @@ namespace MarkTwo
 
                 serverDataType.Add(type);
 
-                ServerTypeList.Text += type + "\n";
+                //ServerTypeList.Text += type + "\n";
             }
         }
 
@@ -1089,7 +1089,7 @@ namespace MarkTwo
         }
 
         // 클라이언트 DB에 바이너리 파일을 쓴다.
-        private void Write_ToClientDB(string dataType, string data_ExchangedString, TableData tableData, int row, int column)
+        private void Write_ToClientDB(string dataType, string data_ExchangedString, TableDataS tableData, int row, int column)
         {
             try
             {
@@ -1116,11 +1116,11 @@ namespace MarkTwo
                 MessageBox.Show("클라이언트DB시트에 데이터 입력이 잘못되었습니다. [테이블 : " + tableData.name + "] [필드 이름 : " + tableData.fieldNameList[column - 1] + "]" +"] [행 : " + row);
                 Close();
             }
-            EditFormLabel_ClientThread(Client_FileSize, "누적 바이트 : " + binaryWriter_ForClientDB.BaseStream.Length.ToString("###,###") + " Byte");
+            //EditFormLabel_ClientThread(Client_FileSize, "누적 바이트 : " + binaryWriter_ForClientDB.BaseStream.Length.ToString("###,###") + " Byte");
         }
 
         // 서버 DB에 바이너리 파일을 쓴다.
-        void Write_ToServerDB(string dataType, string data_ExchangedString, TableData tableData, int row, int column)
+        void Write_ToServerDB(string dataType, string data_ExchangedString, TableDataS tableData, int row, int column)
         {
             try
             {
@@ -1147,10 +1147,10 @@ namespace MarkTwo
                 MessageBox.Show("서버DB시트에 데이터 입력이 잘못되었습니다. [테이블 : " + tableData.name + "] [필드 이름 : " + tableData.fieldNameList[column - 1] + "]" + "] [행 : " + row);
                 Close();
             }
-            EditFormLabel_ClientThread(Server_FileSize, "누적 바이트 : " + binaryWriter_ForServerDB.BaseStream.Length.ToString("###,###") + " Byte");
+            //EditFormLabel_ClientThread(Server_FileSize, "누적 바이트 : " + binaryWriter_ForServerDB.BaseStream.Length.ToString("###,###") + " Byte");
         }
 
-        void Query_TableData(string dataType, string fieldName, string data_ExchangedString, TableData tableData, int row, int column)
+        void Query_TableData(string dataType, string fieldName, string data_ExchangedString, TableDataS tableData, int row, int column)
         {
             try
             {
@@ -1206,7 +1206,7 @@ namespace MarkTwo
         }
 
         // TODO : 잘못된 코드 수저할 것(쓰레드를 돌려서 처리할 것)
-        void ReadBinaryFileForClient(TableData tableData)
+        void ReadBinaryFileForClient(TableDataS tableData)
         {
             if (!isExtractionText) return;  // 텍스트 추출 모드인가?
 
@@ -1306,7 +1306,7 @@ namespace MarkTwo
     }
 
     /// 클라이언트 엑셀시트 데이터를 저장하는 클래스
-    public class TableData
+    public class TableDataS
     {
         public Excel.Worksheet workSheet; // 시트 정보
 

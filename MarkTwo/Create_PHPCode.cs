@@ -80,7 +80,7 @@ namespace MarkTwo
         }
 
         // 테이블의 시트 정보를 참조하여 테이블 변환용 코드를 만든다.
-        public void WriteCode_TableConverter_PHP(TableData tableData)
+        public void WriteCode_TableConverter_PHP(TableDataS tableData)
         {
             // 데이터를 생성하는 코드를 짠다.
             m_TableConverter.WriteLine(AddString("    $Data_", tableData.name, " = Query_SEND_TableData(\"", tableData.name, "\");"));

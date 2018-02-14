@@ -52,7 +52,8 @@ namespace MarkTwo
             }
 
             SheetData tagSheetData = new SheetData(dataManager.sheets, "Tag", this.dataRule); // 태그 시트 정보를 추출한다.
-            
+            tagSheetData.Create();
+
             foreach (var key in tagSheetData.fieldDatas.Keys)
             {
                 FieldData fieldData = tagSheetData.fieldDatas[key]; // 필드 데이터(enum 자료형)를 추출한다.

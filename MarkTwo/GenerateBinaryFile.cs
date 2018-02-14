@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace MarkTwo
 {
@@ -20,7 +21,10 @@ namespace MarkTwo
         }
 
         DataManager dataManager;
-        
+
+        Thread multilingualThread;    // 다국어 바이너리 파일
+        Thread clientThread;    // 클라이언트 바이너리 파일
+
         public void Create(DataManager dataManager) // 바이너리 파일을 생성한다.
         { 
             this.dataManager = dataManager;
@@ -45,6 +49,35 @@ namespace MarkTwo
                 // INFO : 쓰레드는 해당 객체에 동시 접근하면 안된다. 
                 // INFO : 만약 동시 접근하는 객체가 있다면 당연히 쓰레드는 동작하지 않는다.
                 // https://msdn.microsoft.com/ko-kr/library/3dasc8as(v=vs.80).aspx 참조로 쓰레드를 만들 것!
+
+                // 다국어 쓰레드
+                //multilingualThread = new Thread(new ThreadStart(() => clientSheetDatas.Add(SheetName.Multilingual, new SheetData(this.dataManager.sheets, SheetName.Multilingual, this.dataRule))));
+                //multilingualThread.Start();
+
+                //// 다국어를 제외한 클라이언트 쓰레드
+                //clientThread = new Thread(new ThreadStart(() => this.GenerateOtherSheetDatas()));
+                //clientThread.Start();
+
+                // 쓰레드 쌤플
+                //multilingualThread = new Thread(new ThreadStart(
+                //    () => {
+                //        for (int i = 0; i < 10000; i++)
+                //        {
+                //            Console.WriteLine("aaa : " + i);
+                //        }
+                //    }
+                //));
+                //multilingualThread.Start();
+
+                //clientThread = new Thread(new ThreadStart(
+                //    () => {
+                //        for (int i = 0; i < 10000; i++)
+                //        {
+                //            Console.WriteLine("bbb : " + i);
+                //        }
+                //    }
+                //));
+                //clientThread.Start();
             }
 
             /*
