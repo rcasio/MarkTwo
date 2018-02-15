@@ -15,6 +15,8 @@ namespace MarkTwo
         public class SheetName
         {
             public const string Multilingual = "Multilingual"; // 다국어 시트
+            public const string PR = "PR"; // PR 시트
+            public const string Tag = "Tag"; // Tag 시트
         }
     }
 }

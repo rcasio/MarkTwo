@@ -31,15 +31,17 @@ namespace MarkTwo
 
         public Dictionary<string, FieldData> fieldDatas = new Dictionary<string, FieldData>(); // 필드 데이터 딕셔너리
 
-        public SheetData(Excel.Sheets sheets, string sheetName, DataRule dataRule)
+        //public SheetData(Excel.Sheets sheets, string sheetName, DataRule dataRule)
+        public SheetData(Excel.Worksheet sheet, string sheetName, DataRule dataRule)
         {
             // TODO : 쓰레드를 사용기 위해서는 Excel 관련 클래스를 사용하면 안된다.
             this.name = sheetName;
 
             Console.WriteLine("");
-            Console.WriteLine("--- 테이블 정보 추출 : " + this.name);
+            Console.WriteLine("--- 테이블 기반 정보 추출 : " + this.name);
 
-            this.workSheet = sheets[sheetName] as Excel.Worksheet; // 시트를 할당한다.
+            //this.workSheet = sheets[sheetName] as Excel.Worksheet; // 시트를 할당한다.
+            this.workSheet = sheet;
 
             this.dataRule = dataRule;
 
@@ -52,7 +54,7 @@ namespace MarkTwo
         public void Create()
         {
             Console.WriteLine("");
-            Console.WriteLine("======== 테이블 정보");
+            Console.WriteLine("======== 테이블 기반 정보");
             Console.WriteLine("==== 테이블 이름 : " + this.name);
             Console.WriteLine("==== 테이블 필드 개수 : " + this.totalColumnCount);
             Console.WriteLine("==== 테이블 레코드 개수 : " + this.totalRowCount);

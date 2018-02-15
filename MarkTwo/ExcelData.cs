@@ -18,9 +18,13 @@ namespace MarkTwo
         private DataTableList dataTableList;
 
         public int totalDataCount; // 데이터 카운트
+
+        public Dictionary<string, SheetData> necessarySheetDatas = new Dictionary<string, SheetData>(); // 필수 시트 데이터
         
-        public Dictionary<string, SheetData> clientSheetDatas = new Dictionary<string, SheetData>(); // 클라이언트 시트 데이터
-        public Dictionary<string, SheetData> serverSheetDats = new Dictionary<string, SheetData>(); // 서버 시트 데이터
+        public Dictionary<string, SheetData> client01SheetDatas = new Dictionary<string, SheetData>(); // 클라이언트 시트 데이터
+        public Dictionary<string, SheetData> client02SheetDatas = new Dictionary<string, SheetData>(); // 클라이언트 시트 데이터
+        public Dictionary<string, SheetData> server01SheetDats = new Dictionary<string, SheetData>(); // 서버 시트 데이터
+        public Dictionary<string, SheetData> server02SheetDats = new Dictionary<string, SheetData>(); // 서버 시트 데이터
 
         public ExcelData(DataManager dataManager)
         {
@@ -28,17 +32,61 @@ namespace MarkTwo
             this.dataRule = dataManager.dataRule;
             this.dataTableList = dataManager.dataTableList;
 
-            Console.WriteLine("");
-            Console.WriteLine("========= 클라이언트 데이터 추출 시작");
+            // TODO : 콜백을 사용해서 프로그래스 진행상황 나타내기
 
             Console.WriteLine("");
-            Console.WriteLine("====== 데이터 정보 추출 ");
-
-            for (int i = 0; i < this.dataTableList.clientList.Count; i++)
+            Console.WriteLine("========= 필수 데이터 기반 정보 추출 시작");
+            
+            for (int i = 0; i < this.dataTableList.necessaryList.Count; i++)
             {
-                string sheetName = this.dataTableList.clientList[i];
+                string sheetName = this.dataTableList.necessaryList[i];
 
-                clientSheetDatas.Add(this.dataTableList.clientList[i], new SheetData(this.dataManager.sheets, this.dataTableList.clientList[i], this.dataRule));
+                //client01SheetDatas.Add(this.dataTableList.necessaryList[i], new SheetData(this.dataManager.sheets, this.dataTableList.necessaryList[i], this.dataRule));
+                client01SheetDatas.Add(sheetName, new SheetData(this.dataTableList.necessarySheetList[i], sheetName, this.dataRule));
+            }
+
+            Console.WriteLine("");
+            Console.WriteLine("========= 클라이언트 데이터01 기반 정보 추출 시작");
+            
+            for (int i = 0; i < this.dataTableList.clientList01.Count; i++)
+            {
+                string sheetName = this.dataTableList.clientList01[i];
+
+                //client01SheetDatas.Add(this.dataTableList.clientList01[i], new SheetData(this.dataManager.sheets, this.dataTableList.clientList01[i], this.dataRule));
+                client01SheetDatas.Add(sheetName, new SheetData(this.dataTableList.clientsSheetList01[i], sheetName, this.dataRule));
+            }
+
+            Console.WriteLine("");
+            Console.WriteLine("========= 클라이언트 데이터02 기반 정보 추출 시작");
+            
+            for (int i = 0; i < this.dataTableList.clientList02.Count; i++)
+            {
+                string sheetName = this.dataTableList.clientList02[i];
+
+                //client01SheetDatas.Add(this.dataTableList.clientList02[i], new SheetData(this.dataManager.sheets, this.dataTableList.clientList02[i], this.dataRule));
+                client01SheetDatas.Add(sheetName, new SheetData(this.dataTableList.clientsSheetList02[i], sheetName, this.dataRule));
+            }
+
+            Console.WriteLine("");
+            Console.WriteLine("========= 서버 데이터01 기반 정보 추출 시작");
+            
+            for (int i = 0; i < this.dataTableList.serverList01.Count; i++)
+            {
+                string sheetName = this.dataTableList.serverList01[i];
+
+                //client01SheetDatas.Add(this.dataTableList.serverList01[i], new SheetData(this.dataManager.sheets, this.dataTableList.serverList01[i], this.dataRule));
+                client01SheetDatas.Add(sheetName, new SheetData(this.dataTableList.serverSheetList01[i], sheetName, this.dataRule));
+            }
+
+            Console.WriteLine("");
+            Console.WriteLine("========= 서버 데이터02 기반 정보 추출 시작");
+
+            for (int i = 0; i < this.dataTableList.serverList02.Count; i++)
+            {
+                string sheetName = this.dataTableList.serverList02[i];
+
+                //client01SheetDatas.Add(this.dataTableList.serverList02[i], new SheetData(this.dataManager.sheets, this.dataTableList.serverList02[i], this.dataRule));
+                client01SheetDatas.Add(sheetName, new SheetData(this.dataTableList.serverSheetList02[i], sheetName, this.dataRule));
             }
         }
 

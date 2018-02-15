@@ -74,6 +74,8 @@ namespace MarkTwo
             this.excelData      = new ExcelData(this); // 엑셀 데이터를 추출한다.
             this.dataExtraction = new DataExtraction(this); // 데이터 추출
 
+            // TODO : DataRule 부터 ExcelData 처리를 데이터 추출 준비 작업 프로그래스에 나타낸다.
+
             // TODO : ExcelData 객체에 SheetData 객체를 기반으로 엑셀에서 데이터를 추출한다.
             
             SetFormDataRule(dataRule); // 데이터 룰 UI를 세팅한다.

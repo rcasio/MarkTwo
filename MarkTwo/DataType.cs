@@ -51,7 +51,7 @@ namespace MarkTwo
                 //ClientTypeList.Text += type + "\n"; // 라벨에 표시한다.
             }
 
-            SheetData tagSheetData = new SheetData(dataManager.sheets, "Tag", this.dataRule); // 태그 시트 정보를 추출한다.
+            SheetData tagSheetData = new SheetData(dataManager.sheets["Tag"] as Excel.Worksheet, "Tag", this.dataRule); // 태그 시트 정보를 추출한다.
             tagSheetData.Create();
 
             foreach (var key in tagSheetData.fieldDatas.Keys)

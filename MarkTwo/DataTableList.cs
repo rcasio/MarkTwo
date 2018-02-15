@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Excel = Microsoft.Office.Interop.Excel;
+using System.Windows.Forms;
+
+using static MarkTwo.TagManager;
 
 namespace MarkTwo
 {
@@ -12,11 +15,20 @@ namespace MarkTwo
     {
         public Excel.Worksheet tableManagerSheet; // 테이블 관리 시트
 
-        public List<string> clientList = new List<string>(); // 사용되는 테이블 리스트
-        public List<string> serverList = new List<string>(); // 사용되는 클라이언트 리스트
+        public List<string> totalList = new List<string>(); // 스레드 프로그래스 진행을 위해 사용된다.
 
-        public List<Excel.Worksheet> clientsSheets = new List<Excel.Worksheet>(); // 클라이언트 시트 리스트
-        public List<Excel.Worksheet> serverSheets = new List<Excel.Worksheet>(); // 서버 시트 리스트
+        public List<string> necessaryList = new List<string>(); // 픽수 테이블
+        public List<Excel.Worksheet> necessarySheetList = new List<Excel.Worksheet>(); // 픽수 테이블
+
+        public List<string> clientList01 = new List<string>(); // 사용되는 테이블 리스트
+        public List<Excel.Worksheet> clientsSheetList01 = new List<Excel.Worksheet>(); // 클라이언트 시트 리스트
+        public List<string> clientList02 = new List<string>(); // 사용되는 테이블 리스트
+        public List<Excel.Worksheet> clientsSheetList02 = new List<Excel.Worksheet>(); // 클라이언트 시트 리스트
+
+        public List<string> serverList01 = new List<string>(); // 사용되는 클라이언트 리스트
+        public List<Excel.Worksheet> serverSheetList01 = new List<Excel.Worksheet>(); // 서버 시트 리스트
+        public List<string> serverList02 = new List<string>(); // 사용되는 클라이언트 리스트
+        public List<Excel.Worksheet> serverSheetList02 = new List<Excel.Worksheet>(); // 서버 시트 리스트
 
         public DataTableList(Excel.Worksheet tableManagerSheet, Excel.Sheets sheets)
         {
@@ -27,29 +39,134 @@ namespace MarkTwo
 
             Console.WriteLine("");
             Console.WriteLine("========= 시트 리스트 추가 작업 시작");
+
             Console.WriteLine("");
-            Console.WriteLine("====== 클라이언트 시트 추가");
-
-            // 클라이언트 리스트
-            foreach (string ClientSheets_Name in tableManagerSheet.get_Range("B8", "B50").Value)
+            Console.WriteLine("====== 필수 테이블리스트 추가");
+            // 필수 테이블리스트
+            try
             {
-                if (ClientSheets_Name == null) break;
+                foreach (string sheetName in tableManagerSheet.get_Range("B8", "B50").Value)
+                {
+                    if (sheetName == null) break;
 
-                clientList.Add(ClientSheets_Name); // 시트 리스트 추가 (문자열 리스트)
-                clientsSheets.Add(sheets[ClientSheets_Name] as Excel.Worksheet); // 시트 리스트 추가 (시트 리스트)
-                Console.WriteLine("=== 클라이언트 시트 이름 : " + ClientSheets_Name);
+                    if (sheetName.Equals(SheetName.Multilingual))
+                    {
+                        this.necessaryList.Add(sheetName);
+                        this.necessarySheetList.Add(sheets[sheetName] as Excel.Worksheet);
+                    }
+                    else if (sheetName.Equals(SheetName.PR))
+                    {
+                        necessaryList.Add(sheetName);
+                        this.necessarySheetList.Add(sheets[sheetName] as Excel.Worksheet);
+                    }
+                    else if (sheetName.Equals(SheetName.Tag))
+                    {
+                        necessaryList.Add(sheetName);
+                        this.necessarySheetList.Add(sheets[sheetName] as Excel.Worksheet);
+                    }
+                    else
+                    {
+                        MessageBox.Show("[테이블 규칙] 시트에서 [필수 테이블]이 Multilingual, PR, Tag 외의 다른 테이블이 들어가 있습니다.");
+                        Environment.Exit(0);
+                    }
+
+                    totalList.Add(sheetName);
+                    Console.WriteLine("=== 필수 테이블 시트 이름 : {0}", sheetName);
+                }
+            }
+            catch (Exception)
+            {
+
+                MessageBox.Show("[테이블 규칙] 시트에서 [필수 테이블] 리스트에서 오류가 발생했습니다.");
+                Environment.Exit(0);
             }
 
             Console.WriteLine("");
-            Console.WriteLine("====== 서버 시트 추가");
-            // 서버 리스트
-            foreach (string ServerSheets_Name in tableManagerSheet.get_Range("C8", "C50").Value)
+            Console.WriteLine("====== 클라이언트 스레드01 추가");
+            // 클라이언트 스레드01 테이블리스트
+            foreach (string sheetName in tableManagerSheet.get_Range("C8", "C50").Value)
             {
-                if (ServerSheets_Name == null) break;
+                if (sheetName == null) break;
 
-                serverList.Add(ServerSheets_Name);
-                serverSheets.Add(sheets[ServerSheets_Name] as Excel.Worksheet); // 시트 리스트 추가 (시트 리스트)
-                Console.WriteLine("=== 클라이언트 시트 이름 : " + ServerSheets_Name);
+                clientList01.Add(sheetName);
+                try
+                {
+                    this.clientsSheetList01.Add(sheets[sheetName] as Excel.Worksheet);
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("[테이블 규칙] 시트에서 [클라이언트 스레드01]에 정의되지 않는 테이블이 들어가 있습니다. \n\n오류 시트 이름 :" + sheetName);
+                    Environment.Exit(0);
+                }
+
+                totalList.Add(sheetName);
+                Console.WriteLine("=== 클라이언트 스레드01 시트 이름 : {0}", sheetName);
+            }
+
+            Console.WriteLine("");
+            Console.WriteLine("====== 클라이언트 스레드02 추가");
+            // 클라이언트 스레드02 테이블리스트
+            foreach (string sheetName in tableManagerSheet.get_Range("D8", "D50").Value)
+            {
+                if (sheetName == null) break;
+
+                clientList02.Add(sheetName);
+                try
+                {
+                    this.clientsSheetList02.Add(sheets[sheetName] as Excel.Worksheet);
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("[테이블 규칙] 시트에서 [클라이언트 스레드02]에 정의되지 않는 테이블이 들어가 있습니다. \n\n오류 시트 이름 :" + sheetName);
+                    Environment.Exit(0);
+                }
+
+                totalList.Add(sheetName);
+                Console.WriteLine("=== 클라이언트 스레드02 시트 이름 : {0}", sheetName);
+            }
+
+            Console.WriteLine("");
+            Console.WriteLine("====== 서버 스레드01 추가");
+            // 서버 스레드01 테이블리스트
+            foreach (string sheetName in tableManagerSheet.get_Range("E8", "E50").Value)
+            {
+                if (sheetName == null) break;
+
+                serverList01.Add(sheetName);
+                try
+                {
+                    this.serverSheetList01.Add(sheets[sheetName] as Excel.Worksheet);
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("[테이블 규칙] 시트에서 [서버 스레드01]에 정의되지 않는 테이블이 들어가 있습니다. \n\n오류 시트 이름 :" + sheetName);
+                    Environment.Exit(0);
+                }
+
+                totalList.Add(sheetName);
+                Console.WriteLine("=== 서버 스레드01 시트 이름 : {0}", sheetName);
+            }
+
+            Console.WriteLine("");
+            Console.WriteLine("====== 서버 스레드02 추가");
+            // 서버 스레드01 테이블리스트
+            foreach (string sheetName in tableManagerSheet.get_Range("F8", "F50").Value)
+            {
+                if (sheetName == null) break;
+
+                serverList02.Add(sheetName);
+                try
+                {
+                    this.serverSheetList02.Add(sheets[sheetName] as Excel.Worksheet);
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("[테이블 규칙] 시트에서 [서버 스레드01]에 정의되지 않는 테이블이 들어가 있습니다. \n\n오류 시트 이름 :" + sheetName);
+                    Environment.Exit(0);
+                }
+
+                totalList.Add(sheetName);
+                Console.WriteLine("=== 서버 스레드01 시트 이름 : {0}", sheetName);
             }
         }
     }

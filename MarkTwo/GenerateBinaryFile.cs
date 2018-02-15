@@ -30,7 +30,7 @@ namespace MarkTwo
             this.dataManager = dataManager;
 
             // 개별적으로 바이너리 파일을 만든다.
-            Dictionary<string, SheetData> clientSheetDatas = dataManager.excelData.clientSheetDatas;
+            Dictionary<string, SheetData> clientSheetDatas = dataManager.excelData.client01SheetDatas;
 
             Console.WriteLine("");
             Console.WriteLine("============ 바이너리 변환을 시작합니다.");

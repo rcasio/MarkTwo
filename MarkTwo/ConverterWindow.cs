@@ -1291,7 +1291,7 @@ namespace MarkTwo
 
         private void ConverterWindow_Load(object sender, EventArgs e)
         {
-
+            
         }
 
         private void label3_Click(object sender, EventArgs e)
@@ -1300,6 +1300,16 @@ namespace MarkTwo
         }
 
         private void label3_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Server_Target_Data_Click(object sender, EventArgs e)
         {
 
         }

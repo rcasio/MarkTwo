@@ -41,8 +41,8 @@ namespace MarkTwo
             this.dataManager = dataManager;
             this.excelData = dataManager.excelData;
 
-            this.clientSheetDatas = excelData.clientSheetDatas;
-            this.serverSheetDats = excelData.serverSheetDats;
+            this.clientSheetDatas = excelData.client01SheetDatas;
+            this.serverSheetDats = excelData.server01SheetDats;
 
             // TODO : 다국어 테이블을 필드별로 분류하여 스레드로 데이터를 추출한다
             // TODO : 다국어 제외 테이블을 시트별로 데이터를 추출한다.
@@ -69,7 +69,7 @@ namespace MarkTwo
             multilingualThread01 = new Thread(new ThreadStart(
                 () =>
                 {
-                    this.excelData.clientSheetDatas[SheetName.Multilingual].Create();
+                    this.excelData.client01SheetDatas[SheetName.Multilingual].Create();
                     Console.WriteLine("다국어 완료");
 
                     this.isExtractioneMultilingual = true;
