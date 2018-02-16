@@ -26,68 +26,78 @@ namespace MarkTwo
         public Dictionary<string, SheetData> server01SheetDats = new Dictionary<string, SheetData>(); // 서버 시트 데이터
         public Dictionary<string, SheetData> server02SheetDats = new Dictionary<string, SheetData>(); // 서버 시트 데이터
 
-        public ExcelData(DataManager dataManager)
+        public ExcelData(DataManager dataManager, Action<int> SetExtreactionProgressBar, Action<string, bool> SetProgressText)
         {
             this.dataManager = dataManager;
             this.dataRule = dataManager.dataRule;
             this.dataTableList = dataManager.dataTableList;
-
-            // TODO : 콜백을 사용해서 프로그래스 진행상황 나타내기
-
-            Console.WriteLine("");
-            Console.WriteLine("========= 필수 데이터 기반 정보 추출 시작");
             
+            SetProgressText("====== 엑셀 기반 데이터 추출 \n엑셀 데이터 추출을 위해 기반 데이터 추출을 시작합니다.", false);
+
+            SetProgressText("", false);
+            SetProgressText("필수 데이터 기반 정보 추출 시작", false);
+
             for (int i = 0; i < this.dataTableList.necessaryList.Count; i++)
             {
                 string sheetName = this.dataTableList.necessaryList[i];
+                SetProgressText("- 필수 데이터 기반 정보 추출 테이블 : " + sheetName, false);
+                
+                client01SheetDatas.Add(sheetName, new SheetData(this.dataTableList.necessarySheetList[i], sheetName, this.dataRule, SetProgressText));
 
-                //client01SheetDatas.Add(this.dataTableList.necessaryList[i], new SheetData(this.dataManager.sheets, this.dataTableList.necessaryList[i], this.dataRule));
-                client01SheetDatas.Add(sheetName, new SheetData(this.dataTableList.necessarySheetList[i], sheetName, this.dataRule));
+                SetProgressText("- 추출 완료 : " + sheetName, false);
             }
-
-            Console.WriteLine("");
-            Console.WriteLine("========= 클라이언트 데이터01 기반 정보 추출 시작");
             
+            SetProgressText("", false);
+            SetProgressText("클라이언트 데이터01 기반 정보 추출 시작", false);
+
             for (int i = 0; i < this.dataTableList.clientList01.Count; i++)
             {
                 string sheetName = this.dataTableList.clientList01[i];
+                SetProgressText("- 클라이언트 데이터01 기반 정보 추출 테이블 : " + sheetName, false);
 
-                //client01SheetDatas.Add(this.dataTableList.clientList01[i], new SheetData(this.dataManager.sheets, this.dataTableList.clientList01[i], this.dataRule));
-                client01SheetDatas.Add(sheetName, new SheetData(this.dataTableList.clientsSheetList01[i], sheetName, this.dataRule));
+                client01SheetDatas.Add(sheetName, new SheetData(this.dataTableList.clientsSheetList01[i], sheetName, this.dataRule, SetProgressText));
+
+                SetProgressText("- 추출 완료 : " + sheetName, false);
             }
-
-            Console.WriteLine("");
-            Console.WriteLine("========= 클라이언트 데이터02 기반 정보 추출 시작");
             
+            SetProgressText("", false);
+            SetProgressText("클라이언트 데이터02 기반 정보 추출 시작", false);
+
             for (int i = 0; i < this.dataTableList.clientList02.Count; i++)
             {
                 string sheetName = this.dataTableList.clientList02[i];
+                SetProgressText("- 클라이언트 데이터02 기반 정보 추출 테이블 : " + sheetName, false);
 
-                //client01SheetDatas.Add(this.dataTableList.clientList02[i], new SheetData(this.dataManager.sheets, this.dataTableList.clientList02[i], this.dataRule));
-                client01SheetDatas.Add(sheetName, new SheetData(this.dataTableList.clientsSheetList02[i], sheetName, this.dataRule));
+                client01SheetDatas.Add(sheetName, new SheetData(this.dataTableList.clientsSheetList02[i], sheetName, this.dataRule, SetProgressText));
+                SetProgressText("- 추출 완료 : " + sheetName, false);
             }
-
-            Console.WriteLine("");
-            Console.WriteLine("========= 서버 데이터01 기반 정보 추출 시작");
             
+            SetProgressText("", false);
+            SetProgressText("서버 데이터01 기반 정보 추출 시작", false);
+
             for (int i = 0; i < this.dataTableList.serverList01.Count; i++)
             {
                 string sheetName = this.dataTableList.serverList01[i];
+                SetProgressText("- 서버 데이터01 기반 정보 추출 테이블 : " + sheetName, false);
 
-                //client01SheetDatas.Add(this.dataTableList.serverList01[i], new SheetData(this.dataManager.sheets, this.dataTableList.serverList01[i], this.dataRule));
-                client01SheetDatas.Add(sheetName, new SheetData(this.dataTableList.serverSheetList01[i], sheetName, this.dataRule));
+                client01SheetDatas.Add(sheetName, new SheetData(this.dataTableList.serverSheetList01[i], sheetName, this.dataRule, SetProgressText));
+                SetProgressText("- 추출 완료 : " + sheetName, false);
             }
-
-            Console.WriteLine("");
-            Console.WriteLine("========= 서버 데이터02 기반 정보 추출 시작");
+            
+            SetProgressText("", false);
+            SetProgressText("서버 데이터02 기반 정보 추출 시작", false);
 
             for (int i = 0; i < this.dataTableList.serverList02.Count; i++)
             {
                 string sheetName = this.dataTableList.serverList02[i];
+                SetProgressText("- 서버 데이터02 기반 정보 추출 테이블 : " + sheetName, false);
 
-                //client01SheetDatas.Add(this.dataTableList.serverList02[i], new SheetData(this.dataManager.sheets, this.dataTableList.serverList02[i], this.dataRule));
-                client01SheetDatas.Add(sheetName, new SheetData(this.dataTableList.serverSheetList02[i], sheetName, this.dataRule));
+                client01SheetDatas.Add(sheetName, new SheetData(this.dataTableList.serverSheetList02[i], sheetName, this.dataRule, SetProgressText));
+                SetProgressText("- 추출 완료 : " + sheetName, false);
             }
+
+            SetExtreactionProgressBar(100);
+            SetProgressText("====== 완료", true);
         }
 
         // 엑셀을 닫는다.

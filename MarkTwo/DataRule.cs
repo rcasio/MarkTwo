@@ -45,10 +45,9 @@ namespace MarkTwo
         /// <summary>
         /// 테이블 률 설정
         /// </summary>
-        public DataRule(Excel.Worksheet ruleSheet, DataManager dataManager)
+        public DataRule(Excel.Worksheet ruleSheet, DataManager dataManager, Action<int> SetExtreactionProgressBar, Action<string, bool> SetProgressText)
         {
-            Console.WriteLine("");
-            Console.WriteLine("============ [테이블_규칙] 테이블을 기준으로 데이터 룰을 설정합니다.");
+            SetProgressText("====== 데이터 규칙 설정 \n[테이블_규칙]에서 시트를 기준으로 데이터 규칙을 설정합니다.",false);
 
             this.ruleSheet = ruleSheet;
             this.dataManager = dataManager;
@@ -90,6 +89,9 @@ namespace MarkTwo
             {
                 dataManager.ShowCloseMSB("[테이블 규칙] 시트에서 [※ 추출할 파일 형식]의 양식이 잘못 입력되어 있습니다.\n\n(On/Off 로 입력하시기 바랍니다.)");
             }
+
+            SetExtreactionProgressBar(10);
+            SetProgressText("====== 완료", true);
         }
     }
 }

@@ -100,6 +100,7 @@ namespace MarkTwo
         public TableDataS tableDataServer;
         
         DataManager dataManager;  // 데이터를 관리한다.(오류 등)
+        GenerateBinaryFile generateBinaryFile;
 
         Dictionary<string, TableDataS> tableDatasClient = new Dictionary<string, TableDataS>();    // 테이블 클라이언트시트를 클래스를 저장하는 딕셔너리
         Dictionary<string, TableDataS> tableDatasServer = new Dictionary<string, TableDataS>();    // 테이블 서버시트를 저장하는 딕셔너리
@@ -138,10 +139,10 @@ namespace MarkTwo
 
         public ConverterWindow()
         {
-            dataManager = new DataManager();
-            GenerateBinaryFile generateBinaryFile = new GenerateBinaryFile();
+            this.dataManager = new DataManager(this);
+            this.generateBinaryFile = new GenerateBinaryFile();
 
-            dataManager.converterWindow = this;
+            this.dataManager.converterWindow = this;
 
             InitializeComponent(); // 컴포넌트를 초기화 한다.
             this.SetProgressbar(); // 프로그래스바를 설정한다.
@@ -151,16 +152,16 @@ namespace MarkTwo
 
             #region 변경 부분
 ;
-            this.InitializeForm(); // 폼을 초기화 한다.
+            //this.InitializeForm(); // 폼을 초기화 한다.
 
-            // TODO : 주석을 제외한 엑셀 오리지날 데이터를 추출한다.
-            // TODO : 쓰레드에서 Excel을 사용할 수 없기 떄문
-            // TODO : 추출한 데이터를 중심으로 ExcelData를 추출하고
-            // TODO : 바이너리 파일을 제작하도록 한다.
+            //// TODO : 주석을 제외한 엑셀 오리지날 데이터를 추출한다.
+            //// TODO : 쓰레드에서 Excel을 사용할 수 없기 떄문
+            //// TODO : 추출한 데이터를 중심으로 ExcelData를 추출하고
+            //// TODO : 바이너리 파일을 제작하도록 한다.
 
-            dataManager.CreateExcelData((p) => SetFormDataRule(p)); // 엑셀 데이터를 생성한다.
+            //this.dataManager.CreateExcelData((p) => SetFormDataRule(p)); // 엑셀 데이터를 생성한다.
             
-            generateBinaryFile.Create(dataManager); // 바이너리 파일을 생성한다.
+            //generateBinaryFile.Create(this.dataManager); // 바이너리 파일을 생성한다.
 
             //if (sheetType == SheetType.Client)
             //{
@@ -217,8 +218,8 @@ namespace MarkTwo
 
         private void SetFormDataRule(DataRule dataRule) // 폼 데이터 룰 관련 세팅을 한다.
         {
-            Console.WriteLine("");
-            Console.WriteLine("===== 폼 데이터 룰 세팅");
+            //Console.WriteLine("");
+            //Console.WriteLine("===== 폼 데이터 룰 세팅");
 
             //Default_RowComment_LineCount.Text = "기본 주석 행 : " + DataRule.Default_RowComment_LineCount.ToString() + " 행";
             //Field_Comment.Text = "필드 주석 : " + dataRule.commentFieldMark + "&"; // "&"만 하면 표시되지 않는다.
@@ -283,6 +284,20 @@ namespace MarkTwo
         protected override void OnShown(EventArgs e)
         {
             base.OnShown(e);
+
+            this.InitializeForm(); // 폼을 초기화 한다.
+
+            // TODO : 주석을 제외한 엑셀 오리지날 데이터를 추출한다.
+            // TODO : 쓰레드에서 Excel을 사용할 수 없기 떄문
+            // TODO : 추출한 데이터를 중심으로 ExcelData를 추출하고
+            // TODO : 바이너리 파일을 제작하도록 한다.
+
+            // 엑셀 데이터를 생성한다.
+            this.dataManager.CreateExcelData((p) => this.SetFormDataRule(p), 
+                                             (p) => this.SetExtreactionProgressBar(p),
+                                             (s,b) => this.SetProgressText(s,b)); 
+
+            this.generateBinaryFile.Create(this.dataManager); // 바이너리 파일을 생성한다.
             
             // INFO : 기존 코드에서 폼이 시작될 때 실행되는 부분
 
@@ -297,6 +312,34 @@ namespace MarkTwo
             timerConvertChecker.Elapsed += new System.Timers.ElapsedEventHandler(Check_EndConvertWork); // 이벤트를 등록한다.
             timerConvertChecker.Start();
             */
+        }
+
+        /// <summary>
+        /// 추출 프로그래스 바 진행을 나타낸다.
+        /// </summary>
+        /// <param name="progress"></param>
+        public void SetExtreactionProgressBar(int progress)
+        {
+            this.ExtreactionReadyProgressBar.Value = progress;
+        }
+
+        /// <summary>
+        /// 진행상황 텍스트를 나타낸다.
+        /// </summary>
+        /// <param name="text"></param>
+        public void SetProgressText(string text, bool isEndLine = true)
+        {
+            if (isEndLine) // 종료 라인이라면 두줄을 띄우도록 한다.
+            {
+                this.ProgressText.AppendText(text + "\n\n");
+            }
+            else
+            {
+                this.ProgressText.AppendText(text + "\n");
+            }
+
+            this.ProgressText.ScrollToCaret();
+            
         }
 
         // 쓰레드로 함수가 사용될 경우 인자를 넘기려면 object로 해야 하는데 편의상 함수를 랩핑하기로 함
@@ -364,6 +407,11 @@ namespace MarkTwo
         //  프로그래스바를 설정한다.
         private void SetProgressbar()
         {
+            ExtreactionReadyProgressBar.Style = ProgressBarStyle.Continuous;
+            ExtreactionReadyProgressBar.Minimum = 0;
+            ExtreactionReadyProgressBar.Maximum = 100;
+            ExtreactionReadyProgressBar.Value = 0;
+
             //Client_ProgressBar.Style = ProgressBarStyle.Continuous;
             //Client_ProgressBar.Minimum = 0;
             //Client_ProgressBar.Maximum = 1000;

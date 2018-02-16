@@ -21,10 +21,9 @@ namespace MarkTwo
         public Dictionary<string, Type> cSharpTypes = new Dictionary<string, Type>(); // c# 자료형
         public Dictionary<string, Type> mySQLTypes = new Dictionary<string, Type>(); // MySQL 자료형
         
-        public DataType(Excel.Worksheet ruleSheet, Excel.Worksheet tagSheet, DataManager dataManager, DataRule dataRule)
+        public DataType(Excel.Worksheet ruleSheet, Excel.Worksheet tagSheet, DataManager dataManager, DataRule dataRule, Action<int> SetExtreactionProgressBar, Action<string, bool> SetProgressText)
         {
-            Console.WriteLine("");
-            Console.WriteLine("============ [테이블_규칙], [Tag] 시트에서 데이터 타입 설정을 시작합니다. : ");
+            SetProgressText("====== 테이블 규칙 설정 \n[테이블_규칙], [Tag] 시트에서 데이터 타입 설정을 시작합니다.", false);
 
             this.ruleSheet = ruleSheet;
             this.dataManager = dataManager;
@@ -51,8 +50,10 @@ namespace MarkTwo
                 //ClientTypeList.Text += type + "\n"; // 라벨에 표시한다.
             }
 
-            SheetData tagSheetData = new SheetData(dataManager.sheets["Tag"] as Excel.Worksheet, "Tag", this.dataRule); // 태그 시트 정보를 추출한다.
-            tagSheetData.Create();
+            SetExtreactionProgressBar(20);
+
+            SheetData tagSheetData = new SheetData(dataManager.sheets["Tag"] as Excel.Worksheet, "Tag", this.dataRule, SetProgressText); // 태그 시트 정보를 추출한다.
+            tagSheetData.Create(SetProgressText);
 
             foreach (var key in tagSheetData.fieldDatas.Keys)
             {
@@ -63,38 +64,44 @@ namespace MarkTwo
                     List<string> net_List = fieldData.contents; // enum의 멤버를 추가한다.
 
                     Type netListEnumType = this.GenerateEnumerations(net_List, key); // enum 을 생성한다.
-
-                    Console.WriteLine("");
-                    Console.WriteLine("========= 동적 생성 Enum 이름 : " + netListEnumType.Name);
-                    Console.WriteLine("===== 실제 이름 : " + netListEnumType.GetType().Name);
+                    
+                    SetProgressText("", false);
+                    SetProgressText("동적 생성 Enum 이름: " + netListEnumType.Name, false);
+                    SetProgressText("- 실제 이름 : " + netListEnumType.GetType().Name, false);
 
                     foreach (var item in net_List)
                     {
                         if (string.IsNullOrEmpty(item)) break;
 
                         var enumValBoxed = Enum.Parse(netListEnumType, item);
-                        Console.WriteLine("=== 멤버 : " + enumValBoxed.ToString());
+                        SetProgressText("- 멤버 : " + enumValBoxed.ToString(), false);
                     }
 
                     cSharpTypes.Add(netListEnumType.Name, netListEnumType);
                 }
             }
 
-            Console.WriteLine("");
-            Console.WriteLine("====== 엑셀 지원 자료형");
-            Console.WriteLine("");
-            Console.WriteLine("===c# 자료형");
+            SetExtreactionProgressBar(30);
+            
+            SetProgressText("", false);
+            SetProgressText("엑셀 지원 자료형", false);
+            SetProgressText("", false);
+            SetProgressText("c# 자료형", false);
+
             foreach (var cSharpType in cSharpTypes.Keys)
             {
-                Console.WriteLine("엑셀 스트링 : " + cSharpType + " => 시스템 자료형 : " + cSharpTypes[cSharpType]);
+                SetProgressText("- 엑셀 스트링 : " + cSharpType + " => 시스템 자료형 : " + cSharpTypes[cSharpType], false);
             }
-
-            Console.WriteLine("");
-            Console.WriteLine("===MySQL 자료형");
+            
+            SetProgressText("", false);
+            SetProgressText("MySQL 자료형", false);
             foreach (var mySQType in mySQLTypes.Keys)
             {
-                Console.WriteLine("엑셀 스트링 : " + mySQType + " => 시스템 자료형 : " + mySQLTypes[mySQType]);
+                SetProgressText("- 엑셀 스트링 : " + mySQType + " => 시스템 자료형 : " + mySQLTypes[mySQType], false);
             }
+
+            SetExtreactionProgressBar(40);
+            SetProgressText("====== 완료", true);
         }
 
         /// <summary>

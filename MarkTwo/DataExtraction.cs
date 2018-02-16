@@ -35,7 +35,7 @@ namespace MarkTwo
         private bool isExtractionClient = false;
 
         //private void StartConvertClient() { this.StartConversion(SheetType.Client); }
-
+        
         public DataExtraction(DataManager dataManager)
         {
             this.dataManager = dataManager;
@@ -43,6 +43,9 @@ namespace MarkTwo
 
             this.clientSheetDatas = excelData.client01SheetDatas;
             this.serverSheetDats = excelData.server01SheetDats;
+
+            // TODO : DataTableList에서 추출된 테이블을 기준으로 쓰레드를 돌려 데이터를 추출한다.
+            // necessaryList, clientList01, 등등
 
             // TODO : 다국어 테이블을 필드별로 분류하여 스레드로 데이터를 추출한다
             // TODO : 다국어 제외 테이블을 시트별로 데이터를 추출한다.

@@ -32,13 +32,13 @@ namespace MarkTwo
         public Dictionary<string, FieldData> fieldDatas = new Dictionary<string, FieldData>(); // 필드 데이터 딕셔너리
 
         //public SheetData(Excel.Sheets sheets, string sheetName, DataRule dataRule)
-        public SheetData(Excel.Worksheet sheet, string sheetName, DataRule dataRule)
+        public SheetData(Excel.Worksheet sheet, string sheetName, DataRule dataRule, Action<string, bool> SetProgressText)
         {
             // TODO : 쓰레드를 사용기 위해서는 Excel 관련 클래스를 사용하면 안된다.
             this.name = sheetName;
-
-            Console.WriteLine("");
-            Console.WriteLine("--- 테이블 기반 정보 추출 : " + this.name);
+            
+            SetProgressText("",false);
+            SetProgressText("테이블 기반 정보 추출 : " + this.name, false);
 
             //this.workSheet = sheets[sheetName] as Excel.Worksheet; // 시트를 할당한다.
             this.workSheet = sheet;
@@ -51,21 +51,21 @@ namespace MarkTwo
             this.totalDataCount = this.totalColumnCount * this.totalRowCount; // 데이터 카운트
         }
 
-        public void Create()
+        public void Create(Action<string, bool> SetProgressText = null)
         {
-            Console.WriteLine("");
-            Console.WriteLine("======== 테이블 기반 정보");
-            Console.WriteLine("==== 테이블 이름 : " + this.name);
-            Console.WriteLine("==== 테이블 필드 개수 : " + this.totalColumnCount);
-            Console.WriteLine("==== 테이블 레코드 개수 : " + this.totalRowCount);
-            Console.WriteLine("==== 테이블 데이터 총합 : " + this.totalDataCount.ToString("#,###"));
+            if (SetProgressText != null) SetProgressText("", false);
+            if (SetProgressText != null) SetProgressText("테이블 기반 정보", false);
+            if (SetProgressText != null) SetProgressText("- 테이블 이름 : " + this.name, false);
+            if (SetProgressText != null) SetProgressText("- 테이블 필드 개수 : " + this.totalColumnCount, false);
+            if (SetProgressText != null) SetProgressText("- 테이블 레코드 개수 : " + this.totalRowCount, false);
+            if (SetProgressText != null) SetProgressText("- 테이블 데이터 총합 : " + this.totalDataCount.ToString("#,###"), false);
 
             for (int column = 1; column <= this.totalColumnCount; column++) // 필드 카운트
             {
                 FieldData fieldData = new FieldData(); // 필드 데이터를 생성한다.
 
-                Console.WriteLine("");
-                Console.WriteLine("==== 필드 정보");
+                if (SetProgressText != null) SetProgressText("", false);
+                if (SetProgressText != null) SetProgressText("필드 정보", false);
 
                 for (int row = 1; row <= this.totalRowCount; row++) // 로우 카운트
                 {
@@ -76,18 +76,19 @@ namespace MarkTwo
                         if (row.Equals(DataRule.FIELD_DESIGN_NAME))
                         {
                             fieldData.designName = data; // 필드 기획 이름설정일 경우
-                            Console.WriteLine(" 필드 기획 설정 이름 : " + fieldData.designName);
+                            if (SetProgressText != null ) SetProgressText("- 필드 기획 설정 이름 : " + fieldData.designName, false);
                         }
                         else if (row.Equals(DataRule.FIELD_NAME))
                         {
                             fieldData.name = data; // 필드 이름일 경우
-                            Console.WriteLine(" 필드 이름 : " + fieldData.name);
+                            if (SetProgressText != null) SetProgressText("- 필드 이름 : " + fieldData.name, false);
                         }
                         else if (row.Equals(DataRule.FIELD_DATA_TYPE))
                         {
                             fieldData.dataType = data; // 필드 데이터 타입일 경우
-                            Console.WriteLine(" 필드 타입 : " + fieldData.dataType);
-                            Console.WriteLine("");
+
+                            if (SetProgressText != null) SetProgressText("- 필드 타입 : " + fieldData.dataType, false);
+                            if (SetProgressText != null) SetProgressText("", false);
                         }
                         else
                         {
@@ -102,7 +103,7 @@ namespace MarkTwo
                                     // TODO : 타입에 맞는 데이터 형인지 체크한다.
 
                                     fieldData.Add(data); // 데이터를 추가한다.
-                                    Console.WriteLine(" - 필드 컨텐츠 [필드 : " +column + "] [레코드 : " + row + "] : "+ data);
+                                    if (SetProgressText != null) SetProgressText("- 필드 컨텐츠 [필드 : " + column + "] [레코드 : " + row + "] : " + data, false);
                                 }
                             }
                             else // 두번째 필드
@@ -112,7 +113,7 @@ namespace MarkTwo
                                     // TODO : 타입에 맞는 데이터 형인지 체크한다.
 
                                     fieldData.Add(data); // 데이터를 추가한다.
-                                    Console.WriteLine(" - 필드 컨텐츠 [필드 : " + column + "] [레코드 : " + row + "] : " + data);
+                                    if (SetProgressText != null) SetProgressText(" - 필드 컨텐츠 [필드 : " + column + "] [레코드 : " + row + "] : " + data, false);
                                 }
                             }
                         }
@@ -120,7 +121,7 @@ namespace MarkTwo
                     else // 주석 필드일 경우
                     {
                         commentColumnNums.Add(column); // 주석 필드 번호를 기록한다.
-                        Console.WriteLine(" --- & 주석 필드 [필드 : " + column + "]");
+                        if (SetProgressText != null) SetProgressText("- 주석 필드 [필드 : " + column + "]", false);
                         break; // 루프틑 탈출해서 더이상 데이터를 읽지 못하게 한다.
                     }
                 }

@@ -30,18 +30,17 @@ namespace MarkTwo
         public List<string> serverList02 = new List<string>(); // 사용되는 클라이언트 리스트
         public List<Excel.Worksheet> serverSheetList02 = new List<Excel.Worksheet>(); // 서버 시트 리스트
 
-        public DataTableList(Excel.Worksheet tableManagerSheet, Excel.Sheets sheets)
+        public DataTableList(Excel.Worksheet tableManagerSheet, Excel.Sheets sheets, Action<int> SetExtreactionProgressBar, Action<string, bool> SetProgressText)
         {
-            Console.WriteLine("");
-            Console.WriteLine("============ [테이블_관리] 시트에서 테이블 시트 리스트 추출을 시작합니다.");
+            SetProgressText("====== 테이블 리스트 설정 \n[테이블_관리] 시트에서 테이블 시트 리스트 추출을 시작합니다.", false);
 
             this.tableManagerSheet = tableManagerSheet as Excel.Worksheet;
+            
+            SetProgressText("", false);
+            SetProgressText("시트 리스트 추가 작업 시작", false);
 
-            Console.WriteLine("");
-            Console.WriteLine("========= 시트 리스트 추가 작업 시작");
-
-            Console.WriteLine("");
-            Console.WriteLine("====== 필수 테이블리스트 추가");
+            SetProgressText("", false);
+            SetProgressText("필수 테이블리스트 추가", false);
             // 필수 테이블리스트
             try
             {
@@ -71,7 +70,7 @@ namespace MarkTwo
                     }
 
                     totalList.Add(sheetName);
-                    Console.WriteLine("=== 필수 테이블 시트 이름 : {0}", sheetName);
+                    SetProgressText("- 필수 테이블 시트 이름 : " + sheetName, false);
                 }
             }
             catch (Exception)
@@ -81,8 +80,10 @@ namespace MarkTwo
                 Environment.Exit(0);
             }
 
-            Console.WriteLine("");
-            Console.WriteLine("====== 클라이언트 스레드01 추가");
+            SetExtreactionProgressBar(50);
+            
+            SetProgressText("", false);
+            SetProgressText("클라이언트 스레드01 추가", false);
             // 클라이언트 스레드01 테이블리스트
             foreach (string sheetName in tableManagerSheet.get_Range("C8", "C50").Value)
             {
@@ -101,10 +102,13 @@ namespace MarkTwo
 
                 totalList.Add(sheetName);
                 Console.WriteLine("=== 클라이언트 스레드01 시트 이름 : {0}", sheetName);
+                SetProgressText("- 클라이언트 스레드01 시트 이름 : " + sheetName, false);
             }
 
-            Console.WriteLine("");
-            Console.WriteLine("====== 클라이언트 스레드02 추가");
+            SetExtreactionProgressBar(60);
+            
+            SetProgressText("", false);
+            SetProgressText("클라이언트 스레드02 추가", false);
             // 클라이언트 스레드02 테이블리스트
             foreach (string sheetName in tableManagerSheet.get_Range("D8", "D50").Value)
             {
@@ -122,11 +126,13 @@ namespace MarkTwo
                 }
 
                 totalList.Add(sheetName);
-                Console.WriteLine("=== 클라이언트 스레드02 시트 이름 : {0}", sheetName);
+                SetProgressText("- 클라이언트 스레드02 시트 이름 : " + sheetName, false);
             }
 
-            Console.WriteLine("");
-            Console.WriteLine("====== 서버 스레드01 추가");
+            SetExtreactionProgressBar(70);
+            
+            SetProgressText("", false);
+            SetProgressText("서버 스레드01 추가", false);
             // 서버 스레드01 테이블리스트
             foreach (string sheetName in tableManagerSheet.get_Range("E8", "E50").Value)
             {
@@ -144,11 +150,13 @@ namespace MarkTwo
                 }
 
                 totalList.Add(sheetName);
-                Console.WriteLine("=== 서버 스레드01 시트 이름 : {0}", sheetName);
+                SetProgressText("- 서버 스레드01 시트 이름 : " + sheetName, false);
             }
 
-            Console.WriteLine("");
-            Console.WriteLine("====== 서버 스레드02 추가");
+            SetExtreactionProgressBar(80);
+            
+            SetProgressText("", false);
+            SetProgressText("서버 스레드02 추가", false);
             // 서버 스레드01 테이블리스트
             foreach (string sheetName in tableManagerSheet.get_Range("F8", "F50").Value)
             {
@@ -166,8 +174,11 @@ namespace MarkTwo
                 }
 
                 totalList.Add(sheetName);
-                Console.WriteLine("=== 서버 스레드01 시트 이름 : {0}", sheetName);
+                SetProgressText("- 서버 스레드02 시트 이름 : " + sheetName, false);
             }
+
+            SetExtreactionProgressBar(90);
+            SetProgressText("====== 완료", true);
         }
     }
 }
