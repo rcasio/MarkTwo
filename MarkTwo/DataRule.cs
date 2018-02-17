@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 using System.Threading.Tasks;
 // 참조 : http://msdn.microsoft.com/en-us/library/office/microsoft.office.interop.excel.aspx
 using Excel = Microsoft.Office.Interop.Excel;
@@ -45,12 +46,14 @@ namespace MarkTwo
         /// <summary>
         /// 테이블 률 설정
         /// </summary>
-        public DataRule(Excel.Worksheet ruleSheet, DataManager dataManager, Action<int> SetExtreactionProgressBar, Action<string, bool> SetProgressText)
+        public DataRule(Excel.Worksheet ruleSheet, DataManager dataManager, Action<int> SetExtreactionProgressBar, Action<RichTextBox, string> SetRichText)
         {
-            SetProgressText("====== 데이터 규칙 설정 \n[테이블_규칙]에서 시트를 기준으로 데이터 규칙을 설정합니다.",false);
-
             this.ruleSheet = ruleSheet;
             this.dataManager = dataManager;
+
+            RichTextBox rb = this.dataManager.converterWindow.ExtreactionReadyText; // 리치 텍스트 폼을 할당한다
+
+            SetRichText(rb, "====== 데이터 규칙 설정 \n[테이블_규칙]에서 시트를 기준으로 데이터 규칙을 설정합니다.");
 
             commentRowMark = this.ruleSheet.Range["B16"].Value;
             commentFieldMark = this.ruleSheet.Range["B17"].Value;
@@ -91,7 +94,8 @@ namespace MarkTwo
             }
 
             SetExtreactionProgressBar(10);
-            SetProgressText("====== 완료", true);
+            SetRichText(rb, "====== 완료");
+            SetRichText(rb, "");
         }
     }
 }

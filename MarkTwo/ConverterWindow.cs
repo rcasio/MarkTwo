@@ -293,9 +293,11 @@ namespace MarkTwo
             // TODO : 바이너리 파일을 제작하도록 한다.
 
             // 엑셀 데이터를 생성한다.
-            this.dataManager.CreateExcelData((p) => this.SetFormDataRule(p), 
+            this.dataManager.CreateExcelData((p) => this.SetFormDataRule(p),
                                              (p) => this.SetExtreactionProgressBar(p),
-                                             (s,b) => this.SetProgressText(s,b)); 
+                                             (p, a) => this.SetRichText(p, a),
+                                             (p, a) => this.SetProgressBar(p, a)
+                                             ); 
 
             this.generateBinaryFile.Create(this.dataManager); // 바이너리 파일을 생성한다.
             
@@ -322,24 +324,48 @@ namespace MarkTwo
         {
             this.ExtreactionReadyProgressBar.Value = progress;
         }
-
-        /// <summary>
-        /// 진행상황 텍스트를 나타낸다.
-        /// </summary>
-        /// <param name="text"></param>
-        public void SetProgressText(string text, bool isEndLine = true)
+        
+        // 리치 텍스트 박스 설정
+        public void SetRichText(RichTextBox richTextBox, string text)
         {
-            if (isEndLine) // 종료 라인이라면 두줄을 띄우도록 한다.
+            if (richTextBox.InvokeRequired)
             {
-                this.ProgressText.AppendText(text + "\n\n");
+                Action<RichTextBox, string> richTextCallBack = new Action<RichTextBox, string>(SetRichText);
+                Invoke(richTextCallBack, new object[] { richTextBox, text });
             }
             else
             {
-                this.ProgressText.AppendText(text + "\n");
+                richTextBox.AppendText(text + "\n");
+                richTextBox.ScrollToCaret();
             }
+        }
+        
+        // 프로그래스바 설정
+        public void SetProgressBar(ProgressBar progressBar, int value)
+        {
+            if (progressBar.InvokeRequired)
+            {
+                Action<ProgressBar, int> progressBarCallBack = new Action<ProgressBar, int>(SetProgressBar);
+                Invoke(progressBarCallBack, new object[] { progressBar, value });
+            }
+            else
+            {
+                progressBar.Value = value;
+            }
+        }
 
-            this.ProgressText.ScrollToCaret();
-            
+        // 테이블 이름 라벨 설정
+        public void SetTableLabel(Label label, string text)
+        {
+            if (label.InvokeRequired)
+            {
+                Action<Label, string> labelCallBack = new Action<Label, string>(SetTableLabel);
+                Invoke(labelCallBack, new object[] { label, text });
+            }
+            else
+            {
+                label.Text = "테이블 이름 [" + text + "]";
+            }
         }
 
         // 쓰레드로 함수가 사용될 경우 인자를 넘기려면 object로 해야 하는데 편의상 함수를 랩핑하기로 함
@@ -411,6 +437,31 @@ namespace MarkTwo
             ExtreactionReadyProgressBar.Minimum = 0;
             ExtreactionReadyProgressBar.Maximum = 100;
             ExtreactionReadyProgressBar.Value = 0;
+
+            MultiligualThreadLabelProgressBar.Style = ProgressBarStyle.Continuous;
+            MultiligualThreadLabelProgressBar.Minimum = 0;
+            MultiligualThreadLabelProgressBar.Maximum = 1000;
+            MultiligualThreadLabelProgressBar.Value = 0;
+
+            ClientThread01progressBar.Style = ProgressBarStyle.Continuous;
+            ClientThread01progressBar.Minimum = 0;
+            ClientThread01progressBar.Maximum = 1000;
+            ClientThread01progressBar.Value = 0;
+
+            ClientThread02progressBar.Style = ProgressBarStyle.Continuous;
+            ClientThread02progressBar.Minimum = 0;
+            ClientThread02progressBar.Maximum = 1000;
+            ClientThread02progressBar.Value = 0;
+
+            ServerThread01ProgressBar.Style = ProgressBarStyle.Continuous;
+            ServerThread01ProgressBar.Minimum = 0;
+            ServerThread01ProgressBar.Maximum = 1000;
+            ServerThread01ProgressBar.Value = 0;
+
+            ServerThread02ProgressBar.Style = ProgressBarStyle.Continuous;
+            ServerThread02ProgressBar.Minimum = 0;
+            ServerThread02ProgressBar.Maximum = 1000;
+            ServerThread02ProgressBar.Value = 0;
 
             //Client_ProgressBar.Style = ProgressBarStyle.Continuous;
             //Client_ProgressBar.Minimum = 0;
@@ -1358,6 +1409,11 @@ namespace MarkTwo
         }
 
         private void Server_Target_Data_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click_1(object sender, EventArgs e)
         {
 
         }

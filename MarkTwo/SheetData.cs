@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace MarkTwo
@@ -30,17 +31,19 @@ namespace MarkTwo
         public List<int> commentRowNums = new List<int>(); // 주석처리 행 번호 리스트
 
         public Dictionary<string, FieldData> fieldDatas = new Dictionary<string, FieldData>(); // 필드 데이터 딕셔너리
-
+        
         //public SheetData(Excel.Sheets sheets, string sheetName, DataRule dataRule)
-        public SheetData(Excel.Worksheet sheet, string sheetName, DataRule dataRule, Action<string, bool> SetProgressText)
+        public SheetData(Excel.Worksheet sheet, string sheetName, DataRule dataRule, Action<RichTextBox, string> SetRichTextBox, RichTextBox richTextBox)
         {
+            RichTextBox rb = richTextBox;
+            Action<RichTextBox,string> srb = SetRichTextBox;
+
             // TODO : 쓰레드를 사용기 위해서는 Excel 관련 클래스를 사용하면 안된다.
             this.name = sheetName;
             
-            SetProgressText("",false);
-            SetProgressText("테이블 기반 정보 추출 : " + this.name, false);
+            srb(rb, "");
+            srb(rb, "테이블 기반 정보 추출 : " + this.name);
 
-            //this.workSheet = sheets[sheetName] as Excel.Worksheet; // 시트를 할당한다.
             this.workSheet = sheet;
 
             this.dataRule = dataRule;
@@ -51,21 +54,35 @@ namespace MarkTwo
             this.totalDataCount = this.totalColumnCount * this.totalRowCount; // 데이터 카운트
         }
 
-        public void Create(Action<string, bool> SetProgressText = null)
+        public void Create(Action<RichTextBox, string> SetRichTextBox,
+                           RichTextBox richTextBox,
+                           Action<ProgressBar, int> SetProgressBar = null,
+                           ProgressBar progressBar = null,
+                           Action<Label, string> SetTableLabel = null,
+                           Label label = null)
         {
-            if (SetProgressText != null) SetProgressText("", false);
-            if (SetProgressText != null) SetProgressText("테이블 기반 정보", false);
-            if (SetProgressText != null) SetProgressText("- 테이블 이름 : " + this.name, false);
-            if (SetProgressText != null) SetProgressText("- 테이블 필드 개수 : " + this.totalColumnCount, false);
-            if (SetProgressText != null) SetProgressText("- 테이블 레코드 개수 : " + this.totalRowCount, false);
-            if (SetProgressText != null) SetProgressText("- 테이블 데이터 총합 : " + this.totalDataCount.ToString("#,###"), false);
+            RichTextBox rb = richTextBox;
+            Action<RichTextBox, string> srb = SetRichTextBox;
+
+            srb(rb, "");
+            srb(rb, "테이블 기반 정보");
+            srb(rb, "- 테이블 이름 : " + this.name);
+            srb(rb, "- 테이블 필드 개수 : " + this.totalColumnCount);
+            srb(rb, "- 테이블 레코드 개수 : " + this.totalRowCount);
+            srb(rb, "- 테이블 데이터 총합 : " + this.totalDataCount.ToString("#,###"));
+
+            // UI에 현재 진행중인 테이블 정보를 넣는다.
+            if (SetTableLabel != null)
+            {
+                SetTableLabel(label, this.name);
+            }
 
             for (int column = 1; column <= this.totalColumnCount; column++) // 필드 카운트
             {
                 FieldData fieldData = new FieldData(); // 필드 데이터를 생성한다.
 
-                if (SetProgressText != null) SetProgressText("", false);
-                if (SetProgressText != null) SetProgressText("필드 정보", false);
+                srb(rb, "");
+                srb(rb, "필드 정보");
 
                 for (int row = 1; row <= this.totalRowCount; row++) // 로우 카운트
                 {
@@ -76,19 +93,19 @@ namespace MarkTwo
                         if (row.Equals(DataRule.FIELD_DESIGN_NAME))
                         {
                             fieldData.designName = data; // 필드 기획 이름설정일 경우
-                            if (SetProgressText != null ) SetProgressText("- 필드 기획 설정 이름 : " + fieldData.designName, false);
+                            srb(rb, "- 필드 기획 설정 이름 : " + fieldData.designName);
                         }
                         else if (row.Equals(DataRule.FIELD_NAME))
                         {
                             fieldData.name = data; // 필드 이름일 경우
-                            if (SetProgressText != null) SetProgressText("- 필드 이름 : " + fieldData.name, false);
+                            srb(rb, "- 필드 이름 : " + fieldData.name);
                         }
                         else if (row.Equals(DataRule.FIELD_DATA_TYPE))
                         {
                             fieldData.dataType = data; // 필드 데이터 타입일 경우
 
-                            if (SetProgressText != null) SetProgressText("- 필드 타입 : " + fieldData.dataType, false);
-                            if (SetProgressText != null) SetProgressText("", false);
+                            srb(rb, "- 필드 타입 : " + fieldData.dataType);
+                            srb(rb, "");
                         }
                         else
                         {
@@ -101,19 +118,20 @@ namespace MarkTwo
                                 else
                                 {
                                     // TODO : 타입에 맞는 데이터 형인지 체크한다.
+                                    // TODO : 바이너리 데이터에 기록한다.
 
                                     fieldData.Add(data); // 데이터를 추가한다.
-                                    if (SetProgressText != null) SetProgressText("- 필드 컨텐츠 [필드 : " + column + "] [레코드 : " + row + "] : " + data, false);
+                                    srb(rb, "- 레이블 [" + column + "],[" + row + "] : " + data);
                                 }
                             }
-                            else // 두번째 필드
+                            else // 첫번째 필드가 아닐 경우
                             {
                                 if (!commentRowNums.Contains(row)) // 주석 행이 아닐 경우
                                 {
                                     // TODO : 타입에 맞는 데이터 형인지 체크한다.
 
                                     fieldData.Add(data); // 데이터를 추가한다.
-                                    if (SetProgressText != null) SetProgressText(" - 필드 컨텐츠 [필드 : " + column + "] [레코드 : " + row + "] : " + data, false);
+                                    srb(rb, " - 레이블 [" + column + "],[" + row + "] : " + data);
                                 }
                             }
                         }
@@ -121,8 +139,16 @@ namespace MarkTwo
                     else // 주석 필드일 경우
                     {
                         commentColumnNums.Add(column); // 주석 필드 번호를 기록한다.
-                        if (SetProgressText != null) SetProgressText("- 주석 필드 [필드 : " + column + "]", false);
+                        srb(rb, "- 주석 필드 [필드 : " + column + "]");
                         break; // 루프틑 탈출해서 더이상 데이터를 읽지 못하게 한다.
+                    }
+
+                    if (SetProgressBar != null) // 프로그래스바가 할당되지 않는다면
+                    {
+                        // 잰행도 구하기
+                        int p = (int)(((double)(((column - 1) * this.totalRowCount) + row) / this.totalDataCount) * 1000);
+
+                        SetProgressBar(progressBar, p); // 프록래스바에 표시한다.
                     }
                 }
 
@@ -131,6 +157,9 @@ namespace MarkTwo
                     fieldDatas.Add(fieldData.name, fieldData); // 필드 데이터스에 등록한다.
                 }
             }
+
+            srb(rb, "");
+            srb(rb, "====== [" + this.name + "]테이블 변환완료");
         }
     }
 }

@@ -62,7 +62,11 @@ namespace MarkTwo
         /// 엑셀 데이터를 생성한다.
         /// </summary>
         /// <param name="sheetType"> 엑셀 타입 </param>
-        public void CreateExcelData(Action<DataRule> SetFormDataRule, Action<int> SetExtreactionProgressBar, Action<string, bool> SetProgressText)
+        public void CreateExcelData(Action<DataRule> SetFormDataRule, 
+                                    Action<int> SetExtreactionProgressBar, 
+                                    Action<RichTextBox, string> SetRichText,
+                                    Action<ProgressBar, int> SetMultilingualProgressBar
+                                    )
         {
             Console.WriteLine("===== 엑셀 데이터 생성");
             this.excelApp       = new Excel.Application();
@@ -73,11 +77,11 @@ namespace MarkTwo
             this.dataTableSheet = sheets["테이블관리"] as Excel.Worksheet; // [테이블관리] 시트를 할당한다.
             this.dataTypeSheet  = sheets["Tag"] as Excel.Worksheet; // [테이블관리] 시트를 할당한다.
 
-            this.dataRule       = new DataRule(this.ruleSheet, this , SetExtreactionProgressBar, SetProgressText); // [테이블_규칙] 시트를 기준으로 데이터 룰 객체를 만든다.
-            this.dataType       = new DataType(this.ruleSheet, dataTypeSheet, this , this.dataRule, SetExtreactionProgressBar, SetProgressText); // [테이블_규칙]과 [Tag] 시트를 기반으로 데이터 타입을 만든다.
-            this.dataTableList  = new DataTableList(this.dataTableSheet, this.sheets, SetExtreactionProgressBar, SetProgressText); // 테이블 리스트를 만든다.
-            this.excelData      = new ExcelData(this, SetExtreactionProgressBar, SetProgressText); // 엑셀 데이터를 추출한다.
-            this.dataExtraction = new DataExtraction(this); // 데이터 추출
+            this.dataRule       = new DataRule(this.ruleSheet, this , SetExtreactionProgressBar, SetRichText); // [테이블_규칙] 시트를 기준으로 데이터 룰 객체를 만든다.
+            this.dataType       = new DataType(this.ruleSheet, dataTypeSheet, this , this.dataRule, SetExtreactionProgressBar, SetRichText); // [테이블_규칙]과 [Tag] 시트를 기반으로 데이터 타입을 만든다.
+            this.dataTableList  = new DataTableList(this.dataTableSheet, this.sheets, SetExtreactionProgressBar, SetRichText, this.converterWindow.ExtreactionReadyText); // 테이블 리스트를 만든다.
+            this.excelData      = new ExcelData(this, SetExtreactionProgressBar, SetRichText); // 엑셀 데이터를 추출한다.
+            this.dataExtraction = new DataExtraction(this, SetRichText, SetMultilingualProgressBar); // 데이터 추출
             
             SetFormDataRule(dataRule); // 데이터 룰 UI를 세팅한다.
             // TODO : 지원하는 타입( 사용자 enum을 포함 )을 폼에 표시한다.

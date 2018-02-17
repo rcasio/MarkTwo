@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Reflection;
 using System.Reflection.Emit;
+
+using static MarkTwo.TagManager;
 
 namespace MarkTwo
 {
@@ -21,9 +24,16 @@ namespace MarkTwo
         public Dictionary<string, Type> cSharpTypes = new Dictionary<string, Type>(); // c# 자료형
         public Dictionary<string, Type> mySQLTypes = new Dictionary<string, Type>(); // MySQL 자료형
         
-        public DataType(Excel.Worksheet ruleSheet, Excel.Worksheet tagSheet, DataManager dataManager, DataRule dataRule, Action<int> SetExtreactionProgressBar, Action<string, bool> SetProgressText)
+        public DataType(Excel.Worksheet ruleSheet, 
+                        Excel.Worksheet tagSheet,
+                        DataManager dataManager, 
+                        DataRule dataRule, 
+                        Action<int> SetExtreactionProgressBar, 
+                        Action<RichTextBox, string> SetRichText)
         {
-            SetProgressText("====== 테이블 규칙 설정 \n[테이블_규칙], [Tag] 시트에서 데이터 타입 설정을 시작합니다.", false);
+            RichTextBox rb = dataManager.converterWindow.ExtreactionReadyText; // 데이터 추출 준비 리치텍스트 박스 폼을 참조한다.
+
+            SetRichText(rb, "====== 테이블 규칙 설정 \n[테이블_규칙], [Tag] 시트에서 데이터 타입 설정을 시작합니다.");
 
             this.ruleSheet = ruleSheet;
             this.dataManager = dataManager;
@@ -52,8 +62,8 @@ namespace MarkTwo
 
             SetExtreactionProgressBar(20);
 
-            SheetData tagSheetData = new SheetData(dataManager.sheets["Tag"] as Excel.Worksheet, "Tag", this.dataRule, SetProgressText); // 태그 시트 정보를 추출한다.
-            tagSheetData.Create(SetProgressText);
+            SheetData tagSheetData = new SheetData(dataManager.sheets["Tag"] as Excel.Worksheet, SheetName.Tag, this.dataRule, SetRichText, this.dataManager.converterWindow.ExtreactionReadyText); // 태그 시트 정보를 추출한다.
+            tagSheetData.Create(SetRichText, this.dataManager.converterWindow.ExtreactionReadyText);
 
             foreach (var key in tagSheetData.fieldDatas.Keys)
             {
@@ -65,16 +75,16 @@ namespace MarkTwo
 
                     Type netListEnumType = this.GenerateEnumerations(net_List, key); // enum 을 생성한다.
                     
-                    SetProgressText("", false);
-                    SetProgressText("동적 생성 Enum 이름: " + netListEnumType.Name, false);
-                    SetProgressText("- 실제 이름 : " + netListEnumType.GetType().Name, false);
+                    SetRichText(rb, "");
+                    SetRichText(rb, "동적 생성 Enum 이름: " + netListEnumType.Name);
+                    SetRichText(rb, "- 실제 이름 : " + netListEnumType.GetType().Name);
 
                     foreach (var item in net_List)
                     {
                         if (string.IsNullOrEmpty(item)) break;
 
                         var enumValBoxed = Enum.Parse(netListEnumType, item);
-                        SetProgressText("- 멤버 : " + enumValBoxed.ToString(), false);
+                        SetRichText(rb, "- 멤버 : " + enumValBoxed.ToString());
                     }
 
                     cSharpTypes.Add(netListEnumType.Name, netListEnumType);
@@ -83,25 +93,25 @@ namespace MarkTwo
 
             SetExtreactionProgressBar(30);
             
-            SetProgressText("", false);
-            SetProgressText("엑셀 지원 자료형", false);
-            SetProgressText("", false);
-            SetProgressText("c# 자료형", false);
+            SetRichText(rb, "");
+            SetRichText(rb, "엑셀 지원 자료형");
+            SetRichText(rb, "");
+            SetRichText(rb, "c# 자료형");
 
             foreach (var cSharpType in cSharpTypes.Keys)
             {
-                SetProgressText("- 엑셀 스트링 : " + cSharpType + " => 시스템 자료형 : " + cSharpTypes[cSharpType], false);
+                SetRichText(rb, "- 엑셀 스트링 : " + cSharpType + " => 시스템 자료형 : " + cSharpTypes[cSharpType]);
             }
             
-            SetProgressText("", false);
-            SetProgressText("MySQL 자료형", false);
+            SetRichText(rb, "");
+            SetRichText(rb, "MySQL 자료형");
             foreach (var mySQType in mySQLTypes.Keys)
             {
-                SetProgressText("- 엑셀 스트링 : " + mySQType + " => 시스템 자료형 : " + mySQLTypes[mySQType], false);
+                SetRichText(rb, "- 엑셀 스트링 : " + mySQType + " => 시스템 자료형 : " + mySQLTypes[mySQType]);
             }
 
             SetExtreactionProgressBar(40);
-            SetProgressText("====== 완료", true);
+            SetRichText(rb, "====== 완료");
         }
 
         /// <summary>

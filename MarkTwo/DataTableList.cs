@@ -17,7 +17,7 @@ namespace MarkTwo
 
         public List<string> totalList = new List<string>(); // 스레드 프로그래스 진행을 위해 사용된다.
 
-        public List<string> necessaryList = new List<string>(); // 픽수 테이블
+        public List<string> multilingual = new List<string>(); // 다국어 테이블
         public List<Excel.Worksheet> necessarySheetList = new List<Excel.Worksheet>(); // 픽수 테이블
 
         public List<string> clientList01 = new List<string>(); // 사용되는 테이블 리스트
@@ -30,17 +30,17 @@ namespace MarkTwo
         public List<string> serverList02 = new List<string>(); // 사용되는 클라이언트 리스트
         public List<Excel.Worksheet> serverSheetList02 = new List<Excel.Worksheet>(); // 서버 시트 리스트
 
-        public DataTableList(Excel.Worksheet tableManagerSheet, Excel.Sheets sheets, Action<int> SetExtreactionProgressBar, Action<string, bool> SetProgressText)
+        public DataTableList(Excel.Worksheet tableManagerSheet, Excel.Sheets sheets, Action<int> SetExtreactionProgressBar, Action<RichTextBox, string> SetRichBox, RichTextBox richTextBox)
         {
-            SetProgressText("====== 테이블 리스트 설정 \n[테이블_관리] 시트에서 테이블 시트 리스트 추출을 시작합니다.", false);
+            SetRichBox(richTextBox, "====== 테이블 리스트 설정 \n[테이블_관리] 시트에서 테이블 시트 리스트 추출을 시작합니다.");
 
             this.tableManagerSheet = tableManagerSheet as Excel.Worksheet;
             
-            SetProgressText("", false);
-            SetProgressText("시트 리스트 추가 작업 시작", false);
+            SetRichBox(richTextBox, "");
+            SetRichBox(richTextBox, "시트 리스트 추가 작업 시작");
 
-            SetProgressText("", false);
-            SetProgressText("필수 테이블리스트 추가", false);
+            SetRichBox(richTextBox, "");
+            SetRichBox(richTextBox, "필수 테이블리스트 추가");
             // 필수 테이블리스트
             try
             {
@@ -50,40 +50,30 @@ namespace MarkTwo
 
                     if (sheetName.Equals(SheetName.Multilingual))
                     {
-                        this.necessaryList.Add(sheetName);
-                        this.necessarySheetList.Add(sheets[sheetName] as Excel.Worksheet);
-                    }
-                    else if (sheetName.Equals(SheetName.PR))
-                    {
-                        necessaryList.Add(sheetName);
-                        this.necessarySheetList.Add(sheets[sheetName] as Excel.Worksheet);
-                    }
-                    else if (sheetName.Equals(SheetName.Tag))
-                    {
-                        necessaryList.Add(sheetName);
+                        this.multilingual.Add(sheetName);
                         this.necessarySheetList.Add(sheets[sheetName] as Excel.Worksheet);
                     }
                     else
                     {
-                        MessageBox.Show("[테이블 규칙] 시트에서 [필수 테이블]이 Multilingual, PR, Tag 외의 다른 테이블이 들어가 있습니다.");
+                        MessageBox.Show("[테이블 규칙] 시트에서 [다국어]리스트에 Multilingual 외의 다른 테이블이 들어가 있습니다.");
                         Environment.Exit(0);
                     }
 
                     totalList.Add(sheetName);
-                    SetProgressText("- 필수 테이블 시트 이름 : " + sheetName, false);
+                    SetRichBox(richTextBox, "- 다국어 테이블 시트 이름 : " + sheetName);
                 }
             }
             catch (Exception)
             {
 
-                MessageBox.Show("[테이블 규칙] 시트에서 [필수 테이블] 리스트에서 오류가 발생했습니다.");
+                MessageBox.Show("[테이블 규칙] 시트에서 [다국어] 리스트에서 오류가 발생했습니다.");
                 Environment.Exit(0);
             }
 
             SetExtreactionProgressBar(50);
             
-            SetProgressText("", false);
-            SetProgressText("클라이언트 스레드01 추가", false);
+            SetRichBox(richTextBox, "");
+            SetRichBox(richTextBox, "클라이언트 스레드01 추가");
             // 클라이언트 스레드01 테이블리스트
             foreach (string sheetName in tableManagerSheet.get_Range("C8", "C50").Value)
             {
@@ -100,15 +90,21 @@ namespace MarkTwo
                     Environment.Exit(0);
                 }
 
+                if (!clientList01.Contains(SheetName.PR))
+                {
+                    MessageBox.Show("[테이블 규칙] 시트에서 [클라이언트 스레드01]에 PR 테이블이 없습니다.");
+                    Environment.Exit(0);
+                }
+
                 totalList.Add(sheetName);
-                Console.WriteLine("=== 클라이언트 스레드01 시트 이름 : {0}", sheetName);
-                SetProgressText("- 클라이언트 스레드01 시트 이름 : " + sheetName, false);
+                //Console.WriteLine("=== 클라이언트 스레드01 시트 이름 : {0}", sheetName);
+                SetRichBox(richTextBox, "- 클라이언트 스레드01 시트 이름 : " + sheetName);
             }
 
             SetExtreactionProgressBar(60);
             
-            SetProgressText("", false);
-            SetProgressText("클라이언트 스레드02 추가", false);
+            SetRichBox(richTextBox, "");
+            SetRichBox(richTextBox, "클라이언트 스레드02 추가");
             // 클라이언트 스레드02 테이블리스트
             foreach (string sheetName in tableManagerSheet.get_Range("D8", "D50").Value)
             {
@@ -125,14 +121,20 @@ namespace MarkTwo
                     Environment.Exit(0);
                 }
 
+                if (!clientList02.Contains(SheetName.Tag))
+                {
+                    MessageBox.Show("[테이블 규칙] 시트에서 [클라이언트 스레드02]에 Tag 테이블이 없습니다.");
+                    Environment.Exit(0);
+                }
+
                 totalList.Add(sheetName);
-                SetProgressText("- 클라이언트 스레드02 시트 이름 : " + sheetName, false);
+                SetRichBox(richTextBox, "- 클라이언트 스레드02 시트 이름 : " + sheetName);
             }
 
             SetExtreactionProgressBar(70);
             
-            SetProgressText("", false);
-            SetProgressText("서버 스레드01 추가", false);
+            SetRichBox(richTextBox, "");
+            SetRichBox(richTextBox, "서버 스레드01 추가");
             // 서버 스레드01 테이블리스트
             foreach (string sheetName in tableManagerSheet.get_Range("E8", "E50").Value)
             {
@@ -149,14 +151,20 @@ namespace MarkTwo
                     Environment.Exit(0);
                 }
 
+                if (!serverList01.Contains(SheetName.PR))
+                {
+                    MessageBox.Show("[테이블 규칙] 시트에서 [서버 스레드01]에 PR 테이블이 없습니다.");
+                    Environment.Exit(0);
+                }
+
                 totalList.Add(sheetName);
-                SetProgressText("- 서버 스레드01 시트 이름 : " + sheetName, false);
+                SetRichBox(richTextBox, "- 서버 스레드01 시트 이름 : " + sheetName);
             }
 
             SetExtreactionProgressBar(80);
             
-            SetProgressText("", false);
-            SetProgressText("서버 스레드02 추가", false);
+            SetRichBox(richTextBox, "");
+            SetRichBox(richTextBox, "서버 스레드02 추가");
             // 서버 스레드01 테이블리스트
             foreach (string sheetName in tableManagerSheet.get_Range("F8", "F50").Value)
             {
@@ -173,12 +181,18 @@ namespace MarkTwo
                     Environment.Exit(0);
                 }
 
+                if (!serverList02.Contains(SheetName.Tag))
+                {
+                    MessageBox.Show("[테이블 규칙] 시트에서 [서버 스레드01]에 Tag 테이블이 없습니다.");
+                    Environment.Exit(0);
+                }
+
                 totalList.Add(sheetName);
-                SetProgressText("- 서버 스레드02 시트 이름 : " + sheetName, false);
+                SetRichBox(richTextBox, "- 서버 스레드02 시트 이름 : " + sheetName);
             }
 
             SetExtreactionProgressBar(90);
-            SetProgressText("====== 완료", true);
+            SetRichBox(richTextBox, "====== 완료");
         }
     }
 }
