@@ -196,6 +196,7 @@ namespace MarkTwo
         public void ShowCloseMSB(string msg)
         {
             MessageBox.Show(msg);
+            converterWindow.Close();
             Environment.Exit(0);
         }
     }

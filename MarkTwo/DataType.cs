@@ -62,7 +62,7 @@ namespace MarkTwo
 
             SetExtreactionProgressBar(20);
 
-            SheetData tagSheetData = new SheetData(dataManager.sheets["Tag"] as Excel.Worksheet, SheetName.Tag, this.dataRule, SetRichText, this.dataManager.converterWindow.ExtreactionReadyText); // 태그 시트 정보를 추출한다.
+            SheetData tagSheetData = new SheetData(dataManager.sheets["Tag"] as Excel.Worksheet, SheetName.Tag, this.dataManager, this.dataRule, SetRichText, this.dataManager.converterWindow.ExtreactionReadyText); // 태그 시트 정보를 추출한다.
             tagSheetData.Create(SetRichText, this.dataManager.converterWindow.ExtreactionReadyText);
 
             foreach (var key in tagSheetData.fieldDatas.Keys)
@@ -130,7 +130,7 @@ namespace MarkTwo
             if (text.Equals("Float")) type = typeof(float);
             if (text.Equals("Double")) type = typeof(double);
             if (text.Equals("Bigint")) type = typeof(long);
-            if (text.Equals("Char")) type = typeof(string);
+            if (text.Equals("VarChar")) type = typeof(string);
 
             return type;
         }
@@ -185,6 +185,16 @@ namespace MarkTwo
             var retEnumType = enumBuilder.CreateType();
 
             return retEnumType;
+        }
+
+        public bool CheckMySQLType(string data) // 타입을 체크한다
+        {
+            if (this.mySQLTypes.ContainsKey(data) ||
+                data.StartsWith("VarChar("))
+            {
+                return true;
+            }
+            else return false;
         }
     }
 }
