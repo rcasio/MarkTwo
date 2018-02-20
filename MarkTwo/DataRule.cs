@@ -43,6 +43,13 @@ namespace MarkTwo
         public bool isExtractionCSV = false;
         public bool isExtractionXML = false;
 
+        // 파일 패스 및 서버 관련 정보(테이블에서 추출)
+        public string serverIP;
+        public double port;
+        public string serverDBPath;
+        public string clientDBPath;
+        public string cshapFilePath;
+
         /// <summary>
         /// 테이블 률 설정
         /// </summary>
@@ -92,6 +99,12 @@ namespace MarkTwo
             {
                 dataManager.ShowCloseMSB("[테이블 규칙] 시트에서 [※ 추출할 파일 형식]의 양식이 잘못 입력되어 있습니다.\n\n(On/Off 로 입력하시기 바랍니다.)");
             }
+
+            this.serverIP = this.ruleSheet.Range["Q12"].Value;
+            this.port = this.ruleSheet.Range["Q13"].Value;
+            this.serverDBPath = this.ruleSheet.Range["Q14"].Value;
+            this.clientDBPath = this.ruleSheet.Range["Q15"].Value;
+            this.cshapFilePath = this.ruleSheet.Range["Q16"].Value; 
 
             SetExtreactionProgressBar(10);
             SetRichText(rb, "====== 완료");

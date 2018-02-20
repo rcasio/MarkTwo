@@ -45,7 +45,14 @@ namespace MarkTwo
                 string sheetName = this.dataTableList.multilingual[i];
                 SetRichBox(rb, "- 필수 데이터 기반 정보 추출 테이블 : " + sheetName);
 
-                multilingualSheetDatas.Add(sheetName, new SheetData(this.dataTableList.necessarySheetList[i], sheetName, this.dataManager, this.dataRule, SetRichBox, this.dataManager.converterWindow.ExtreactionReadyText));
+                multilingualSheetDatas.Add(sheetName, new SheetData(this.dataTableList.necessarySheetList[i], 
+                                                                    sheetName, 
+                                                                    this.dataManager, 
+                                                                    this.dataRule, 
+                                                                    SetRichBox, 
+                                                                    this.dataManager.converterWindow.ExtreactionReadyText,
+                                                                    true,
+                                                                    SheetType.Multilingual));
 
                 SetRichBox(rb, "- 추출 완료 : " + sheetName);
             }
@@ -58,7 +65,14 @@ namespace MarkTwo
                 string sheetName = this.dataTableList.clientList01[i];
                 SetRichBox(rb, "- 클라이언트 데이터01 기반 정보 추출 테이블 : " + sheetName);
 
-                client01SheetDatas.Add(sheetName, new SheetData(this.dataTableList.clientsSheetList01[i], sheetName, this.dataManager, this.dataRule, SetRichBox, this.dataManager.converterWindow.ExtreactionReadyText));
+                client01SheetDatas.Add(sheetName, new SheetData(this.dataTableList.clientsSheetList01[i], 
+                                                                sheetName, 
+                                                                this.dataManager, 
+                                                                this.dataRule, 
+                                                                SetRichBox, 
+                                                                this.dataManager.converterWindow.ExtreactionReadyText,
+                                                                true,
+                                                                SheetType.Client));
 
                 SetRichBox(rb, "- 추출 완료 : " + sheetName);
             }
@@ -71,7 +85,14 @@ namespace MarkTwo
                 string sheetName = this.dataTableList.clientList02[i];
                 SetRichBox(rb, "- 클라이언트 데이터02 기반 정보 추출 테이블 : " + sheetName);
 
-                client02SheetDatas.Add(sheetName, new SheetData(this.dataTableList.clientsSheetList02[i], sheetName, this.dataManager, this.dataRule, SetRichBox, this.dataManager.converterWindow.ExtreactionReadyText));
+                client02SheetDatas.Add(sheetName, new SheetData(this.dataTableList.clientsSheetList02[i], 
+                                                                sheetName, 
+                                                                this.dataManager, 
+                                                                this.dataRule, 
+                                                                SetRichBox, 
+                                                                this.dataManager.converterWindow.ExtreactionReadyText,
+                                                                true,
+                                                                SheetType.Client));
                 SetRichBox(rb, "- 추출 완료 : " + sheetName);
             }
             
@@ -83,7 +104,14 @@ namespace MarkTwo
                 string sheetName = this.dataTableList.serverList01[i];
                 SetRichBox(rb, "- 서버 데이터01 기반 정보 추출 테이블 : " + sheetName);
 
-                server01SheetDats.Add(sheetName, new SheetData(this.dataTableList.serverSheetList01[i], sheetName, this.dataManager, this.dataRule, SetRichBox, this.dataManager.converterWindow.ExtreactionReadyText));
+                server01SheetDats.Add(sheetName, new SheetData(this.dataTableList.serverSheetList01[i], 
+                                                               sheetName, 
+                                                               this.dataManager, 
+                                                               this.dataRule, 
+                                                               SetRichBox, 
+                                                               this.dataManager.converterWindow.ExtreactionReadyText,
+                                                               true,
+                                                               SheetType.Server));
                 SetRichBox(rb, "- 추출 완료 : " + sheetName);
             }
             
@@ -95,7 +123,14 @@ namespace MarkTwo
                 string sheetName = this.dataTableList.serverList02[i];
                 SetRichBox(rb, "- 서버 데이터02 기반 정보 추출 테이블 : " + sheetName);
 
-                server02SheetDats.Add(sheetName, new SheetData(this.dataTableList.serverSheetList02[i], sheetName, this.dataManager, this.dataRule, SetRichBox, this.dataManager.converterWindow.ExtreactionReadyText));
+                server02SheetDats.Add(sheetName, new SheetData(this.dataTableList.serverSheetList02[i], 
+                                                               sheetName, 
+                                                               this.dataManager, 
+                                                               this.dataRule, 
+                                                               SetRichBox, 
+                                                               this.dataManager.converterWindow.ExtreactionReadyText,
+                                                               true,
+                                                               SheetType.Server));
                 SetRichBox(rb, "- 추출 완료 : " + sheetName);
             }
 

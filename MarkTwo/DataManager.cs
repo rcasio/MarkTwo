@@ -15,7 +15,7 @@ using static MarkTwo.TagManager;
 namespace MarkTwo
 {
     /// <summary>
-    /// 정상적인 데이터인지 체크합니다.
+    /// 템플릿 메소드 패턴이 아닌, 템플릿 클래스 패턴;;;;;;;;;;;;
     /// </summary>
     public class DataManager
     {

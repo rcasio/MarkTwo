@@ -62,9 +62,18 @@ namespace MarkTwo
 
             SetExtreactionProgressBar(20);
 
-            SheetData tagSheetData = new SheetData(dataManager.sheets["Tag"] as Excel.Worksheet, SheetName.Tag, this.dataManager, this.dataRule, SetRichText, this.dataManager.converterWindow.ExtreactionReadyText); // 태그 시트 정보를 추출한다.
+            SheetData tagSheetData = new SheetData(dataManager.sheets[SheetName.Tag] as Excel.Worksheet, 
+                                                   SheetName.Tag, 
+                                                   this.dataManager, 
+                                                   this.dataRule, 
+                                                   SetRichText, 
+                                                   this.dataManager.converterWindow.ExtreactionReadyText,
+                                                   false,
+                                                   SheetType.None); // 태그 시트 정보를 추출한다.
+
             tagSheetData.Create(SetRichText, this.dataManager.converterWindow.ExtreactionReadyText);
 
+            // enum 타입 추가
             foreach (var key in tagSheetData.fieldDatas.Keys)
             {
                 FieldData fieldData = tagSheetData.fieldDatas[key]; // 필드 데이터(enum 자료형)를 추출한다.
@@ -86,8 +95,9 @@ namespace MarkTwo
                         var enumValBoxed = Enum.Parse(netListEnumType, item);
                         SetRichText(rb, "- 멤버 : " + enumValBoxed.ToString());
                     }
-
+                    
                     cSharpTypes.Add(netListEnumType.Name, netListEnumType);
+                    mySQLTypes.Add(netListEnumType.Name, netListEnumType);
                 }
             }
 

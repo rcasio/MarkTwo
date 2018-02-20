@@ -140,7 +140,6 @@ namespace MarkTwo
         public ConverterWindow()
         {
             this.dataManager = new DataManager(this);
-            this.generateBinaryFile = new GenerateBinaryFile();
 
             this.dataManager.converterWindow = this;
 
@@ -298,8 +297,6 @@ namespace MarkTwo
                                              (p, a) => this.SetRichText(p, a),
                                              (p, a) => this.SetProgressBar(p, a)
                                              ); 
-
-            this.generateBinaryFile.Create(this.dataManager); // 바이너리 파일을 생성한다.
             
             // INFO : 기존 코드에서 폼이 시작될 때 실행되는 부분
 
