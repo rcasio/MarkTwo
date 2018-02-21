@@ -19,7 +19,7 @@ namespace MarkTwo
 
         public List<string> multilingual = new List<string>(); // 다국어 테이블
         public List<Excel.Worksheet> necessarySheetList = new List<Excel.Worksheet>(); // 픽수 테이블
-
+        
         public List<string> clientList01 = new List<string>(); // 사용되는 테이블 리스트
         public List<Excel.Worksheet> clientsSheetList01 = new List<Excel.Worksheet>(); // 클라이언트 시트 리스트
         public List<string> clientList02 = new List<string>(); // 사용되는 테이블 리스트
@@ -29,6 +29,9 @@ namespace MarkTwo
         public List<Excel.Worksheet> serverSheetList01 = new List<Excel.Worksheet>(); // 서버 시트 리스트
         public List<string> serverList02 = new List<string>(); // 사용되는 클라이언트 리스트
         public List<Excel.Worksheet> serverSheetList02 = new List<Excel.Worksheet>(); // 서버 시트 리스트
+
+        public List<string> totlaClientList = new List<string>(); // 모든 클라이언트 테이블 리스트
+        public List<string> totalServerList = new List<string>(); // 모든 서버 테이블 리스트
 
         public DataTableList(Excel.Worksheet tableManagerSheet, Excel.Sheets sheets, Action<int> SetExtreactionProgressBar, Action<RichTextBox, string> SetRichBox, RichTextBox richTextBox)
         {
@@ -51,6 +54,7 @@ namespace MarkTwo
                     if (sheetName.Equals(SheetName.Multilingual))
                     {
                         this.multilingual.Add(sheetName);
+                        this.totlaClientList.Add(sheetName);
                         this.necessarySheetList.Add(sheets[sheetName] as Excel.Worksheet);
                     }
                     else
@@ -80,6 +84,7 @@ namespace MarkTwo
                 if (sheetName == null) break;
 
                 clientList01.Add(sheetName);
+                totlaClientList.Add(sheetName);
                 try
                 {
                     this.clientsSheetList01.Add(sheets[sheetName] as Excel.Worksheet);
@@ -111,6 +116,7 @@ namespace MarkTwo
                 if (sheetName == null) break;
 
                 clientList02.Add(sheetName);
+                totlaClientList.Add(sheetName);
                 try
                 {
                     this.clientsSheetList02.Add(sheets[sheetName] as Excel.Worksheet);
@@ -140,7 +146,8 @@ namespace MarkTwo
             {
                 if (sheetName == null) break;
 
-                serverList01.Add(sheetName);
+                this.serverList01.Add(sheetName);
+                this.totalServerList.Add(sheetName);
                 try
                 {
                     this.serverSheetList01.Add(sheets[sheetName] as Excel.Worksheet);
@@ -170,7 +177,8 @@ namespace MarkTwo
             {
                 if (sheetName == null) break;
 
-                serverList02.Add(sheetName);
+                this.serverList02.Add(sheetName);
+                this.totalServerList.Add(sheetName);
                 try
                 {
                     this.serverSheetList02.Add(sheets[sheetName] as Excel.Worksheet);

@@ -93,10 +93,6 @@ namespace MarkTwo
             if (this.isCreateFile)
             {
                 generateBinaryFile = new GenerateBinaryFile(this.name, this.dataManager, this, this.sheetType); // 바이너리 파일
-
-                // TODO : C# 코드를 생성하도록 한다.
-                //Create_CSharpCode.Instance.WriteCode_TableConverter(tableData);
-                //Create_CSharpCode.Instance.WriteCode_TableClassList(tableData);
             }
 
             // UI에 현재 진행중인 테이블 정보를 넣는다.

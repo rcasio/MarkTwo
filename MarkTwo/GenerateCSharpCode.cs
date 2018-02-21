@@ -6,15 +6,19 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 
+using static MarkTwo.TagManager;
+
 namespace MarkTwo
 {
-    class Create_CSharpCode
+    class GenerateCSharpCode
     {
         public const string TABLECONVERTER_FILENAME = "TableConverter.cs";
         public const string TABLECLASSLIST_FILENAME = "TableClassList.cs";
         public const string TABLETAGLIST_FILENAME = "TableTagList.cs";
 
         public List<string> multilingual = new List<string>();
+
+        private DataManager dataManager;
 
         // PR 데이터를 담기 위한 기본 클래스, PR 테이블의 필드와 동일해야 한다.
         public class PR
@@ -39,16 +43,16 @@ namespace MarkTwo
 
         public int CurrentPRNum; // 현재 PR 넘버
 
-        // 싱글톤
-        private static Create_CSharpCode instance;
-        public static Create_CSharpCode Instance
-        {
-            get
-            {
-                if (instance == null) { instance = new Create_CSharpCode(); }
-                return instance;
-            }
-        }
+        //// 싱글톤
+        //private static GenerateCSharpCode instance;
+        //public static GenerateCSharpCode Instance
+        //{
+        //    get
+        //    {
+        //        if (instance == null) { instance = new GenerateCSharpCode(); }
+        //        return instance;
+        //    }
+        //}
 
         // 문자열을 편집할 때 사용됩니다.
         static StringBuilder edit_string = new StringBuilder();
@@ -120,76 +124,85 @@ namespace MarkTwo
         }
         
         // 최초 생성 시 기본적인 코드를 짜도록 한다.
-        public Create_CSharpCode()
+        public GenerateCSharpCode(DataManager dataManager)
         {
+            this.dataManager = dataManager;
+
             m_TableConverter = new StreamWriter(new FileStream(this.Create_FilePath_TableConverter(), FileMode.Create));
             m_TableClassList = new StreamWriter(new FileStream(this.Create_FilePath_TableClassList(), FileMode.Create));
             m_TableTagList = new StreamWriter(new FileStream(this.Create_FilePath_TableTagList(), FileMode.Create));
-
+            
             m_TableConverter.WriteLine("using UnityEngine;");
             m_TableConverter.WriteLine("using System.Collections;");
             m_TableConverter.WriteLine("using System.Collections.Generic;");
             m_TableConverter.WriteLine("using System.IO;");
 
             m_TableConverter.WriteLine("");
-            m_TableConverter.WriteLine("  public class Table");
-            m_TableConverter.WriteLine("  {");
+            m_TableConverter.WriteLine("public class Table");
+            m_TableConverter.WriteLine("{");
 
             // 테이블 시트를 담을 클래스 리스트를 선언한다.
-            foreach (string sheetName in ConverterWindow.clientSheetNames)
+            //foreach (string sheetName in ConverterWindow.clientSheetNames)
+            foreach (string sheetName in this.dataManager.dataTableList.totlaClientList)
             {
-                m_TableConverter.WriteLine(AddString("    public static Dictionary<int, ", sheetName, "> Data_", sheetName, ";"));
+                //m_TableConverter.WriteLine(AddString("\t\tpublic static Dictionary<int, ", sheetName, "> ", sheetName, "Datas;"));
+                m_TableConverter.WriteLine(AddString("\tpublic static Dictionary<int, ", sheetName, "> ", sheetName, ";"));
             }
 
-            m_TableConverter.WriteLine("  }");
+            m_TableConverter.WriteLine("}");
             m_TableConverter.WriteLine("");
+            m_TableConverter.WriteLine("public class TableLoad");
+            m_TableConverter.WriteLine("{");
 
-            // 싱글톤으로 
-            m_TableConverter.WriteLine("  public class Table_Load : Singleton<Table_Load>");
-            m_TableConverter.WriteLine("  {");
+            // GetBinaryReader() 함수를 작성한다.
+            this.WriteGetBinaryReader(); 
 
-            // 바이너리 파일을 읽을 바이너리 리더를 선언한다.
-            m_TableConverter.WriteLine("    BinaryReader m_TableDataBinary;");
-            // 읽어올 파일을 선언한다.
-            m_TableConverter.WriteLine("    TextAsset m_Textasset;");
             m_TableConverter.WriteLine("");
-
-            // 테이블 행의 데이터를 담을 클래스를 선언한다.
-            foreach (string sheetName in ConverterWindow.clientSheetNames) { m_TableConverter.WriteLine(AddString("    ", sheetName, " ", "row_", sheetName, ";")); }
-            
-            m_TableConverter.WriteLine("");
-            
             // 테이블을 최초로 로딩하는 함수
-            m_TableConverter.WriteLine("    public void Load_TableDB(string setLanguage = null, byte[] bytes = null)");
-            m_TableConverter.WriteLine("    {");
-            m_TableConverter.WriteLine("        MemoryStream stream;");
-            m_TableConverter.WriteLine("");
-
-            // 다운로드된 bytes를 로그할 것인가?
-            m_TableConverter.WriteLine("        if (bytes != null)");
-            m_TableConverter.WriteLine("        {");
-            // 다운로드된 bytes를 기반으로 바이너리 파일 스트림을 만든다.
-            m_TableConverter.WriteLine("            stream = new MemoryStream(bytes);");
-            m_TableConverter.WriteLine("        }");
-            m_TableConverter.WriteLine("        else");
-            m_TableConverter.WriteLine("        {");
-            // 클라이언트에 저장된 테이블DB일 경우 한번 읽었는지 체크하고 다시 읽지 않도록 한다.
-            m_TableConverter.WriteLine("            if (!(Table.Data_PR == null)) return;");
-            m_TableConverter.WriteLine("");
-            // 파일스트림에 파일 경로를 할당합니다.
-            m_TableConverter.WriteLine(AddString("            m_Textasset = Resources.Load(\"", ConverterWindow.CLIENT_BINARY_FILENAME, "\") as TextAsset;"));
-            m_TableConverter.WriteLine("            stream = new MemoryStream(m_Textasset.bytes);");
-            m_TableConverter.WriteLine("        }");
-            m_TableConverter.WriteLine("");
-
-            // 클라이언트DB 파일을 바이너리리더로 할당합니다.
-            m_TableConverter.WriteLine(AddString("       m_TableDataBinary = new BinaryReader(stream);"));
-            m_TableConverter.WriteLine("");
+            m_TableConverter.WriteLine("\tpublic TableLoad()");
+            m_TableConverter.WriteLine("\t{");
         }
 
-        // 테이블의 시트 정보를 참조하여 테이블 변환용 코드를 만든다.
-        public void WriteCode_TableConverter(TableDataS tableData)
-        {   
+        /// <summary>
+        /// GetBinaryReader 함수를 작성한다.
+        /// </summary>
+        private void WriteGetBinaryReader()
+        {
+            m_TableConverter.WriteLine("\tprivate BinaryReader GetBinaryReader(string fileName)");
+            m_TableConverter.WriteLine("\t{");
+            m_TableConverter.WriteLine("\t\tTextAsset textasset = Resources.Load(fileName) as TextAsset;");
+            m_TableConverter.WriteLine("\t\tMemoryStream stream = new MemoryStream(textasset.bytes);");
+            m_TableConverter.WriteLine("\t\tBinaryReader binaryReader = new BinaryReader(stream);");
+            m_TableConverter.WriteLine("\t\tstream.Close();");
+            m_TableConverter.WriteLine("");
+            m_TableConverter.WriteLine("\t\treturn binaryReader;");
+            m_TableConverter.WriteLine("\t}");
+        }
+
+        // 테이블 시트 정보를 참조하여 테이블 변환용 코드를 만든다.
+        public void Write(TableDataS tableData)
+        {
+            // TODO : 아래 주석처럼 나오도록 한다.
+            // TODO : TableConverter_Saple.cs를 참조하도록 한다.
+
+            /*Table.Data_Multilingual = new Dictionary<int, Multilingual>(26);
+            BinaryReader multilingualBinaryReader = GetBinaryReader("multilingual_Multilingual");
+
+            for (int i = 0; i < 26; i++)
+            {
+                Multilingual multilingual = new Multilingual();
+
+                multilingual.Num = multilingualBinaryReader.ReadInt32();
+                multilingual.Kor = multilingualBinaryReader.ReadString();
+                multilingual.Eng = multilingualBinaryReader.ReadString();
+                multilingual.Jpn = multilingualBinaryReader.ReadString();
+
+                Table.Data_Multilingual.Add(multilingual.Num, multilingual);
+            }
+
+            multilingualBinaryReader.Close();
+            */
+
             // 각각의 리스트를 할당하도록 합니다.
             m_TableConverter.WriteLine(AddString("      Table.Data_", tableData.name, " = new Dictionary<int, ", tableData.name, ">(", tableData.totalRowCountDeleteComment.ToString(),");"));
             m_TableConverter.WriteLine("");
@@ -482,16 +495,16 @@ namespace MarkTwo
         }
 
         // 파일 경로를 반환한다.
-        string Create_FilePath_TableConverter() { return Application.StartupPath + "\\" + TABLECONVERTER_FILENAME; }
+        private string Create_FilePath_TableConverter() { return Application.StartupPath + "\\" + TABLECONVERTER_FILENAME; }
 
         // 파일 경로를 반환한다.
-        string Create_FilePath_TableClassList() { return Application.StartupPath + "\\" + TABLECLASSLIST_FILENAME; }
+        private string Create_FilePath_TableClassList() { return Application.StartupPath + "\\" + TABLECLASSLIST_FILENAME; }
 
         // 파일 경로를 반환한다.
-        string Create_FilePath_TableTagList() { return Application.StartupPath + "\\" + TABLETAGLIST_FILENAME; }
+        private string Create_FilePath_TableTagList() { return Application.StartupPath + "\\" + TABLETAGLIST_FILENAME; }
 
         // 문자열을 편집할 때 사용됩니다.
-        string AddString(params string[] string_List)
+        private string AddString(params string[] string_List)
         {
             // 유니티에서는 Clear() 함수를 지원하지 않는다.
             edit_string.Clear();
@@ -510,9 +523,9 @@ namespace MarkTwo
             return edit_string.ToString();
         }
 
-        public void Close_StreamWrite()
+        public void Close()
         {
-            m_TableConverter.WriteLine("        m_TableDataBinary.Close();");
+            //m_TableConverter.WriteLine("        m_TableDataBinary.Close();");
             m_TableConverter.WriteLine("    }");
             m_TableConverter.WriteLine("}");
 

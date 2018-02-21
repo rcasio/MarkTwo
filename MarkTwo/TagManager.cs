@@ -18,5 +18,11 @@ namespace MarkTwo
             public const string PR = "PR"; // PR 시트
             public const string Tag = "Tag"; // Tag 시트
         }
+
+        // 파일 확장자
+        public class FileExtensionName
+        {
+            public const string Binary = "bytes";
+        }
     }
 }

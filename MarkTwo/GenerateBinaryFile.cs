@@ -14,7 +14,7 @@ namespace MarkTwo
     public class GenerateBinaryFile
     {
         string originalBinaryFilePath; // 클라이언트 바이너리 파일 경로를 나타낸다.
-        string BINARY_FILE_EXENAME_FOR_UNITY = "bytes"; // 유니티에서 사용하는 바이너리 파일 확장자명
+        //string BINARY_FILE_EXENAME_FOR_UNITY = "bytes"; // 유니티에서 사용하는 바이너리 파일 확장자명
         string targetPathDB_Binary;
 
         private FileStream fileStream;    // 클라이언트 바이너리 파일
@@ -26,15 +26,30 @@ namespace MarkTwo
         private SheetType sheetType;
         private DataRule dataRule;
 
+        static public List<string> clientBinaryFiles = new List<string>();
+        static public List<string> serverBinaryFiles = new List<string>();
+
         public GenerateBinaryFile(string name, DataManager dataManager, SheetData sheetData, SheetType sheetType)
         {
             this.dataManager = dataManager;
             this.sheetData = sheetData;
             this.sheetType = sheetType;
-            this.dataRule = this.dataManager.dataRule; 
+            this.dataRule = this.dataManager.dataRule;
 
             this.name = name + "_" + this.sheetType; // 이름 설정
-            originalBinaryFilePath = Application.StartupPath + "\\" + this.name + "." + BINARY_FILE_EXENAME_FOR_UNITY;  // 생성할 클라이언트의 바이너리 파일 경로를 만든다.
+
+            if (sheetType == SheetType.Multilingual ||
+                sheetType == SheetType.Client)
+            {
+                clientBinaryFiles.Add(name);
+            }
+            else
+            {
+                serverBinaryFiles.Add(name);
+            }
+
+            
+            originalBinaryFilePath = Application.StartupPath + "\\" + this.name + "." + FileExtensionName.Binary;  // 생성할 클라이언트의 바이너리 파일 경로를 만든다.
             fileStream = new FileStream(originalBinaryFilePath, FileMode.Create);
             binaryWriter = new BinaryWriter(fileStream);
 
@@ -42,12 +57,11 @@ namespace MarkTwo
             if (this.sheetType == SheetType.Multilingual ||
                 this.sheetType == SheetType.Client)
             {
-                //targetPathClientDB_Binary = Application.StartupPath.Replace("\\ADDesign", "") + "\\" + workSheet.Range["Q15"].Value + "\\" + CLIENT_BINARY_FILENAME + "." + CLIENT_TEXT_FILE_EXTENSION;
-                targetPathDB_Binary = Application.StartupPath.Replace("\\ADDesign", "") + "\\" + this.dataRule.clientDBPath + "\\" + this.name + "." + BINARY_FILE_EXENAME_FOR_UNITY;
+                targetPathDB_Binary = Application.StartupPath.Replace("\\ADDesign", "") + "\\" + this.dataRule.clientDBPath + "\\" + this.name + "." + FileExtensionName.Binary;
             }
             else if (this.sheetType == SheetType.Server)
             {
-                targetPathDB_Binary = Application.StartupPath.Replace("\\ADDesign", "") + "\\" + this.dataRule.serverDBPath + "\\" + this.name + "." + BINARY_FILE_EXENAME_FOR_UNITY;
+                targetPathDB_Binary = Application.StartupPath.Replace("\\ADDesign", "") + "\\" + this.dataRule.serverDBPath + "\\" + this.name + "." + FileExtensionName.Binary;
             }
         }
 
@@ -100,7 +114,6 @@ namespace MarkTwo
                         MessageBox.Show("[테이블_규칙] 및 [Tag] 테이블에 정의되지 않는 자료형이 입력되었습니다(0). \n[테이블 : " + tableName + "] [ 필드 : " + column + " ] [ 레코드 : " + row + " ] \n[ 레이블 : " + data + " ]");
                         this.sheetData.Close();
                     }
-                    
                 }
                 else
                 {

@@ -100,7 +100,7 @@ namespace MarkTwo
         public TableDataS tableDataServer;
         
         DataManager dataManager;  // 데이터를 관리한다.(오류 등)
-        GenerateBinaryFile generateBinaryFile;
+        GenerateCSharpCode generateCSharpCode; //c# 코드를 생성한다.
 
         Dictionary<string, TableDataS> tableDatasClient = new Dictionary<string, TableDataS>();    // 테이블 클라이언트시트를 클래스를 저장하는 딕셔너리
         Dictionary<string, TableDataS> tableDatasServer = new Dictionary<string, TableDataS>();    // 테이블 서버시트를 저장하는 딕셔너리
@@ -295,9 +295,16 @@ namespace MarkTwo
             this.dataManager.CreateExcelData((p) => this.SetFormDataRule(p),
                                              (p) => this.SetExtreactionProgressBar(p),
                                              (p, a) => this.SetRichText(p, a),
-                                             (p, a) => this.SetProgressBar(p, a)
-                                             ); 
+                                             (p, a) => this.SetProgressBar(p, a),
+                                             () => this.NextAction());
+
+            // TODO : C# 코드를 생성하도록 한다.
+            //GenerateCSharpCode.Instance.WriteCode_TableConverter(tableData);
+            //Create_CSharpCode.Instance.WriteCode_TableClassList(tableData);
+
             
+            
+
             // INFO : 기존 코드에서 폼이 시작될 때 실행되는 부분
 
             /*
@@ -311,6 +318,14 @@ namespace MarkTwo
             timerConvertChecker.Elapsed += new System.Timers.ElapsedEventHandler(Check_EndConvertWork); // 이벤트를 등록한다.
             timerConvertChecker.Start();
             */
+        }
+
+        /// <summary>
+        /// 파일 추출 스레드가 종료된 후 작업
+        /// </summary>
+        public void NextAction()
+        {
+            this.generateCSharpCode = new GenerateCSharpCode(this.dataManager); // c# 파일을 생성한다
         }
 
         /// <summary>
@@ -721,13 +736,13 @@ namespace MarkTwo
                                 if (tableData.name.Equals("PR"))
                                 {
                                     // PR 태그 클래스를 만들기 위한 자료를 추출한다.
-                                    Create_CSharpCode.Instance.SetDicPR(tableData.fieldNameList[dataCount - 1], data_ExchangedString);
+                                    //GenerateCSharpCode.Instance.SetDicPR(tableData.fieldNameList[dataCount - 1], data_ExchangedString);
                                 }
 
                                 // Tag 테이블일 경우
                                 if (tableData.name.Equals("Tag"))
                                 {
-                                    Create_CSharpCode.Instance.SetDicTag(tableData.fieldNameList[dataCount - 1], data_ExchangedString);
+                                    //GenerateCSharpCode.Instance.SetDicTag(tableData.fieldNameList[dataCount - 1], data_ExchangedString);
                                 }
                             }
                             else if (sheetType == SheetType.Server)
@@ -769,17 +784,17 @@ namespace MarkTwo
                 // Multilingual, PR Tag 클래스를 만든다.
                 if (tableData.name.Equals("PR"))
                 {
-                    Create_CSharpCode.Instance.WriteCode_TableTagMultilingualPR(tableData);
+                    //GenerateCSharpCode.Instance.WriteCode_TableTagMultilingualPR(tableData);
                 }
                 else if (tableData.name.Equals("Tag")) // tag 테이블을 기반으로 Class를 작성한다.
                 {
-                    Create_CSharpCode.Instance.WriteCode_TableTag(tableData);
+                    //GenerateCSharpCode.Instance.WriteCode_TableTag(tableData);
                 }
             }
 
             if (sheetType == SheetType.Client)
             {
-                Create_CSharpCode.Instance.Close_StreamWrite(); // C# 파일 스트림을 닫는다.
+                //GenerateCSharpCode.Instance.Close_StreamWrite(); // C# 파일 스트림을 닫는다.
 
                 binaryWriter_ForClientDB.Close(); // 바이너리 파일을 닫는다.
 
@@ -1166,22 +1181,22 @@ namespace MarkTwo
         // 유니티에서 사용되는 TableClassList.cs 파일 경로를 생성한다.
         private void CreatePathTableClassList()
         {
-            originalPathTableClassList_Unity = Application.StartupPath + "\\" + Create_CSharpCode.TABLECLASSLIST_FILENAME; // 현재위치
-            targetPathTableClassList_Unity = Application.StartupPath.Replace("\\ADDesign", "") + "\\" + workSheet.Range["Q16"].Value + "\\" + Create_CSharpCode.TABLECLASSLIST_FILENAME; // 복사할 위치
+            originalPathTableClassList_Unity = Application.StartupPath + "\\" + GenerateCSharpCode.TABLECLASSLIST_FILENAME; // 현재위치
+            targetPathTableClassList_Unity = Application.StartupPath.Replace("\\ADDesign", "") + "\\" + workSheet.Range["Q16"].Value + "\\" + GenerateCSharpCode.TABLECLASSLIST_FILENAME; // 복사할 위치
         }
 
         // 유니티에서 사용되는 TableConverter.cs 파일 경로를 생성한다.
         private void CreatePathTableConverter()
         {
-            originalPathTableConverter = Application.StartupPath + "\\" + Create_CSharpCode.TABLECONVERTER_FILENAME; // 현재위치
-            targetPathTableConverter = Application.StartupPath.Replace("\\ADDesign", "") + "\\" + workSheet.Range["Q16"].Value + "\\" + Create_CSharpCode.TABLECONVERTER_FILENAME; // 복사할 위치
+            originalPathTableConverter = Application.StartupPath + "\\" + GenerateCSharpCode.TABLECONVERTER_FILENAME; // 현재위치
+            targetPathTableConverter = Application.StartupPath.Replace("\\ADDesign", "") + "\\" + workSheet.Range["Q16"].Value + "\\" + GenerateCSharpCode.TABLECONVERTER_FILENAME; // 복사할 위치
         }
 
         // 유니티에서 사용되는 TableTagList 클래스가 복사될 파일 경로를 나타낸다.
         private void CreatePathTableTagList()
         {
-            createdPathNameForTableTagList = Application.StartupPath + "\\" + Create_CSharpCode.TABLETAGLIST_FILENAME; // 현재위치
-            targetPathForTableTagList = Application.StartupPath.Replace("\\ADDesign", "") + "\\" + workSheet.Range["Q16"].Value + "\\" + Create_CSharpCode.TABLETAGLIST_FILENAME; // 복사할 위치
+            createdPathNameForTableTagList = Application.StartupPath + "\\" + GenerateCSharpCode.TABLETAGLIST_FILENAME; // 현재위치
+            targetPathForTableTagList = Application.StartupPath.Replace("\\ADDesign", "") + "\\" + workSheet.Range["Q16"].Value + "\\" + GenerateCSharpCode.TABLETAGLIST_FILENAME; // 복사할 위치
         }
 
         // 클라이언트 DB에 바이너리 파일을 쓴다.
@@ -1341,7 +1356,9 @@ namespace MarkTwo
         // 프로그램이 닫힐 때 실행된다.
         private void ClostMarkTwo(object sender, FormClosedEventArgs e)
         {
-            switch(e.CloseReason)
+            this.generateCSharpCode.Close();
+
+            switch (e.CloseReason)
             {
                 case CloseReason.WindowsShutDown : this.CloseExcel(); break;
                 case CloseReason.FormOwnerClosing : this.CloseExcel(); break;

@@ -65,8 +65,8 @@ namespace MarkTwo
         public void CreateExcelData(Action<DataRule> SetFormDataRule, 
                                     Action<int> SetExtreactionProgressBar, 
                                     Action<RichTextBox, string> SetRichText,
-                                    Action<ProgressBar, int> SetMultilingualProgressBar
-                                    )
+                                    Action<ProgressBar, int> SetMultilingualProgressBar,
+                                    Action NextAction)
         {
             Console.WriteLine("===== 엑셀 데이터 생성");
             this.excelApp       = new Excel.Application();
@@ -81,7 +81,7 @@ namespace MarkTwo
             this.dataType       = new DataType(this.ruleSheet, dataTypeSheet, this , this.dataRule, SetExtreactionProgressBar, SetRichText); // [테이블_규칙]과 [Tag] 시트를 기반으로 데이터 타입을 만든다.
             this.dataTableList  = new DataTableList(this.dataTableSheet, this.sheets, SetExtreactionProgressBar, SetRichText, this.converterWindow.ExtreactionReadyText); // 테이블 리스트를 만든다.
             this.excelData      = new ExcelData(this, SetExtreactionProgressBar, SetRichText); // 엑셀 데이터를 추출한다.
-            this.dataExtraction = new DataExtraction(this, SetRichText, SetMultilingualProgressBar); // 데이터 추출
+            this.dataExtraction = new DataExtraction(this, SetRichText, SetMultilingualProgressBar, NextAction); // 데이터 추출
             
             SetFormDataRule(dataRule); // 데이터 룰 UI를 세팅한다.
             // TODO : 지원하는 타입( 사용자 enum을 포함 )을 폼에 표시한다.

@@ -39,12 +39,15 @@ namespace MarkTwo
         private bool isExtreactionServer01 = false;
         private bool isExtreactionServer02 = false;
 
+        private Action NextAction; // 스레드 다음 액션
+
         //private void StartConvertClient() { this.StartConversion(SheetType.Client); }
 
-        public DataExtraction(DataManager dataManager, Action<RichTextBox, string> SetRichText, Action<ProgressBar, int> SetProgressBar)
+        public DataExtraction(DataManager dataManager, Action<RichTextBox, string> SetRichText, Action<ProgressBar, int> SetProgressBar, Action NextAction)
         {
             this.dataManager = dataManager;
             this.excelData = dataManager.excelData;
+            this.NextAction = NextAction;
 
             // 데이터를 할당한다.
             this.multilingualData = this.excelData.multilingualSheetDatas;
@@ -167,9 +170,11 @@ namespace MarkTwo
                 this.isExtreactionServer02)
             {
                 Console.WriteLine("추출 작업 완료");
-                this.CloseThreads(); // 스레드를 닫는다.
 
+                this.CloseThreads(); // 스레드를 닫는다.
                 this.excelData.CloseExcel(); // 엑셀을 닫는다.
+
+                this.NextAction(); // 다음 액션을 한다.
             }
         }
 
