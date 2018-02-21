@@ -5,8 +5,6 @@ using System.Text;
 using System.Windows.Forms;
 using System.Threading;
 using System.Threading.Tasks;
-// 참조 : http://msdn.microsoft.com/en-us/library/office/microsoft.office.interop.excel.aspx
-using Excel = Microsoft.Office.Interop.Excel;
 
 using static MarkTwo.TagManager;
 
@@ -26,6 +24,9 @@ namespace MarkTwo
         public Dictionary<string, SheetData> client02SheetDatas = new Dictionary<string, SheetData>(); // 클라이언트 시트 데이터
         public Dictionary<string, SheetData> server01SheetDats = new Dictionary<string, SheetData>(); // 서버 시트 데이터
         public Dictionary<string, SheetData> server02SheetDats = new Dictionary<string, SheetData>(); // 서버 시트 데이터
+
+        public Dictionary<string, SheetData> totalClientSheetDatas = new Dictionary<string, SheetData>(); // 클라이언트 최종 시트 데이터
+        public Dictionary<string, SheetData> totalServerSheetDatas = new Dictionary<string, SheetData>(); // 서버 최종 시트 데이터
 
         public ExcelData(DataManager dataManager, Action<int> SetExtreactionProgressBar, Action<RichTextBox, string> SetRichBox)
         {
@@ -136,6 +137,31 @@ namespace MarkTwo
 
             SetExtreactionProgressBar(100);
             SetRichBox(rb, "====== 완료");
+        }
+
+        /// <summary>
+        /// totalClientSheetDatas, totalServerSheetDatas을 설정합니다.
+        /// </summary>
+        public void SetTotlaDictionary()
+        {
+            IEnumerator<KeyValuePair<string, SheetData>> e;
+
+            // totalClientSheetDatas 설정
+            e = this.multilingualSheetDatas.GetEnumerator();
+            while (e.MoveNext()) this.totalClientSheetDatas.Add(e.Current.Key, e.Current.Value);
+
+            e = this.client01SheetDatas.GetEnumerator();
+            while(e.MoveNext()) this.totalClientSheetDatas.Add(e.Current.Key, e.Current.Value);
+
+            e = this.client02SheetDatas.GetEnumerator();
+            while(e.MoveNext()) this.totalClientSheetDatas.Add(e.Current.Key, e.Current.Value);
+
+            // totalServerSheetDatas 설정
+            e = this.server01SheetDats.GetEnumerator();
+            while (e.MoveNext()) this.totalServerSheetDatas.Add(e.Current.Key, e.Current.Value);
+
+            e = this.server02SheetDats.GetEnumerator();
+            while (e.MoveNext()) this.totalServerSheetDatas.Add(e.Current.Key, e.Current.Value);
         }
 
         // 엑셀을 닫는다.

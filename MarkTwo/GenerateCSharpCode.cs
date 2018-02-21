@@ -42,18 +42,7 @@ namespace MarkTwo
         public Dictionary<string, Tag> dicTag = new Dictionary<string, Tag>(); // Tag 데이터를 담기위한 딕셔너리
 
         public int CurrentPRNum; // 현재 PR 넘버
-
-        //// 싱글톤
-        //private static GenerateCSharpCode instance;
-        //public static GenerateCSharpCode Instance
-        //{
-        //    get
-        //    {
-        //        if (instance == null) { instance = new GenerateCSharpCode(); }
-        //        return instance;
-        //    }
-        //}
-
+        
         // 문자열을 편집할 때 사용됩니다.
         static StringBuilder edit_string = new StringBuilder();
 
@@ -65,6 +54,10 @@ namespace MarkTwo
 
         // 테이블용 태그를 정리한 파일
         StreamWriter m_TableTagList;
+
+        public List<string> totlaClientList; // 모든 클라이언트 테이블 리스트
+        public Dictionary<string, SheetData> totalClientSheetDatas; // 클라이언트 최종 시트 데이터
+        public Dictionary<string, SheetData> totalServerSheetDatas; // 클라이언트 최종 시트 데이터
 
         // PR 테이블 데이터를 만드기 위한 함수를 만든다.
         public void SetDicPR(string fieldName, string dataExchangedString)
@@ -127,6 +120,9 @@ namespace MarkTwo
         public GenerateCSharpCode(DataManager dataManager)
         {
             this.dataManager = dataManager;
+            this.totlaClientList = this.dataManager.dataTableList.totlaClientList;
+            this.totalClientSheetDatas = this.dataManager.excelData.totalClientSheetDatas;
+            this.totalServerSheetDatas = this.dataManager.excelData.totalServerSheetDatas;
 
             m_TableConverter = new StreamWriter(new FileStream(this.Create_FilePath_TableConverter(), FileMode.Create));
             m_TableClassList = new StreamWriter(new FileStream(this.Create_FilePath_TableClassList(), FileMode.Create));
@@ -143,7 +139,7 @@ namespace MarkTwo
 
             // 테이블 시트를 담을 클래스 리스트를 선언한다.
             //foreach (string sheetName in ConverterWindow.clientSheetNames)
-            foreach (string sheetName in this.dataManager.dataTableList.totlaClientList)
+            foreach (string sheetName in this.totlaClientList)
             {
                 //m_TableConverter.WriteLine(AddString("\t\tpublic static Dictionary<int, ", sheetName, "> ", sheetName, "Datas;"));
                 m_TableConverter.WriteLine(AddString("\tpublic static Dictionary<int, ", sheetName, "> ", sheetName, ";"));
@@ -161,6 +157,73 @@ namespace MarkTwo
             // 테이블을 최초로 로딩하는 함수
             m_TableConverter.WriteLine("\tpublic TableLoad()");
             m_TableConverter.WriteLine("\t{");
+
+            IEnumerator<KeyValuePair<string, SheetData >> e = this.totalClientSheetDatas.GetEnumerator();
+            while (e.MoveNext())
+            {
+                //m_TableConverter.WriteLine(AddString("\tTable.", e.Current.Key, " = new Dictionary<int, ", e.Current.Key, ">(", e.Current.Value.RowCount.ToString(), ")"));
+                m_TableConverter.WriteLine(AddString("\t\t//", e.Current.Key));
+                m_TableConverter.WriteLine(AddString("\t\tTable.", e.Current.Key, " = new Dictionary<int, ", e.Current.Key, ">();"));
+                m_TableConverter.WriteLine(AddString("\t\tBinaryReader ", e.Current.Key,"BinaryReader = this.GetBinaryReader(", GenerateBinaryFile.clientBinaryFiles[e.Current.Key], ");"));
+                m_TableConverter.WriteLine("");
+                m_TableConverter.WriteLine(AddString("\t\tfor (int i = 0; i < ", e.Current.Value.RowCount.ToString(), "; i++)"));
+                m_TableConverter.WriteLine("\t\t{");
+                m_TableConverter.WriteLine(AddString("\t\t\t", e.Current.Key," ", e.Current.Key.ToLower()," = new ", e.Current.Key,"();"));
+                m_TableConverter.WriteLine("");
+
+                // 필드에 따른 데이터를 설정한다.
+                for (int i = 0; i < e.Current.Value.fieldDataTypeList.Count; i++)
+                {
+                    string read = null;
+                    string fieldDataType = e.Current.Value.fieldDataTypeList[i];
+                    string fieldName = e.Current.Value.fieldNameList[i];
+
+                    if (fieldDataType.Equals("Bit")) read = "ReadBoolean();";
+                    else if (fieldDataType.Equals("TinyInt")) read = "ReadByte();";
+                    else if (fieldDataType.Equals("SmallInt")) read = "ReadInt16();";
+                    else if (fieldDataType.Equals("Int")) read = "ReadInt32();";
+                    else if (fieldDataType.Equals("Float")) read = "ReadSingle();";
+                    else if (fieldDataType.Equals("Double")) read = "ReadDouble();";
+                    else if (fieldDataType.Equals("Bigint")) read = "ReadInt64();";
+                    else if (fieldDataType.StartsWith("VarChar")) read = "ReadString();";
+                    else 
+                    {
+                        // TODO : enum일 경우 처리
+                        // strind을 enum으로 변경해서 넣기
+                        read = "ReadString();";
+                    }
+
+                    m_TableConverter.WriteLine(AddString("\t\t\t", e.Current.Key.ToLower(), ".", fieldName, " = ", e.Current.Key, "BinaryReader.", read));
+                }
+
+                m_TableConverter.WriteLine("\t\t}");
+                m_TableConverter.WriteLine("");
+
+            }
+
+            //foreach (var sheetName in e)
+            //{
+
+            //}
+
+            //Table.Multilingual = new Dictionary<int, Multilingual>();
+            //BinaryReader multilingualBinaryReader = GetBinaryReader("multilingual_Multilingual");
+
+            //for (int i = 0; i < 26; i++)
+            //{
+            //    Multilingual multilingual = new Multilingual();
+
+            //    multilingual.Num = multilingualBinaryReader.ReadInt32();
+            //    multilingual.Kor = multilingualBinaryReader.ReadString();
+            //    multilingual.Eng = multilingualBinaryReader.ReadString();
+            //    multilingual.Jpn = multilingualBinaryReader.ReadString();
+
+            //    Table.Data_Multilingual.Add(multilingual.Num, multilingual);
+            //}
+
+            //multilingualBinaryReader.Close();
+
+
         }
 
         /// <summary>
@@ -185,7 +248,8 @@ namespace MarkTwo
             // TODO : 아래 주석처럼 나오도록 한다.
             // TODO : TableConverter_Saple.cs를 참조하도록 한다.
 
-            /*Table.Data_Multilingual = new Dictionary<int, Multilingual>(26);
+            /*
+            Table.Multilingual = new Dictionary<int, Multilingual>(26);
             BinaryReader multilingualBinaryReader = GetBinaryReader("multilingual_Multilingual");
 
             for (int i = 0; i < 26; i++)

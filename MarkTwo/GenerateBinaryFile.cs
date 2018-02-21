@@ -26,8 +26,8 @@ namespace MarkTwo
         private SheetType sheetType;
         private DataRule dataRule;
 
-        static public List<string> clientBinaryFiles = new List<string>();
-        static public List<string> serverBinaryFiles = new List<string>();
+        static public Dictionary<string, string> clientBinaryFiles = new Dictionary<string, string>();
+        static public Dictionary<string, string> serverBinaryFiles = new Dictionary<string, string>();
 
         public GenerateBinaryFile(string name, DataManager dataManager, SheetData sheetData, SheetType sheetType)
         {
@@ -41,11 +41,11 @@ namespace MarkTwo
             if (sheetType == SheetType.Multilingual ||
                 sheetType == SheetType.Client)
             {
-                clientBinaryFiles.Add(name);
+                clientBinaryFiles.Add(name, this.name);
             }
             else
             {
-                serverBinaryFiles.Add(name);
+                serverBinaryFiles.Add(name, this.name);
             }
 
             

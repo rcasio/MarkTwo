@@ -9,7 +9,7 @@ namespace MarkTwo
 {
     interface IThread
     {
-        void CheckThrea1ds(object soruce, ElapsedEventArgs e);
+        void CheckThreads(object soruce, ElapsedEventArgs e);
         void CloseThreads();
     }
 }

@@ -36,7 +36,7 @@ using System.IO;
 
     public Table_Load()
     { 
-        Table.Data_Multilingual = new Dictionary<int, Multilingual>(26);
+        Table.Data_Multilingual = new Dictionary<int, Multilingual>();
         BinaryReader multilingualBinaryReader = GetBinaryReader("multilingual_Multilingual");
 
         for ( int i = 0; i < 26 ; i++ )

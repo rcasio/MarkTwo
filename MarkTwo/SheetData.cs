@@ -21,15 +21,26 @@ namespace MarkTwo
         public DataRule dataRule; // 데이터 룰
 
         public int totalRowCount; // 테이블 행 숫자
-        public int totalRowCountDeleteComment; // 테이블의
         public int totalColumnCount; // 테이블의 모든 열 숫자
         public int totalDataCount; // 모든 데이터 개수
+
+        /// <summary>
+        /// 주석을 제외한 실 레코드 개수
+        /// </summary>
+        private int rowCount;
+        public int RowCount
+        {   
+            get
+            {
+                rowCount = totalRowCount - this.commentRowNums.Count - 3;
+                return rowCount;
+            }
+        }
 
         public List<int> fieldCommentList = new List<int>(); // 필드의 주석을 저장한다(필드 번호 순 ex) {2,7}이면 2열 7열이 주석필드)
         public List<int> rowCommentList = new List<int>(); // 행의 주석 번호를 저장한다.(행 번호 순 ex) {2,3}이면 2행 3행 주서행)
 
-        public List<string> fieldDataTypeTable = new List<string>();
-        public List<string> fieldDataTypeCSharp = new List<string>();
+        public List<string> fieldDataTypeList = new List<string>();
         public List<string> fieldNameList = new List<string>();
         
         public List<int> commentColumnNums = new List<int>(); // 주석처리 열 번호 리스트
@@ -124,12 +135,14 @@ namespace MarkTwo
                         {
                             this.CheckSecondLineData(data, this.name, column); // 두전째 데이터를 체크한다.
                             fieldData.name = data; // 필드 이름일 경우
+                            this.fieldNameList.Add(data); // 필드 이름을 등록한다.
                             srb(rb, "- 필드 이름 : " + fieldData.name);
                         }
                         else if (row.Equals(DataRule.FIELD_DATA_TYPE))
                         {
                             this.CheckThirdLineData(data, this.name, column); // 세번째 데이터를 체크한다.
                             fieldData.dataType = data; // 필드 데이터 타입일 경우
+                            this.fieldDataTypeList.Add(data); // 필드 데이터 타입을 등록한다.
 
                             srb(rb, "- 필드 타입 : " + fieldData.dataType);
                             srb(rb, "");
@@ -150,7 +163,6 @@ namespace MarkTwo
                                         generateBinaryFile.Write(data, fieldData.dataType, this.name, row, column);
                                     }
                                     
-                                    //this.WriteClientDB(data, this.name, row, column); // 클라이언트 바이너리 파일 생성
                                     fieldData.Add(data); // 데이터를 추가한다.
                                     srb(rb, "- 레이블 [" + column + "],[" + row + "] : " + data);
                                 }
@@ -164,7 +176,7 @@ namespace MarkTwo
                                     {
                                         generateBinaryFile.Write(data, fieldData.dataType, this.name, row, column);
                                     }
-                                    //this.WriteClientDB(data, this.name, row, column); // 클라이언트 바이너리 파일 생성
+                                    
                                     fieldData.Add(data); // 데이터를 추가한다. 
                                     srb(rb, " - 레이블 [" + column + "],[" + row + "] : " + data);
                                 }

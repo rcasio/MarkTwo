@@ -156,11 +156,11 @@ namespace MarkTwo
             this.serverThread02.Start();
             
             // 변환작업 쓰레드 종료를 체크하는 타이머를 구동한다.
-            timerConvertChecker.Elapsed += new System.Timers.ElapsedEventHandler(CheckThrea1ds); // 이벤트를 등록한다.
+            timerConvertChecker.Elapsed += new System.Timers.ElapsedEventHandler(CheckThreads); // 이벤트를 등록한다.
             timerConvertChecker.Start();
         }
 
-        public void CheckThrea1ds(object soruce, ElapsedEventArgs e) // 스레드를 체크한다.
+        public void CheckThreads(object soruce, ElapsedEventArgs e) // 스레드를 체크한다.
         {
             // 추출 작업 체크
             if (this.isExtractioneMultilingual && 
@@ -172,6 +172,8 @@ namespace MarkTwo
                 Console.WriteLine("추출 작업 완료");
 
                 this.CloseThreads(); // 스레드를 닫는다.
+
+                this.excelData.SetTotlaDictionary(); // totalClientSheetDatas, totalServerSheetDatas을 설정 한다.
                 this.excelData.CloseExcel(); // 엑셀을 닫는다.
 
                 this.NextAction(); // 다음 액션을 한다.
