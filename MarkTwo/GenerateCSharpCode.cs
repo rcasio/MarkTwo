@@ -294,21 +294,7 @@ namespace MarkTwo
             tableTagList.WriteLine("\t\t// 다국어 대응 열거자 입니다. Multilingual 테이블을 기반으로 작성됩니다.");
             tableTagList.WriteLine("\t\tpublic enum Multilingual"); // 다국어 열거자를 만든다.
             tableTagList.WriteLine("\t\t{");
-
-            // 다국어에 사용하는 언어를 기입한다.
-            //for (int i = 0; i < multilingual.Count; i++)
-            //{
-            //    // 마지막 라인일 경우
-            //    if (i.Equals(multilingual.Count - 1))
-            //    {
-            //        tableTagList.WriteLine("            " + multilingual[i]); // ","를 빼도록 한다.
-            //    }
-            //    else // 마지막 라인일 경우
-            //    {
-            //        tableTagList.WriteLine("            " + multilingual[i] + ",");
-            //    }
-            //}
-
+            
             List<string> mtFieldNameList= this.dataManager.excelData.totalClientSheetDatas[SheetName.Multilingual].fieldNameList;
 
             for (int i = 0; i < mtFieldNameList.Count; i++)
