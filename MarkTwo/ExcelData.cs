@@ -16,7 +16,28 @@ namespace MarkTwo
         private DataRule dataRule;
         private DataTableList dataTableList;
 
-        public int totalDataCount; // 데이터 카운트
+        private int totalClientData; // 클라이언트 데이터 카운트
+        public int TotalClientData {
+            get
+            {
+                foreach (KeyValuePair<string,SheetData> sheet in this.totalClientSheetDatas)
+                {
+                    this.totalClientData += sheet.Value.totalDataCount;
+                }
+                return this.totalClientData;
+            }
+        }
+        private int totalServerData; // 서버 데이터 카운트
+        public int TotalServerData {
+            get
+            {
+                foreach (KeyValuePair<string,SheetData> sheet in this.totalServerSheetDatas)
+                {
+                    this.totalServerData += sheet.Value.totalDataCount;
+                }
+                return this.totalServerData;
+            }
+        }
 
         public Dictionary<string, SheetData> multilingualSheetDatas = new Dictionary<string, SheetData>(); // 다국어 테이블
         

@@ -49,6 +49,7 @@ namespace MarkTwo
             this.WriteTableConverter();     // TableConverter.cs를 작성한다.
             this.WriteTableClassList();     // TableClassList.cs를 작성한다.
             this.WriteTableTagList();       // TableTagList.cs를 작성한다.
+            this.Close();
         }
 
         // TableClassList.cs를 작성한다.
@@ -374,7 +375,6 @@ namespace MarkTwo
 
         public void Close()
         {
-            //m_TableConverter.WriteLine("        m_TableDataBinary.Close();");
             tableConverter.WriteLine("    }");
             tableConverter.WriteLine("}");
 

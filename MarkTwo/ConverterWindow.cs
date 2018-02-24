@@ -16,10 +16,7 @@ using System.Threading.Tasks;
 using System.Timers;
 // 참조 : https://code.google.com/p/booksleeve/ Redis 클라이언트
 using BookSleeve;
-
-using static MarkTwo.TagManager; // 태그 매니저
-
-// 테스트
+using System.Diagnostics;
 
 namespace MarkTwo
 {
@@ -34,14 +31,13 @@ namespace MarkTwo
         Excel.Workbook workBook;
         Excel.Worksheet workSheet;
         Excel.Sheets sheets;
+
+        Stopwatch sw = new Stopwatch(); // 시간체크
         
         DataManager dataManager;  // 데이터를 관리한다.(오류 등)
         GenerateCSharpCode generateCSharpCode; //c# 코드를 생성한다.
         
         SoundPlayer endFileConvert = new SoundPlayer(Properties.Resources._416631__alpersez__acoustic_guitar); // 변환이 종료되었을 때 나오는 사운드
-
-        bool isEnd_ClientConvert = false; // 클라이언트 데이터 변환 작업이 끝났는가?
-        bool isEnd_ServerConvert = false; // 서버 데이터 변환 작업이 끝났는가?
         
         // 레디스 접속
         bool IsConnectServer = true; // 서버에 접속할 것인가? (엑셀 테이블에서 IP주소를 입력하지 않으면 false가 된다.)
@@ -54,21 +50,19 @@ namespace MarkTwo
         
         public ConverterWindow()
         {
-            this.dataManager = new DataManager(this);
-
-            this.dataManager.converterWindow = this;
-
             InitializeComponent(); // 컴포넌트를 초기화 한다.
+
             this.SetProgressbar(); // 프로그래스바를 설정한다.
-            
+
             this.FormClosed += this.ClostMarkTwo; // 죵료 시 실행되는 콜백함수 설정
-            AppDomain.CurrentDomain.ProcessExit += (s, e) => this.CloseExcel(); // 종료 시 호출되는 
+            AppDomain.CurrentDomain.ProcessExit += (s, e) => this.CloseExcel();
         }
         #region 리펙토링 부분
 
         private void InitializeForm() // 폼을 초기화 한다.
         {
-            Excel_Directory.Text = "엑셀 경로 : " + dataManager.ExcelFilePath(); // 엑셀 경로 표시
+            TimerLabel.Text = "0";
+            //Excel_Directory.Text = "엑셀 경로 : " + dataManager.ExcelFilePath(); // 엑셀 경로 표시
         }
 
         private void SetFormDataRule(DataRule dataRule) // 폼 데이터 룰 관련 세팅을 한다.
@@ -119,7 +113,16 @@ namespace MarkTwo
             base.OnShown(e);
 
             this.InitializeForm(); // 폼을 초기화 한다.
-            
+
+            TimerObj.Start();
+            TimerObj.Interval = 10;
+
+            sw.Start();
+
+            this.dataManager = new DataManager(this);
+
+            this.dataManager.converterWindow = this;
+
             // 엑셀 데이터를 생성한다.
             this.dataManager.CreateExcelData((p) => this.SetFormDataRule(p),
                                              (p) => this.SetExtreactionProgressBar(p),
@@ -134,6 +137,16 @@ namespace MarkTwo
         public void NextAction()
         {
             this.generateCSharpCode = new GenerateCSharpCode(this.dataManager); // c# 파일을 생성한다
+
+            this.Invoke(new Action(() => this.SetTotal()));
+
+            this.CompleateForm();
+        }
+
+       public void SetTotal()
+        {
+            this.ClientDataCount.Text = this.dataManager.excelData.TotalClientData.ToString();
+            this.ServerDataCount.Text = this.dataManager.excelData.TotalServerData.ToString();
         }
 
         /// <summary>
@@ -148,6 +161,11 @@ namespace MarkTwo
         // 리치 텍스트 박스 설정
         public void SetRichText(RichTextBox richTextBox, string text)
         {
+            if (this.dataManager.dataRule != null)
+            {
+                if (this.dataManager.dataRule.isSpeedUp) return; // 고속모드일 경우 텍스트를 추출하지 않는다.
+            }
+
             if (richTextBox.InvokeRequired)
             {
                 Action<RichTextBox, string> richTextCallBack = new Action<RichTextBox, string>(SetRichText);
@@ -220,18 +238,19 @@ namespace MarkTwo
             ServerThread02ProgressBar.Minimum = 0;
             ServerThread02ProgressBar.Maximum = 1000;
             ServerThread02ProgressBar.Value = 0;
-
-            //Client_ProgressBar.Style = ProgressBarStyle.Continuous;
-            //Client_ProgressBar.Minimum = 0;
-            //Client_ProgressBar.Maximum = 1000;
-            //Client_ProgressBar.Value = 0;
-
-            //Server_ProgressBar.Style = ProgressBarStyle.Continuous;
-            //Server_ProgressBar.Minimum = 0;
-            //Server_ProgressBar.Maximum = 1000;
-            //Server_ProgressBar.Value = 0;
         }
-                
+        
+        public void CompleateForm() // 종료 
+        {
+            endFileConvert.Play();
+
+            sw.Stop();
+
+            MessageBox.Show("변환이 완료되었습니다.");
+
+            this.Invoke(new Action(() => Close()));
+        }
+
         public void CloseExcel() // 엑셀을 닫는다.
         {
             // TODO : 실행 완료 후 정상 종료일 때 두번 호출되는 부분 수정할 것
@@ -279,8 +298,6 @@ namespace MarkTwo
         // 프로그램이 닫힐 때 실행된다.
         private void ClostMarkTwo(object sender, FormClosedEventArgs e)
         {
-            this.generateCSharpCode.Close();
-
             switch (e.CloseReason)
             {
                 case CloseReason.WindowsShutDown : this.CloseExcel(); break;
@@ -292,14 +309,7 @@ namespace MarkTwo
                 case CloseReason.ApplicationExitCall:
                     {
                         this.CloseExcel();
-
-                        if (isEnd_ClientConvert && isEnd_ServerConvert) // 변환 작업이 정상적으로 종료되었는가?
-                        {
-                            endFileConvert.Play();
-
-                            MessageBox.Show("변환이 완료되었습니다.");
-                        }
-
+                        
                         break;
                     }
             }
@@ -353,6 +363,11 @@ namespace MarkTwo
         private void label2_Click_1(object sender, EventArgs e)
         {
 
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            TimerLabel.Text = sw.ElapsedMilliseconds.ToString("#,###ms");
         }
     }    
 }

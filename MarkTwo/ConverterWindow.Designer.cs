@@ -28,13 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.Client_ProgressText = new System.Windows.Forms.Label();
-            this.Excel_Directory = new System.Windows.Forms.Label();
-            this.Client_Target_Data = new System.Windows.Forms.Label();
+            this.components = new System.ComponentModel.Container();
             this.StartButton = new System.Windows.Forms.Button();
-            this.TargetPath = new System.Windows.Forms.Label();
-            this.Server_Target_Data = new System.Windows.Forms.Label();
-            this.Server_ProgressText = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.ExtreactionReadyProgressBar = new System.Windows.Forms.ProgressBar();
             this.MultiligualThreadLabelProgressBar = new System.Windows.Forms.ProgressBar();
@@ -52,7 +47,6 @@
             this.ClientThread02Text = new System.Windows.Forms.RichTextBox();
             this.ClientThread02progressBar = new System.Windows.Forms.ProgressBar();
             this.ClientThread02 = new System.Windows.Forms.Label();
-            this.ExtreactionReadyText = new System.Windows.Forms.RichTextBox();
             this.ClientThread01TableLabel = new System.Windows.Forms.Label();
             this.ClientThread02TableLabel = new System.Windows.Forms.Label();
             this.ServerThread01TableLabel = new System.Windows.Forms.Label();
@@ -60,39 +54,13 @@
             this.MultilingualThreadTableLabel = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
+            this.TimeLabel = new System.Windows.Forms.Label();
+            this.TimerLabel = new System.Windows.Forms.Label();
+            this.TimerObj = new System.Windows.Forms.Timer(this.components);
+            this.ExtreactionReadyText = new System.Windows.Forms.RichTextBox();
+            this.ClientDataCount = new System.Windows.Forms.Label();
+            this.ServerDataCount = new System.Windows.Forms.Label();
             this.SuspendLayout();
-            // 
-            // Client_ProgressText
-            // 
-            this.Client_ProgressText.AutoSize = true;
-            this.Client_ProgressText.ForeColor = System.Drawing.Color.DarkGray;
-            this.Client_ProgressText.Location = new System.Drawing.Point(316, 420);
-            this.Client_ProgressText.Name = "Client_ProgressText";
-            this.Client_ProgressText.Size = new System.Drawing.Size(81, 12);
-            this.Client_ProgressText.TabIndex = 2;
-            this.Client_ProgressText.Text = "진행 테이블 : ";
-            // 
-            // Excel_Directory
-            // 
-            this.Excel_Directory.AutoSize = true;
-            this.Excel_Directory.ForeColor = System.Drawing.Color.DarkGray;
-            this.Excel_Directory.Location = new System.Drawing.Point(316, 441);
-            this.Excel_Directory.Name = "Excel_Directory";
-            this.Excel_Directory.Size = new System.Drawing.Size(53, 12);
-            this.Excel_Directory.TabIndex = 3;
-            this.Excel_Directory.Text = "엑셀경로";
-            this.Excel_Directory.Click += new System.EventHandler(this.Excel_Directory_Click);
-            // 
-            // Client_Target_Data
-            // 
-            this.Client_Target_Data.AutoSize = true;
-            this.Client_Target_Data.ForeColor = System.Drawing.Color.DarkGray;
-            this.Client_Target_Data.Location = new System.Drawing.Point(326, 332);
-            this.Client_Target_Data.Name = "Client_Target_Data";
-            this.Client_Target_Data.Size = new System.Drawing.Size(53, 12);
-            this.Client_Target_Data.TabIndex = 4;
-            this.Client_Target_Data.Text = "데이터 : ";
             // 
             // StartButton
             // 
@@ -105,38 +73,6 @@
             this.StartButton.Text = "시작(R)";
             this.StartButton.UseVisualStyleBackColor = false;
             this.StartButton.Click += new System.EventHandler(this.StartButton_Click);
-            // 
-            // TargetPath
-            // 
-            this.TargetPath.AutoSize = true;
-            this.TargetPath.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.TargetPath.Location = new System.Drawing.Point(316, 470);
-            this.TargetPath.Name = "TargetPath";
-            this.TargetPath.Size = new System.Drawing.Size(53, 12);
-            this.TargetPath.TabIndex = 19;
-            this.TargetPath.Text = "이동경로";
-            this.TargetPath.Click += new System.EventHandler(this.TargetPath_Click);
-            // 
-            // Server_Target_Data
-            // 
-            this.Server_Target_Data.AutoSize = true;
-            this.Server_Target_Data.ForeColor = System.Drawing.Color.DarkGray;
-            this.Server_Target_Data.Location = new System.Drawing.Point(316, 388);
-            this.Server_Target_Data.Name = "Server_Target_Data";
-            this.Server_Target_Data.Size = new System.Drawing.Size(53, 12);
-            this.Server_Target_Data.TabIndex = 32;
-            this.Server_Target_Data.Text = "데이터 : ";
-            this.Server_Target_Data.Click += new System.EventHandler(this.Server_Target_Data_Click);
-            // 
-            // Server_ProgressText
-            // 
-            this.Server_ProgressText.AutoSize = true;
-            this.Server_ProgressText.ForeColor = System.Drawing.Color.DarkGray;
-            this.Server_ProgressText.Location = new System.Drawing.Point(316, 354);
-            this.Server_ProgressText.Name = "Server_ProgressText";
-            this.Server_ProgressText.Size = new System.Drawing.Size(81, 12);
-            this.Server_ProgressText.TabIndex = 31;
-            this.Server_ProgressText.Text = "진행 테이블 : ";
             // 
             // label1
             // 
@@ -281,18 +217,6 @@
             this.ClientThread02.TabIndex = 64;
             this.ClientThread02.Text = "클라이언트02 스레드";
             // 
-            // ExtreactionReadyText
-            // 
-            this.ExtreactionReadyText.BackColor = System.Drawing.SystemColors.Window;
-            this.ExtreactionReadyText.Location = new System.Drawing.Point(22, 126);
-            this.ExtreactionReadyText.Name = "ExtreactionReadyText";
-            this.ExtreactionReadyText.ReadOnly = true;
-            this.ExtreactionReadyText.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.ExtreactionReadyText.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.ExtreactionReadyText.Size = new System.Drawing.Size(386, 585);
-            this.ExtreactionReadyText.TabIndex = 70;
-            this.ExtreactionReadyText.Text = "";
-            // 
             // ClientThread01TableLabel
             // 
             this.ClientThread01TableLabel.AutoSize = true;
@@ -349,9 +273,9 @@
             this.label2.ForeColor = System.Drawing.Color.DarkGray;
             this.label2.Location = new System.Drawing.Point(20, 53);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(109, 12);
+            this.label2.Size = new System.Drawing.Size(141, 12);
             this.label2.TabIndex = 76;
-            this.label2.Text = "전체 테이블 개수 : ";
+            this.label2.Text = "클라이언트 데이터 개수 :";
             this.label2.Click += new System.EventHandler(this.label2_Click_1);
             // 
             // label3
@@ -362,17 +286,64 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(105, 12);
             this.label3.TabIndex = 77;
-            this.label3.Text = "전체 레이블 개수 :";
+            this.label3.Text = "서버 데이터 개수 :";
             // 
-            // label4
+            // TimeLabel
             // 
-            this.label4.AutoSize = true;
-            this.label4.ForeColor = System.Drawing.Color.DarkGray;
-            this.label4.Location = new System.Drawing.Point(20, 100);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(37, 12);
-            this.label4.TabIndex = 78;
-            this.label4.Text = "시간 :";
+            this.TimeLabel.AutoSize = true;
+            this.TimeLabel.ForeColor = System.Drawing.Color.DarkGray;
+            this.TimeLabel.Location = new System.Drawing.Point(20, 100);
+            this.TimeLabel.Name = "TimeLabel";
+            this.TimeLabel.Size = new System.Drawing.Size(37, 12);
+            this.TimeLabel.TabIndex = 78;
+            this.TimeLabel.Text = "시간 :";
+            // 
+            // TimerLabel
+            // 
+            this.TimerLabel.AutoSize = true;
+            this.TimerLabel.ForeColor = System.Drawing.Color.DarkGray;
+            this.TimerLabel.Location = new System.Drawing.Point(63, 100);
+            this.TimerLabel.Name = "TimerLabel";
+            this.TimerLabel.Size = new System.Drawing.Size(77, 12);
+            this.TimerLabel.TabIndex = 79;
+            this.TimerLabel.Text = "999999999999";
+            // 
+            // TimerObj
+            // 
+            this.TimerObj.Interval = 1000;
+            this.TimerObj.Tick += new System.EventHandler(this.Timer_Tick);
+            // 
+            // ExtreactionReadyText
+            // 
+            this.ExtreactionReadyText.BackColor = System.Drawing.SystemColors.Window;
+            this.ExtreactionReadyText.Location = new System.Drawing.Point(22, 126);
+            this.ExtreactionReadyText.Name = "ExtreactionReadyText";
+            this.ExtreactionReadyText.ReadOnly = true;
+            this.ExtreactionReadyText.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.ExtreactionReadyText.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
+            this.ExtreactionReadyText.Size = new System.Drawing.Size(386, 585);
+            this.ExtreactionReadyText.TabIndex = 70;
+            this.ExtreactionReadyText.Text = "";
+            // 
+            // ClientDataCount
+            // 
+            this.ClientDataCount.AutoSize = true;
+            this.ClientDataCount.ForeColor = System.Drawing.Color.DarkGray;
+            this.ClientDataCount.Location = new System.Drawing.Point(167, 53);
+            this.ClientDataCount.Name = "ClientDataCount";
+            this.ClientDataCount.Size = new System.Drawing.Size(11, 12);
+            this.ClientDataCount.TabIndex = 80;
+            this.ClientDataCount.Text = "0";
+            // 
+            // ServerDataCount
+            // 
+            this.ServerDataCount.AutoSize = true;
+            this.ServerDataCount.ForeColor = System.Drawing.Color.DarkGray;
+            this.ServerDataCount.Location = new System.Drawing.Point(136, 77);
+            this.ServerDataCount.Name = "ServerDataCount";
+            this.ServerDataCount.Size = new System.Drawing.Size(11, 12);
+            this.ServerDataCount.TabIndex = 81;
+            this.ServerDataCount.Text = "0";
             // 
             // ConverterWindow
             // 
@@ -380,7 +351,10 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(1574, 753);
-            this.Controls.Add(this.label4);
+            this.Controls.Add(this.ServerDataCount);
+            this.Controls.Add(this.ClientDataCount);
+            this.Controls.Add(this.TimerLabel);
+            this.Controls.Add(this.TimeLabel);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.MultilingualThreadTableLabel);
@@ -405,13 +379,7 @@
             this.Controls.Add(this.MultiligualThreadLabel);
             this.Controls.Add(this.ExtreactionReadyProgressBar);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.Server_Target_Data);
-            this.Controls.Add(this.Server_ProgressText);
-            this.Controls.Add(this.TargetPath);
             this.Controls.Add(this.StartButton);
-            this.Controls.Add(this.Client_Target_Data);
-            this.Controls.Add(this.Excel_Directory);
-            this.Controls.Add(this.Client_ProgressText);
             this.Controls.Add(this.ExtreactionReadyText);
             this.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.Name = "ConverterWindow";
@@ -424,21 +392,13 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Label Client_ProgressText;
-        private System.Windows.Forms.Label Excel_Directory;
-        private System.Windows.Forms.Label Client_Target_Data;
         private System.Windows.Forms.Button StartButton;
-        private System.Windows.Forms.Label TargetPath;
-        private System.Windows.Forms.Label Server_Target_Data;
-        private System.Windows.Forms.Label Server_ProgressText;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label MultiligualThreadLabel;
         private System.Windows.Forms.Label ServerThread01;
         private System.Windows.Forms.Label ClientThread01Label;
         private System.Windows.Forms.Label ServerThread02;
         private System.Windows.Forms.Label ClientThread02;
-        public System.Windows.Forms.RichTextBox ExtreactionReadyText;
         public System.Windows.Forms.ProgressBar ExtreactionReadyProgressBar;
         public System.Windows.Forms.ProgressBar MultiligualThreadLabelProgressBar;
         public System.Windows.Forms.RichTextBox MultiligualThreadText;
@@ -457,7 +417,12 @@
         public System.Windows.Forms.Label MultilingualThreadTableLabel;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label TimeLabel;
+        private System.Windows.Forms.Label TimerLabel;
+        public System.Windows.Forms.Timer TimerObj;
+        public System.Windows.Forms.RichTextBox ExtreactionReadyText;
+        public System.Windows.Forms.Label ClientDataCount;
+        public System.Windows.Forms.Label ServerDataCount;
     }
 }
 

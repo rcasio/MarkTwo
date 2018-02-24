@@ -35,6 +35,7 @@ namespace MarkTwo
         public string isSupportJson;
         public string isSupprotCSV;
         public string isSupportXML;
+        public string IsSupportSpeedUp;
 
         // 추출 형식 지원여부(테이블에서 추출)
         public bool isExtractionText = false; // 텍스트 파일을 추출할 것인가?(바이너리 파일로 변환된 파일을 텍스트로)
@@ -42,6 +43,7 @@ namespace MarkTwo
         public bool isExtractionJson = false;
         public bool isExtractionCSV = false;
         public bool isExtractionXML = false;
+        public bool isSpeedUp = false;
 
         // 파일 패스 및 서버 관련 정보(테이블에서 추출)
         public string serverIP;
@@ -78,6 +80,7 @@ namespace MarkTwo
                 isSupportJson = this.ruleSheet.Range["H25"].Value;
                 isSupprotCSV = this.ruleSheet.Range["H26"].Value;
                 isSupportXML = this.ruleSheet.Range["H27"].Value;
+                IsSupportSpeedUp = this.ruleSheet.Range["J23"].Value;
 
                 // 무결성 검사를 한다.
                 if (isSupportTextFile.Equals("On") || isSupportTextFile.Equals("Off")) this.isExtractionText = (isSupportTextFile.Equals("On")) ? true : false;
@@ -94,6 +97,9 @@ namespace MarkTwo
 
                 if (isSupportXML.Equals("On") || isSupportXML.Equals("Off")) this.isExtractionXML = (isSupportXML.Equals("On")) ? true : false;
                 else dataManager.ShowCloseMSB("[테이블 규칙] 시트에서 \n[※ 추출할 파일 형식]의 [XML] 양식이 잘못 입력되어 있습니다.\n\n(On/Off 로 입력하시기 바랍니다.)");
+
+                if (IsSupportSpeedUp.Equals("On") || IsSupportSpeedUp.Equals("Off")) this.isSpeedUp = (IsSupportSpeedUp.Equals("On")) ? true : false;
+                else dataManager.ShowCloseMSB("[테이블 규칙] 시트에서 \n ※ 고속모드의 양식이 잘 못 입력되어 있습니다. \n\n(On/Off 로 입력하시기 바랍니다.)");
             }
             catch (Exception)
             {
@@ -104,11 +110,21 @@ namespace MarkTwo
             this.port = this.ruleSheet.Range["Q13"].Value;
             this.serverDBPath = this.ruleSheet.Range["Q14"].Value;
             this.clientDBPath = this.ruleSheet.Range["Q15"].Value;
-            this.cshapFilePath = this.ruleSheet.Range["Q16"].Value; 
+            this.cshapFilePath = this.ruleSheet.Range["Q16"].Value;
+
+            if (this.isSpeedUp)
+            {
+                SetRichText(rb, "");
+                SetRichText(rb, "- 고속모드 입니다.");
+                SetRichText(rb, "- 진행에 따른 정보는 더는 표시되지 않습니다.");
+                SetRichText(rb, "");
+            }
 
             SetExtreactionProgressBar(10);
             SetRichText(rb, "====== 완료");
             SetRichText(rb, "");
+
+            
         }
     }
 }

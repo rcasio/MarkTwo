@@ -66,7 +66,6 @@ namespace MarkTwo
                                     Action<ProgressBar, int> SetMultilingualProgressBar,
                                     Action NextAction)
         {
-            Console.WriteLine("===== 엑셀 데이터 생성");
             this.excelApp       = new Excel.Application();
             this.workBook       = excelApp.Workbooks.Open(this.ExcelFilePath(), 0, true, 5, "", "", true, Microsoft.Office.Interop.Excel.XlPlatform.xlWindows, "\t", false, false, 0, true, 1, 0);
             this.sheets         = this.workBook.Sheets;
