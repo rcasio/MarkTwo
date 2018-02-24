@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System;
 
 public class Table
 {
@@ -28,9 +29,9 @@ public class TableLoad
 
 	public TableLoad()
 	{
-		//Multilingual
+		// Multilingual
 		Table.Multilingual = new Dictionary<int, Multilingual>();
-		BinaryReader MultilingualBinaryReader = this.GetBinaryReader(Multilingual_Multilingual);
+		BinaryReader multilingualBinaryReader = this.GetBinaryReader("Multilingual_Multilingual");
 
 		for (int i = 0; i < 100; i++)
 		{
@@ -41,10 +42,11 @@ public class TableLoad
 			multilingual.Eng = MultilingualBinaryReader.ReadString();
 			multilingual.Jpn = MultilingualBinaryReader.ReadString();
 		}
+		multilingualBinaryReader.Close();
 
-		//PR
+		// PR
 		Table.PR = new Dictionary<int, PR>();
-		BinaryReader PRBinaryReader = this.GetBinaryReader(PR_Client);
+		BinaryReader prBinaryReader = this.GetBinaryReader("PR_Client");
 
 		for (int i = 0; i < 19; i++)
 		{
@@ -56,10 +58,11 @@ public class TableLoad
 			pr.Value = PRBinaryReader.ReadString();
 			pr.Comment = PRBinaryReader.ReadString();
 		}
+		prBinaryReader.Close();
 
-		//NPC
+		// NPC
 		Table.NPC = new Dictionary<int, NPC>();
-		BinaryReader NPCBinaryReader = this.GetBinaryReader(NPC_Client);
+		BinaryReader npcBinaryReader = this.GetBinaryReader("NPC_Client");
 
 		for (int i = 0; i < 23; i++)
 		{
@@ -67,7 +70,7 @@ public class TableLoad
 
 			npc.Num = NPCBinaryReader.ReadInt32();
 			npc.Property = NPCBinaryReader.ReadInt32();
-			npc.Weapon = NPCBinaryReader.ReadString();
+			npc.Weapon = (TagManager.Table.PR.Weapon) Enum.Parse(typeof(TagManager.Table.PR.Weapon), NPCBinaryReader.ReadString());
 			npc.Race = NPCBinaryReader.ReadInt32();
 			npc.Grade = NPCBinaryReader.ReadByte();
 			npc.Level = NPCBinaryReader.ReadByte();
@@ -100,10 +103,11 @@ public class TableLoad
 			npc.NPC_FileName = NPCBinaryReader.ReadString();
 			npc.NPC_Prefab = NPCBinaryReader.ReadString();
 		}
+		npcBinaryReader.Close();
 
-		//Enchant
+		// Enchant
 		Table.Enchant = new Dictionary<int, Enchant>();
-		BinaryReader EnchantBinaryReader = this.GetBinaryReader(Enchant_Client);
+		BinaryReader enchantBinaryReader = this.GetBinaryReader("Enchant_Client");
 
 		for (int i = 0; i < 21; i++)
 		{
@@ -119,10 +123,11 @@ public class TableLoad
 			enchant.GamePrice = EnchantBinaryReader.ReadInt32();
 			enchant.CashPrice = EnchantBinaryReader.ReadInt32();
 		}
+		enchantBinaryReader.Close();
 
-		//Grade
+		// Grade
 		Table.Grade = new Dictionary<int, Grade>();
-		BinaryReader GradeBinaryReader = this.GetBinaryReader(Grade_Client);
+		BinaryReader gradeBinaryReader = this.GetBinaryReader("Grade_Client");
 
 		for (int i = 0; i < 7; i++)
 		{
@@ -135,10 +140,11 @@ public class TableLoad
 			grade.Hex = GradeBinaryReader.ReadString();
 			grade.Sounds = GradeBinaryReader.ReadString();
 		}
+		gradeBinaryReader.Close();
 
-		//Tag
+		// Tag
 		Table.Tag = new Dictionary<int, Tag>();
-		BinaryReader TagBinaryReader = this.GetBinaryReader(Tag_Client);
+		BinaryReader tagBinaryReader = this.GetBinaryReader("Tag_Client");
 
 		for (int i = 0; i < 15; i++)
 		{
@@ -150,10 +156,11 @@ public class TableLoad
 			tag.Weapon = TagBinaryReader.ReadString();
 			tag.Armor = TagBinaryReader.ReadString();
 		}
+		tagBinaryReader.Close();
 
-		//Map
+		// Map
 		Table.Map = new Dictionary<int, Map>();
-		BinaryReader MapBinaryReader = this.GetBinaryReader(Map_Client);
+		BinaryReader mapBinaryReader = this.GetBinaryReader("Map_Client");
 
 		for (int i = 0; i < 4; i++)
 		{
@@ -172,6 +179,7 @@ public class TableLoad
 			map.NPCBag02 = MapBinaryReader.ReadInt32();
 			map.NPCBag03 = MapBinaryReader.ReadInt32();
 		}
+		mapBinaryReader.Close();
 
     }
 }
