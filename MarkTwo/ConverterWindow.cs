@@ -148,65 +148,6 @@ namespace MarkTwo
             
             this.FormClosed += this.ClostMarkTwo; // 죵료 시 실행되는 콜백함수 설정
             AppDomain.CurrentDomain.ProcessExit += (s, e) => this.CloseExcel(); // 종료 시 호출되는 
-
-            #region 변경 부분
-;
-            //this.InitializeForm(); // 폼을 초기화 한다.
-
-            //// TODO : 주석을 제외한 엑셀 오리지날 데이터를 추출한다.
-            //// TODO : 쓰레드에서 Excel을 사용할 수 없기 떄문
-            //// TODO : 추출한 데이터를 중심으로 ExcelData를 추출하고
-            //// TODO : 바이너리 파일을 제작하도록 한다.
-
-            //this.dataManager.CreateExcelData((p) => SetFormDataRule(p)); // 엑셀 데이터를 생성한다.
-            
-            //generateBinaryFile.Create(this.dataManager); // 바이너리 파일을 생성한다.
-
-            //if (sheetType == SheetType.Client)
-            //{
-            //    // 데이터를 바이너리로 변한한다. (테이블 행과열은 1부터 시작하기 때문에 list 자료를 순서대로 차출하기 위해서 1을 뺀다.)
-            //this.Write_ToClientDB(tableData.fieldDataTypeTable[dataCount - 1], data_ExchangedString, tableData, row, column);
-
-            //    // PR 테이블일 경우
-            //    if (tableData.name.Equals("PR"))
-            //    {
-            //        // PR 태그 클래스를 만들기 위한 자료를 추출한다.
-            //        Create_CSharpCode.Instance.SetDicPR(tableData.fieldNameList[dataCount - 1], data_ExchangedString);
-            //    }
-
-            //    // Tag 테이블일 경우
-            //    if (tableData.name.Equals("Tag"))
-            //    {
-            //        Create_CSharpCode.Instance.SetDicTag(tableData.fieldNameList[dataCount - 1], data_ExchangedString);
-            //    }
-            //}
-
-
-            //Create_CSharpCode.Instance.WriteCode_TableConverter(tableData);
-            //Create_CSharpCode.Instance.WriteCode_TableClassList(tableData);
-
-
-            #endregion
-            
-            // INFO : 기존코드 실행 부분
-            /*
-            this.GetExcelSheets(); // 엑셀 시트를 추출한다.
-            this.GetClientSheetNames(); // 클라이언트 관련 시트이름을 추출한다.
-            this.GetServerSheetNames(); // 서버 관련 시트 이름을 추출한다.
-            this.GetRuleInfo(); // 규칙관련 정보를 추출한다.
-
-            this.ConnectRedisServer(); // 레디스 서버 접속
-
-            this.CreateFilePath(); // 파일경로를 만든다.
-            this.CheckTagetFolder(); // 엑셀에서 설정한 타겟 폴더가 존재하는지 체크한다.
-            
-            this.GetClientCSharpType(); // C샵 타입을 추출한다.
-            this.GetServerMySQLType(); // MYSQL 타입을 추가한다.
-
-            this.DisplayVersion(); // 버전을 표시한다.
-            
-            this.SetTableDatas(); // 클라이어트와 서버 시트의 클래스를 만들어 딕셔너리에 저장한다.
-            */
         }
         #region 리펙토링 부분
 
