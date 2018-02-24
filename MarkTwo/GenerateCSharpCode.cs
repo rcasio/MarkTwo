@@ -58,35 +58,7 @@ namespace MarkTwo
         public List<string> totlaClientList; // 모든 클라이언트 테이블 리스트
         public Dictionary<string, SheetData> totalClientSheetDatas; // 클라이언트 최종 시트 데이터
         public Dictionary<string, SheetData> totalServerSheetDatas; // 클라이언트 최종 시트 데이터
-
-        //// PR 테이블 데이터를 만드기 위한 함수를 만든다.
-        //public void SetDicPR(string fieldName, string dataExchangedString)
-        //{
-        //    // Num이라면
-        //    if (fieldName.Equals("Num"))
-        //    {
-        //        // pr을 생성하고 딕셔너리에 넣는다.
-        //        PR pr = new PR(); // pr을 생성한다.
-        //        CurrentPRNum = int.Parse(dataExchangedString); // 현재 Num을 저장한다.
-
-        //        pr.Num = CurrentPRNum; // pr값을 대입한다.
-        //        dicPR.Add(CurrentPRNum, pr); // pr을 딕셔너리에 넣는다.
-        //    }
-        //    else
-        //    {
-        //        // 딕셔너리에서 해
-        //        PR pr = dicPR[CurrentPRNum]; // 대입할 PR클래스를 가져온다.
-
-        //        // pr을 구성한다.
-        //        if (fieldName.Equals("Type")) pr.Type = dataExchangedString;
-        //        else if (fieldName.Equals("Key")) pr.Key = dataExchangedString;
-        //        else if (fieldName.Equals("Value")) pr.Value = dataExchangedString;
-        //        else if (fieldName.Equals("Comment")) pr.Comment = dataExchangedString;
-
-        //        dicPR[CurrentPRNum] = pr; // 수정된 PR 클래스를 대입한다.
-        //    }
-        //}
-
+        
         // PR 테이블 데이터를 만드기 위한 함수를 만든다.
         public void SetDicPR()
         {
