@@ -198,27 +198,27 @@ namespace MarkTwo
             }
         }
         
-        private void CreateFilePath() // 파일경로를 만든다.
-        {
-            originalPathClientDB_Binary = Application.StartupPath + "\\" + CLIENT_BINARY_FILENAME + "." + CLIENT_BINARY_FILE_EXENAME_FOR_UNITY;  // 생성할 클라이언트의 바이너리 파일 경로를 만든다.
-            originalPathSeverDB_Binary = Application.StartupPath + "\\" + SERVER_BINARY_FILENAME + "." + SERVER_BINARY_FILE_EXENAME_FORUNITY;  // 생성할 서버 바이너리 파일의 경로를 만든다.
+        //private void CreateFilePath() // 파일경로를 만든다.
+        //{
+        //    originalPathClientDB_Binary = Application.StartupPath + "\\" + CLIENT_BINARY_FILENAME + "." + CLIENT_BINARY_FILE_EXENAME_FOR_UNITY;  // 생성할 클라이언트의 바이너리 파일 경로를 만든다.
+        //    originalPathSeverDB_Binary = Application.StartupPath + "\\" + SERVER_BINARY_FILENAME + "." + SERVER_BINARY_FILE_EXENAME_FORUNITY;  // 생성할 서버 바이너리 파일의 경로를 만든다.
             
-            targetPathServerDB_Binary = Application.StartupPath.Replace("\\ADDesign", "") + "\\" + workSheet.Range["Q14"].Value + "\\" + SERVER_BINARY_FILENAME + "." + SERVER_BINARY_FILE_EXENAME_FORUNITY;
-            targetPathClientDB_Binary = Application.StartupPath.Replace("\\ADDesign", "") + "\\" + workSheet.Range["Q15"].Value + "\\" + CLIENT_BINARY_FILENAME + "." + CLIENT_TEXT_FILE_EXTENSION;
+        //    targetPathServerDB_Binary = Application.StartupPath.Replace("\\ADDesign", "") + "\\" + workSheet.Range["Q14"].Value + "\\" + SERVER_BINARY_FILENAME + "." + SERVER_BINARY_FILE_EXENAME_FORUNITY;
+        //    targetPathClientDB_Binary = Application.StartupPath.Replace("\\ADDesign", "") + "\\" + workSheet.Range["Q15"].Value + "\\" + CLIENT_BINARY_FILENAME + "." + CLIENT_TEXT_FILE_EXTENSION;
 
-            targetPathClientDB_Text = Application.StartupPath.Replace("\\ADDesign", "") + "\\" + workSheet.Range["Q15"].Value + "\\" + CLIENT_BINARY_FILENAME_ForText + "." + CLIENT_TEXT_FILE_EXTENSION; // 텍스트 파일 경로를 만든다.
-            // TODO : Json, CSV, XML 등의 파일 경로를 만들도록 한다.
+        //    targetPathClientDB_Text = Application.StartupPath.Replace("\\ADDesign", "") + "\\" + workSheet.Range["Q15"].Value + "\\" + CLIENT_BINARY_FILENAME_ForText + "." + CLIENT_TEXT_FILE_EXTENSION; // 텍스트 파일 경로를 만든다.
+        //    // TODO : Json, CSV, XML 등의 파일 경로를 만들도록 한다.
             
-            targetPathSeverDB_PHP = workSheet.Range["Q5"].Value + "\\" + Create_PHPCode.TABLECONVERTER_FILENAME; // PHP를 위한 서버 DB경로
+        //    targetPathSeverDB_PHP = workSheet.Range["Q5"].Value + "\\" + Create_PHPCode.TABLECONVERTER_FILENAME; // PHP를 위한 서버 DB경로
 
-            // 파일 경로 생성
-            this.CreatePathTableClassList(); // TableClassList.cs 파일 경로를 생성한다.
-            this.CreatePathTableConverter(); // TableTagList.cs 파일 경로를 생성한다.
-            this.CreatePathTableTagList(); // TableTagList.cs 파일 경로를 생성한다.
+        //    // 파일 경로 생성
+        //    this.CreatePathTableClassList(); // TableClassList.cs 파일 경로를 생성한다.
+        //    this.CreatePathTableConverter(); // TableTagList.cs 파일 경로를 생성한다.
+        //    this.CreatePathTableTagList(); // TableTagList.cs 파일 경로를 생성한다.
 
-            // 라벨표시
-            TargetPath.Text = "이동경로 : " + targetPathClientDB_Binary; // TODO : 상황별 이동경로를 만들도록 한다.
-        }
+        //    // 라벨표시
+        //    TargetPath.Text = "이동경로 : " + targetPathClientDB_Binary; // TODO : 상황별 이동경로를 만들도록 한다.
+        //}
 
         // 폼이 시작되고 실행된다.
         protected override void OnShown(EventArgs e)
@@ -226,39 +226,13 @@ namespace MarkTwo
             base.OnShown(e);
 
             this.InitializeForm(); // 폼을 초기화 한다.
-
-            // TODO : 주석을 제외한 엑셀 오리지날 데이터를 추출한다.
-            // TODO : 쓰레드에서 Excel을 사용할 수 없기 떄문
-            // TODO : 추출한 데이터를 중심으로 ExcelData를 추출하고
-            // TODO : 바이너리 파일을 제작하도록 한다.
-
+            
             // 엑셀 데이터를 생성한다.
             this.dataManager.CreateExcelData((p) => this.SetFormDataRule(p),
                                              (p) => this.SetExtreactionProgressBar(p),
                                              (p, a) => this.SetRichText(p, a),
                                              (p, a) => this.SetProgressBar(p, a),
                                              () => this.NextAction());
-
-            // TODO : C# 코드를 생성하도록 한다.
-            //GenerateCSharpCode.Instance.WriteCode_TableConverter(tableData);
-            //Create_CSharpCode.Instance.WriteCode_TableClassList(tableData);
-
-            
-            
-
-            // INFO : 기존 코드에서 폼이 시작될 때 실행되는 부분
-
-            /*
-            client_DataControl = new Thread(new ThreadStart(StartConvertClient));
-            client_DataControl.Start();
-
-            server_DataControl = new Thread(new ThreadStart(StartConvertServer));
-            server_DataControl.Start();
-
-            // 변환작업 쓰레드 종료를 체크하는 타이머를 구동한다.
-            timerConvertChecker.Elapsed += new System.Timers.ElapsedEventHandler(Check_EndConvertWork); // 이벤트를 등록한다.
-            timerConvertChecker.Start();
-            */
         }
 
         /// <summary>
