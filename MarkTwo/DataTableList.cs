@@ -102,7 +102,6 @@ namespace MarkTwo
                 }
 
                 totalList.Add(sheetName);
-                //Console.WriteLine("=== 클라이언트 스레드01 시트 이름 : {0}", sheetName);
                 SetRichBox(richTextBox, "- 클라이언트 스레드01 시트 이름 : " + sheetName);
             }
 

@@ -40,9 +40,7 @@ namespace MarkTwo
         private bool isExtreactionServer02 = false;
 
         private Action NextAction; // 스레드 다음 액션
-
-        //private void StartConvertClient() { this.StartConversion(SheetType.Client); }
-
+        
         public DataExtraction(DataManager dataManager, Action<RichTextBox, string> SetRichText, Action<ProgressBar, int> SetProgressBar, Action NextAction)
         {
             this.dataManager = dataManager;
@@ -55,9 +53,7 @@ namespace MarkTwo
             this.clientData02 = this.excelData.client02SheetDatas;
             this.serverData01 = this.excelData.server01SheetDats;
             this.serverData02 = this.excelData.server02SheetDats;
-
-            // TODO : 툴에 스레드 진행상황 표시
-
+            
             // 다국어 스레드
             this.multilingualThread = new Thread(new ThreadStart(
                 () =>
@@ -68,7 +64,6 @@ namespace MarkTwo
                                                                         this.dataManager.converterWindow.MultiligualThreadLabelProgressBar,
                                                                         (p,s) => this.dataManager.converterWindow.SetTableLabel(p,s),
                                                                         this.dataManager.converterWindow.MultilingualThreadTableLabel);
-                    Console.WriteLine("다국어 완료");
 
                     this.isExtractioneMultilingual = true;
                 }
@@ -88,7 +83,6 @@ namespace MarkTwo
                                                       (p,s) => this.dataManager.converterWindow.SetTableLabel(p,s),
                                                       this.dataManager.converterWindow.ClientThread01TableLabel);
                     }
-                    Console.WriteLine("클라이언트 스레드01 완료");
 
                     this.isExtractionClient01 = true;
                 }
@@ -108,7 +102,6 @@ namespace MarkTwo
                                                       (p,s) => this.dataManager.converterWindow.SetTableLabel(p,s),
                                                       this.dataManager.converterWindow.ClientThread02TableLabel);
                     }
-                    Console.WriteLine("클라이언트 스레드02 완료");
 
                     this.isExtractionClient02 = true;
                 }
@@ -128,7 +121,6 @@ namespace MarkTwo
                                                       (p,s) => this.dataManager.converterWindow.SetTableLabel(p,s),
                                                       this.dataManager.converterWindow.ServerThread01TableLabel);
                     }
-                    Console.WriteLine("서버 스레드01 완료");
 
                     this.isExtreactionServer01 = true;
                 }
@@ -148,7 +140,6 @@ namespace MarkTwo
                                                       (p,s) => this.dataManager.converterWindow.SetTableLabel(p,s),
                                                       this.dataManager.converterWindow.ServerThread02TableLabel);
                     }
-                    Console.WriteLine("서버 스레드02 완료");
 
                     this.isExtreactionServer02 = true;
                 }
@@ -169,7 +160,6 @@ namespace MarkTwo
                 this.isExtreactionServer01 &&
                 this.isExtreactionServer02)
             {
-                Console.WriteLine("추출 작업 완료");
 
                 this.CloseThreads(); // 스레드를 닫는다.
 

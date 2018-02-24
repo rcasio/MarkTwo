@@ -100,10 +100,13 @@ namespace MarkTwo
             srb(rb, "- 테이블 레코드 개수 : " + this.totalRowCount);
             srb(rb, "- 테이블 데이터 총합 : " + this.totalDataCount.ToString("#,###"));
 
+            //Action<string, string, string, int, int> WriteCallBack = null;
+
             // 파일 추출을 할 것인가?
             if (this.isCreateFile)
             {
                 generateBinaryFile = new GenerateBinaryFile(this.name, this.dataManager, this, this.sheetType); // 바이너리 파일
+                //WriteCallBack = generateBinaryFile.Write;
             }
 
             // UI에 현재 진행중인 테이블 정보를 넣는다.
@@ -161,6 +164,7 @@ namespace MarkTwo
                                     if (this.isCreateFile)
                                     {
                                         generateBinaryFile.Write(data, fieldData.dataType, this.name, row, column);
+                                        //WriteCallBack(data, fieldData.dataType, this.name, row, column);
                                     }
                                     
                                     fieldData.Add(data); // 데이터를 추가한다.
@@ -175,6 +179,7 @@ namespace MarkTwo
                                     if (this.isCreateFile)
                                     {
                                         generateBinaryFile.Write(data, fieldData.dataType, this.name, row, column);
+                                        //WriteCallBack(data, fieldData.dataType, this.name, row, column);
                                     }
                                     
                                     fieldData.Add(data); // 데이터를 추가한다. 
