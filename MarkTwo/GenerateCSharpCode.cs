@@ -15,33 +15,8 @@ namespace MarkTwo
         public const string TABLECONVERTER_FILENAME = "TableConverter.cs";
         public const string TABLECLASSLIST_FILENAME = "TableClassList.cs";
         public const string TABLETAGLIST_FILENAME = "TableTagList.cs";
-
-        public List<string> multilingual = new List<string>();
-
+        
         private DataManager dataManager;
-
-        // PR 데이터를 담기 위한 기본 클래스, PR 테이블의 필드와 동일해야 한다.
-        public class PR
-        {
-            public int Num;
-            public string Type;
-            public string Key;
-            public string Value;
-            public string Comment;
-        }
-
-        public Dictionary<int,PR> dicPR = new Dictionary<int, PR>(); // PR데이터를 담기위한 딕셔너리
-
-        // Tag 테이블을 담기위한 클래스
-        public class Tag
-        {
-            public string TagTitle;
-            public List<string> TagCompoments;
-        }
-    
-        public Dictionary<string, Tag> dicTag = new Dictionary<string, Tag>(); // Tag 데이터를 담기위한 딕셔너리
-
-        public int CurrentPRNum; // 현재 PR 넘버
         
         // 문자열을 편집할 때 사용됩니다.
         static StringBuilder edit_string = new StringBuilder();
@@ -58,35 +33,6 @@ namespace MarkTwo
         public List<string> totlaClientList; // 모든 클라이언트 테이블 리스트
         public Dictionary<string, SheetData> totalClientSheetDatas; // 클라이언트 최종 시트 데이터
         public Dictionary<string, SheetData> totalServerSheetDatas; // 클라이언트 최종 시트 데이터
-
-        // Tag 딕셔너리를 구성을 위한 함수
-        public void SetDicTag(string fieldName, string dataExchangedString)
-        {
-            // Num일 경우는 태그를 만들지 않는다.(인덱싱이기 때문에 만들 이유가 없음)
-            if (!fieldName.Equals("Num"))
-            {
-                // Tag 테이블의 필드가 dicTag의 키가 된다.
-                if (!dicTag.ContainsKey(fieldName)) // 만약 키(field)가 없다면
-                {
-                    Tag tag = new Tag(); // 태그 클래스를 생성한다.
-                    tag.TagTitle = fieldName; // 태그 이름을 넣는다.
-                    tag.TagCompoments = new List<string>(); // 리스트를 생성한다.
-                    tag.TagCompoments.Add(dataExchangedString); // 최초 데이터를 넣는다.
-
-                    dicTag.Add(fieldName, tag); // 해당 태그 객체를 추가한다.
-                }
-                else // 태그가 있다면
-                {
-                    Tag tag = dicTag[fieldName]; // 해당 Tag 객체를 불러온다.
-
-                    // 데이터가 null이 아닐 경우 ( 테이블에서 스트링으로 구성되기 때문에 null일 수 있다)
-                    if (!string.IsNullOrEmpty(dataExchangedString))
-                    {
-                        tag.TagCompoments.Add(dataExchangedString); // 태그를 추가한다.
-                    }
-                }
-            }
-        }
         
         // 최초 생성 시 기본적인 코드를 짜도록 한다.
         public GenerateCSharpCode(DataManager dataManager)
