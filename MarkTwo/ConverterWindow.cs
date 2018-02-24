@@ -109,10 +109,7 @@ namespace MarkTwo
 
         bool isEnd_ClientConvert = false; // 클라이언트 데이터 변환 작업이 끝났는가?
         bool isEnd_ServerConvert = false; // 서버 데이터 변환 작업이 끝났는가?
-
-        Thread client_DataControl;    // 클라이언트의 데이터 변환 쓰레드
-        Thread server_DataControl;    // 서버 데이터 변환 쓰레드
-
+        
         // 레디스 접속
         bool IsConnectServer = true; // 서버에 접속할 것인가? (엑셀 테이블에서 IP주소를 입력하지 않으면 false가 된다.)
         string RedisConnect_Ip;
@@ -197,28 +194,6 @@ namespace MarkTwo
                 conn.Server.FlushDb(1); // 기존 데이터를 지운다.
             }
         }
-        
-        //private void CreateFilePath() // 파일경로를 만든다.
-        //{
-        //    originalPathClientDB_Binary = Application.StartupPath + "\\" + CLIENT_BINARY_FILENAME + "." + CLIENT_BINARY_FILE_EXENAME_FOR_UNITY;  // 생성할 클라이언트의 바이너리 파일 경로를 만든다.
-        //    originalPathSeverDB_Binary = Application.StartupPath + "\\" + SERVER_BINARY_FILENAME + "." + SERVER_BINARY_FILE_EXENAME_FORUNITY;  // 생성할 서버 바이너리 파일의 경로를 만든다.
-            
-        //    targetPathServerDB_Binary = Application.StartupPath.Replace("\\ADDesign", "") + "\\" + workSheet.Range["Q14"].Value + "\\" + SERVER_BINARY_FILENAME + "." + SERVER_BINARY_FILE_EXENAME_FORUNITY;
-        //    targetPathClientDB_Binary = Application.StartupPath.Replace("\\ADDesign", "") + "\\" + workSheet.Range["Q15"].Value + "\\" + CLIENT_BINARY_FILENAME + "." + CLIENT_TEXT_FILE_EXTENSION;
-
-        //    targetPathClientDB_Text = Application.StartupPath.Replace("\\ADDesign", "") + "\\" + workSheet.Range["Q15"].Value + "\\" + CLIENT_BINARY_FILENAME_ForText + "." + CLIENT_TEXT_FILE_EXTENSION; // 텍스트 파일 경로를 만든다.
-        //    // TODO : Json, CSV, XML 등의 파일 경로를 만들도록 한다.
-            
-        //    targetPathSeverDB_PHP = workSheet.Range["Q5"].Value + "\\" + Create_PHPCode.TABLECONVERTER_FILENAME; // PHP를 위한 서버 DB경로
-
-        //    // 파일 경로 생성
-        //    this.CreatePathTableClassList(); // TableClassList.cs 파일 경로를 생성한다.
-        //    this.CreatePathTableConverter(); // TableTagList.cs 파일 경로를 생성한다.
-        //    this.CreatePathTableTagList(); // TableTagList.cs 파일 경로를 생성한다.
-
-        //    // 라벨표시
-        //    TargetPath.Text = "이동경로 : " + targetPathClientDB_Binary; // TODO : 상황별 이동경로를 만들도록 한다.
-        //}
 
         // 폼이 시작되고 실행된다.
         protected override void OnShown(EventArgs e)
@@ -400,35 +375,7 @@ namespace MarkTwo
             //Server_ProgressBar.Maximum = 1000;
             //Server_ProgressBar.Value = 0;
         }
-
-        // 변환작업이 종료되었는지 체크한다.
-        private void Check_EndConvertWork(object soruce, ElapsedEventArgs e)
-        {
-            // 클라이언트와 서버의 변환작업이 종료되었을 경우
-            if (isEnd_ClientConvert && isEnd_ServerConvert)
-            {
-                this.End_ApplicationAndThreads();
-            }
-        }
-
-        // 쓰레드와 어플리케이션을 종료한다.
-        private void End_ApplicationAndThreads()
-        {
-            // 엑셀파일을 닫는다.
-            excelApp.DisplayAlerts = false;
-            // 어프리케이션을 종료한다.
-            Application.Exit();
-
-            // 쓰레드를 종료한다.
-            this.AbortThreads();
-        }
-
-        // 쓰레드를 종료한다.
-        private void AbortThreads()
-        {
-            client_DataControl.Abort();
-            server_DataControl.Abort();
-        }
+        
 
         private void StartConversion(SheetType sheetType) // 변환을 시작한다.
         {
