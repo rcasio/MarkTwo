@@ -118,11 +118,11 @@ namespace MarkTwo
             // 클라이언트 바이너리 파일 경로 검색
             if (string.IsNullOrEmpty(this.clientDBPath))
             {
-                dataManager.ShowCloseMSB("[테이블 규칙] 시트에서 \n[※ 클라이언트 ClientDB 저장경로 ]의 경로가 입력되어 있지 않습니다.");
+                dataManager.ShowCloseMSB("[테이블 규칙] 시트에서 \n\n[※ 클라이언트 ClientDB 저장경로 ]의 경로가 입력되어 있지 않습니다.");
             }
             else if (!Directory.Exists(Application.StartupPath.Replace("\\ADDesign", "") + "\\" + this.clientDBPath))
             {
-                dataManager.ShowCloseMSB("[테이블 규칙] 시트에서 \n[※ 클라이언트 ClientDB 저장경로 ]의 폴더가 존재하지 않습니다.\n 폴더경로 : " + Application.StartupPath.Replace("\\ADDesign", "") + "\\" + this.clientDBPath);
+                dataManager.ShowCloseMSB("[테이블 규칙] 시트에서 \n\n[※ 클라이언트 ClientDB 저장경로 ]의 폴더가 존재하지 않습니다.\n\n폴더경로 : " + Application.StartupPath.Replace("\\ADDesign", "") + "\\" + this.clientDBPath);
             }
 
             SetRichText(rb, "");
@@ -131,11 +131,11 @@ namespace MarkTwo
             // C# 파일 경로 검색
             if (string.IsNullOrEmpty(this.cshapFilePath))
             {
-                dataManager.ShowCloseMSB("[테이블 규칙] 시트에서 \n[※ TableClass 및 TableConverter 등 파일 저장경로 ]의 경로가 입력되어 있지 않습니다.");
+                dataManager.ShowCloseMSB("[테이블 규칙] 시트에서 \n\n[※ TableClass 및 TableConverter 등 파일 저장경로 ]의 경로가 입력되어 있지 않습니다.");
             }
             else if (!Directory.Exists(Application.StartupPath.Replace("\\ADDesign", "") + "\\" + this.cshapFilePath))
             {
-                dataManager.ShowCloseMSB("[테이블 규칙] 시트에서 \n[※ TableClass 및 TableConverter 등 파일 저장경로 ]의 폴더가 존재하지 않습니다.\n 폴더경로 : " + Application.StartupPath.Replace("\\ADDesign", "") + "\\" + this.cshapFilePath);
+                dataManager.ShowCloseMSB("[테이블 규칙] 시트에서 \n\n[※ TableClass 및 TableConverter 등 파일 저장경로 ]의 폴더가 존재하지 않습니다.\n\n폴더경로 : " + Application.StartupPath.Replace("\\ADDesign", "") + "\\" + this.cshapFilePath);
             }
 
             SetRichText(rb, "");
