@@ -18,7 +18,7 @@ namespace TagManager
 		// PR 테이블은 개별 변수를 정의하기 위한 테이블입니다.
 		public class PR
 		{
-			public const float TableVersion = 0.322 ; // 테이블버전 ( Num : 1 )
+			public const float TableVersion = 0.322f; // 테이블버전 ( Num : 1 )
 			public const int TestNum = 1; // 테스트 ( Num : 2 )
 			public const int InitSkillPoint = 0; // 스킬 초기화 ( Num : 100 )
 
@@ -29,12 +29,12 @@ namespace TagManager
 				public const int Level30 = 20; // 30레벨 패널티 ( Num : 104 )
 				public const int Level50 = 50; // 50레벨 패널티 ( Num : 105 )
 				public const int Level100 = 100; // 100레벨 패널티 ( Num : 106 )
-				public const int Level100 = 100; // 100레벨 패널티 ( Num : 107 )
+				public const int Level110 = 110; // 110레벨 패널티 ( Num : 107 )
 			}
 
-			public const string MobNormal = notmal; // 일반 몬스터 ( Num : 1101 )
-			public const string MobNamed = named; // 네임드 몬스터 ( Num : 1102 )
-			public const string MobBoss = boss; // 보스 몬스터 ( Num : 1103 )
+			public const string MobNormal = "notmal"; // 일반 몬스터 ( Num : 1101 )
+			public const string MobNamed = "named"; // 네임드 몬스터 ( Num : 1102 )
+			public const string MobBoss = "boss"; // 보스 몬스터 ( Num : 1103 )
 			public const int crystalPrice = 2; // 골드대비 2배 크리스탈 비용 ( Num : 1303 )
 
 			public struct PlayerProperty // 레벨 구조체

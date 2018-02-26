@@ -304,11 +304,11 @@ namespace MarkTwo
         {
             string tValue = value;
 
-            if (type.Equals("float"))
+            if (type.Equals("Float"))
             {
                 tValue = tValue.Replace(" ","") + "f;";
             }
-            else if (type.Equals("string"))
+            else if (type.StartsWith("VarChar") || type.StartsWith("Char"))
             {
                 tValue = "\"" + tValue + "\";";
             }
