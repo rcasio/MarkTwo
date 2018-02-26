@@ -125,17 +125,17 @@ namespace MarkTwo
                     string fieldDataType = e.Current.Value.fieldDataTypeList[i];
                     string fieldName = e.Current.Value.fieldNameList[i];
 
-                    if (fieldDataType.Equals("Bit")) read = this.AddString(e.Current.Key, "BinaryReader.", "ReadBoolean();");
-                    else if (fieldDataType.Equals("TinyInt")) read = this.AddString(e.Current.Key, "BinaryReader.", "ReadByte();");
-                    else if (fieldDataType.Equals("SmallInt")) read = this.AddString(e.Current.Key, "BinaryReader.", "ReadInt16();");
-                    else if (fieldDataType.Equals("Int")) read = this.AddString(e.Current.Key, "BinaryReader.", "ReadInt32();");
-                    else if (fieldDataType.Equals("Float")) read = this.AddString(e.Current.Key, "BinaryReader.", "ReadSingle();");
-                    else if (fieldDataType.Equals("Double")) read = this.AddString(e.Current.Key, "BinaryReader.", "ReadDouble();");
-                    else if (fieldDataType.Equals("Bigint")) read = this.AddString(e.Current.Key, "BinaryReader.", "ReadInt64();");
-                    else if (fieldDataType.StartsWith("VarChar")) read = this.AddString(e.Current.Key, "BinaryReader.", "ReadString();");
+                    if (fieldDataType.Equals("Bit")) read = this.AddString(e.Current.Key.ToLower(), "BinaryReader.", "ReadBoolean();");
+                    else if (fieldDataType.Equals("TinyInt")) read = this.AddString(e.Current.Key.ToLower(), "BinaryReader.", "ReadByte();");
+                    else if (fieldDataType.Equals("SmallInt")) read = this.AddString(e.Current.Key.ToLower(), "BinaryReader.", "ReadInt16();");
+                    else if (fieldDataType.Equals("Int")) read = this.AddString(e.Current.Key.ToLower(), "BinaryReader.", "ReadInt32();");
+                    else if (fieldDataType.Equals("Float")) read = this.AddString(e.Current.Key.ToLower(), "BinaryReader.", "ReadSingle();");
+                    else if (fieldDataType.Equals("Double")) read = this.AddString(e.Current.Key.ToLower(), "BinaryReader.", "ReadDouble();");
+                    else if (fieldDataType.Equals("Bigint")) read = this.AddString(e.Current.Key.ToLower(), "BinaryReader.", "ReadInt64();");
+                    else if (fieldDataType.StartsWith("VarChar")) read = this.AddString(e.Current.Key.ToLower(), "BinaryReader.", "ReadString();");
                     else // enum 일 경우
                     {
-                        read = this.AddString("(TagManager.Table.PR.", fieldName, ") Enum.Parse(typeof(TagManager.Table.PR.", fieldName, "), ", e.Current.Key, "BinaryReader.", "ReadString());");
+                        read = this.AddString("(TagManager.Table.Tag.", fieldName, ") Enum.Parse(typeof(TagManager.Table.Tag.", fieldName, "), ", e.Current.Key.ToLower(), "BinaryReader.", "ReadString());");
                     }
 
                     tableConverter.WriteLine(AddString("\t\t\t", e.Current.Key.ToLower(), ".", fieldName, " = ", read));
@@ -337,8 +337,7 @@ namespace MarkTwo
             else if (type.Contains("StructEnd")) rtype = "}";
             else // enum 타입
             {
-                rtype = type;
-                //MessageBox.Show("[ PR ] 테이블에서 [ Type ]필드의 자료형 입력이 잘못되어 있습니다. 입력된 자료형 : " + type);
+                rtype = AddString("TagManager.Table.Tag.", type);
             }
 
             return rtype;

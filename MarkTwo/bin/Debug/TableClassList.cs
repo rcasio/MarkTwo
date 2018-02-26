@@ -22,7 +22,7 @@ public class NPC
 {
 	public int Num;
 	public int Property;
-	public Weapon Weapon;
+	public TagManager.Table.Tag.Weapon Weapon;
 	public int Race;
 	public byte Grade;
 	public byte Level;

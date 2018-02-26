@@ -37,10 +37,10 @@ public class TableLoad
 		{
 			Multilingual multilingual = new Multilingual();
 
-			multilingual.Num = MultilingualBinaryReader.ReadInt32();
-			multilingual.Kor = MultilingualBinaryReader.ReadString();
-			multilingual.Eng = MultilingualBinaryReader.ReadString();
-			multilingual.Jpn = MultilingualBinaryReader.ReadString();
+			multilingual.Num = multilingualBinaryReader.ReadInt32();
+			multilingual.Kor = multilingualBinaryReader.ReadString();
+			multilingual.Eng = multilingualBinaryReader.ReadString();
+			multilingual.Jpn = multilingualBinaryReader.ReadString();
 		}
 		multilingualBinaryReader.Close();
 
@@ -52,11 +52,11 @@ public class TableLoad
 		{
 			PR pr = new PR();
 
-			pr.Num = PRBinaryReader.ReadInt32();
-			pr.Type = PRBinaryReader.ReadString();
-			pr.Key = PRBinaryReader.ReadString();
-			pr.Value = PRBinaryReader.ReadString();
-			pr.Comment = PRBinaryReader.ReadString();
+			pr.Num = prBinaryReader.ReadInt32();
+			pr.Type = prBinaryReader.ReadString();
+			pr.Key = prBinaryReader.ReadString();
+			pr.Value = prBinaryReader.ReadString();
+			pr.Comment = prBinaryReader.ReadString();
 		}
 		prBinaryReader.Close();
 
@@ -68,40 +68,40 @@ public class TableLoad
 		{
 			NPC npc = new NPC();
 
-			npc.Num = NPCBinaryReader.ReadInt32();
-			npc.Property = NPCBinaryReader.ReadInt32();
-			npc.Weapon = (TagManager.Table.PR.Weapon) Enum.Parse(typeof(TagManager.Table.PR.Weapon), NPCBinaryReader.ReadString());
-			npc.Race = NPCBinaryReader.ReadInt32();
-			npc.Grade = NPCBinaryReader.ReadByte();
-			npc.Level = NPCBinaryReader.ReadByte();
-			npc.HP = NPCBinaryReader.ReadInt32();
-			npc.Exp = NPCBinaryReader.ReadInt32();
-			npc.CLevelExp = NPCBinaryReader.ReadInt32();
-			npc.AddSkill01 = NPCBinaryReader.ReadInt32();
-			npc.RateSkill01 = NPCBinaryReader.ReadInt32();
-			npc.AddSkill02 = NPCBinaryReader.ReadInt32();
-			npc.RateSkill02 = NPCBinaryReader.ReadInt32();
-			npc.AddSkill03 = NPCBinaryReader.ReadInt32();
-			npc.RateSkill03 = NPCBinaryReader.ReadInt32();
-			npc.AddSkill04 = NPCBinaryReader.ReadInt32();
-			npc.RateSkill04 = NPCBinaryReader.ReadInt32();
-			npc.AddSkill05 = NPCBinaryReader.ReadInt32();
-			npc.RateSkill05 = NPCBinaryReader.ReadInt32();
-			npc.MinGold = NPCBinaryReader.ReadInt32();
-			npc.MaxGold = NPCBinaryReader.ReadInt32();
-			npc.DropPosibility = NPCBinaryReader.ReadInt32();
-			npc.Bag01 = NPCBinaryReader.ReadInt32();
-			npc.Rate01 = NPCBinaryReader.ReadInt32();
-			npc.Bag02 = NPCBinaryReader.ReadInt32();
-			npc.Rate02 = NPCBinaryReader.ReadInt32();
-			npc.Bag03 = NPCBinaryReader.ReadInt32();
-			npc.Rate03 = NPCBinaryReader.ReadInt32();
-			npc.Bag04 = NPCBinaryReader.ReadInt32();
-			npc.Rate04 = NPCBinaryReader.ReadInt32();
-			npc.Bag05 = NPCBinaryReader.ReadInt32();
-			npc.Rate05 = NPCBinaryReader.ReadInt32();
-			npc.NPC_FileName = NPCBinaryReader.ReadString();
-			npc.NPC_Prefab = NPCBinaryReader.ReadString();
+			npc.Num = npcBinaryReader.ReadInt32();
+			npc.Property = npcBinaryReader.ReadInt32();
+			npc.Weapon = (TagManager.Table.Tag.Weapon) Enum.Parse(typeof(TagManager.Table.Tag.Weapon), npcBinaryReader.ReadString());
+			npc.Race = npcBinaryReader.ReadInt32();
+			npc.Grade = npcBinaryReader.ReadByte();
+			npc.Level = npcBinaryReader.ReadByte();
+			npc.HP = npcBinaryReader.ReadInt32();
+			npc.Exp = npcBinaryReader.ReadInt32();
+			npc.CLevelExp = npcBinaryReader.ReadInt32();
+			npc.AddSkill01 = npcBinaryReader.ReadInt32();
+			npc.RateSkill01 = npcBinaryReader.ReadInt32();
+			npc.AddSkill02 = npcBinaryReader.ReadInt32();
+			npc.RateSkill02 = npcBinaryReader.ReadInt32();
+			npc.AddSkill03 = npcBinaryReader.ReadInt32();
+			npc.RateSkill03 = npcBinaryReader.ReadInt32();
+			npc.AddSkill04 = npcBinaryReader.ReadInt32();
+			npc.RateSkill04 = npcBinaryReader.ReadInt32();
+			npc.AddSkill05 = npcBinaryReader.ReadInt32();
+			npc.RateSkill05 = npcBinaryReader.ReadInt32();
+			npc.MinGold = npcBinaryReader.ReadInt32();
+			npc.MaxGold = npcBinaryReader.ReadInt32();
+			npc.DropPosibility = npcBinaryReader.ReadInt32();
+			npc.Bag01 = npcBinaryReader.ReadInt32();
+			npc.Rate01 = npcBinaryReader.ReadInt32();
+			npc.Bag02 = npcBinaryReader.ReadInt32();
+			npc.Rate02 = npcBinaryReader.ReadInt32();
+			npc.Bag03 = npcBinaryReader.ReadInt32();
+			npc.Rate03 = npcBinaryReader.ReadInt32();
+			npc.Bag04 = npcBinaryReader.ReadInt32();
+			npc.Rate04 = npcBinaryReader.ReadInt32();
+			npc.Bag05 = npcBinaryReader.ReadInt32();
+			npc.Rate05 = npcBinaryReader.ReadInt32();
+			npc.NPC_FileName = npcBinaryReader.ReadString();
+			npc.NPC_Prefab = npcBinaryReader.ReadString();
 		}
 		npcBinaryReader.Close();
 
@@ -113,15 +113,15 @@ public class TableLoad
 		{
 			Enchant enchant = new Enchant();
 
-			enchant.Num = EnchantBinaryReader.ReadInt32();
-			enchant.Value = EnchantBinaryReader.ReadInt16();
-			enchant.Grade = EnchantBinaryReader.ReadInt32();
-			enchant.Rate = EnchantBinaryReader.ReadInt32();
-			enchant.AtkPercentage = EnchantBinaryReader.ReadInt32();
-			enchant.DefPercentage = EnchantBinaryReader.ReadInt32();
-			enchant.AddCardOption = EnchantBinaryReader.ReadInt32();
-			enchant.GamePrice = EnchantBinaryReader.ReadInt32();
-			enchant.CashPrice = EnchantBinaryReader.ReadInt32();
+			enchant.Num = enchantBinaryReader.ReadInt32();
+			enchant.Value = enchantBinaryReader.ReadInt16();
+			enchant.Grade = enchantBinaryReader.ReadInt32();
+			enchant.Rate = enchantBinaryReader.ReadInt32();
+			enchant.AtkPercentage = enchantBinaryReader.ReadInt32();
+			enchant.DefPercentage = enchantBinaryReader.ReadInt32();
+			enchant.AddCardOption = enchantBinaryReader.ReadInt32();
+			enchant.GamePrice = enchantBinaryReader.ReadInt32();
+			enchant.CashPrice = enchantBinaryReader.ReadInt32();
 		}
 		enchantBinaryReader.Close();
 
@@ -133,12 +133,12 @@ public class TableLoad
 		{
 			Grade grade = new Grade();
 
-			grade.Num = GradeBinaryReader.ReadInt32();
-			grade.Color_R = GradeBinaryReader.ReadByte();
-			grade.Color_G = GradeBinaryReader.ReadByte();
-			grade.Color_B = GradeBinaryReader.ReadByte();
-			grade.Hex = GradeBinaryReader.ReadString();
-			grade.Sounds = GradeBinaryReader.ReadString();
+			grade.Num = gradeBinaryReader.ReadInt32();
+			grade.Color_R = gradeBinaryReader.ReadByte();
+			grade.Color_G = gradeBinaryReader.ReadByte();
+			grade.Color_B = gradeBinaryReader.ReadByte();
+			grade.Hex = gradeBinaryReader.ReadString();
+			grade.Sounds = gradeBinaryReader.ReadString();
 		}
 		gradeBinaryReader.Close();
 
@@ -150,11 +150,11 @@ public class TableLoad
 		{
 			Tag tag = new Tag();
 
-			tag.Num = TagBinaryReader.ReadInt32();
-			tag.Type = TagBinaryReader.ReadString();
-			tag.Item = TagBinaryReader.ReadString();
-			tag.Weapon = TagBinaryReader.ReadString();
-			tag.Armor = TagBinaryReader.ReadString();
+			tag.Num = tagBinaryReader.ReadInt32();
+			tag.Type = tagBinaryReader.ReadString();
+			tag.Item = tagBinaryReader.ReadString();
+			tag.Weapon = tagBinaryReader.ReadString();
+			tag.Armor = tagBinaryReader.ReadString();
 		}
 		tagBinaryReader.Close();
 
@@ -166,18 +166,18 @@ public class TableLoad
 		{
 			Map map = new Map();
 
-			map.Num = MapBinaryReader.ReadInt32();
-			map.ChapterNum = MapBinaryReader.ReadInt32();
-			map.MapNum = MapBinaryReader.ReadInt32();
-			map.Difficulty = MapBinaryReader.ReadByte();
-			map.Attribute = MapBinaryReader.ReadInt32();
-			map.NeedAction = MapBinaryReader.ReadByte();
-			map.WeaponShopNum = MapBinaryReader.ReadInt32();
-			map.ArmorShopNum = MapBinaryReader.ReadInt32();
-			map.PotionShopNum = MapBinaryReader.ReadInt32();
-			map.NPCBag01 = MapBinaryReader.ReadInt32();
-			map.NPCBag02 = MapBinaryReader.ReadInt32();
-			map.NPCBag03 = MapBinaryReader.ReadInt32();
+			map.Num = mapBinaryReader.ReadInt32();
+			map.ChapterNum = mapBinaryReader.ReadInt32();
+			map.MapNum = mapBinaryReader.ReadInt32();
+			map.Difficulty = mapBinaryReader.ReadByte();
+			map.Attribute = mapBinaryReader.ReadInt32();
+			map.NeedAction = mapBinaryReader.ReadByte();
+			map.WeaponShopNum = mapBinaryReader.ReadInt32();
+			map.ArmorShopNum = mapBinaryReader.ReadInt32();
+			map.PotionShopNum = mapBinaryReader.ReadInt32();
+			map.NPCBag01 = mapBinaryReader.ReadInt32();
+			map.NPCBag02 = mapBinaryReader.ReadInt32();
+			map.NPCBag03 = mapBinaryReader.ReadInt32();
 		}
 		mapBinaryReader.Close();
 
