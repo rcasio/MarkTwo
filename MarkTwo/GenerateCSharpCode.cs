@@ -140,6 +140,8 @@ namespace MarkTwo
 
                     tableConverter.WriteLine(AddString("\t\t\t", e.Current.Key.ToLower(), ".", fieldName, " = ", read));
                 }
+                tableConverter.WriteLine("");
+                tableConverter.WriteLine(AddString("\t\t\tTable.", e.Current.Key,".Add(", e.Current.Key.ToLower(),".Num, ", e.Current.Key.ToLower(),");"));
 
                 tableConverter.WriteLine("\t\t}");
                 tableConverter.WriteLine(AddString("\t\t", e.Current.Key.ToLower(), "BinaryReader.Close();"));

@@ -41,6 +41,8 @@ public class TableLoad
 			multilingual.Kor = multilingualBinaryReader.ReadString();
 			multilingual.Eng = multilingualBinaryReader.ReadString();
 			multilingual.Jpn = multilingualBinaryReader.ReadString();
+
+			Table.Multilingual.Add(multilingual.Num, multilingual);
 		}
 		multilingualBinaryReader.Close();
 
@@ -57,6 +59,8 @@ public class TableLoad
 			pr.Key = prBinaryReader.ReadString();
 			pr.Value = prBinaryReader.ReadString();
 			pr.Comment = prBinaryReader.ReadString();
+
+			Table.PR.Add(pr.Num, pr);
 		}
 		prBinaryReader.Close();
 
@@ -102,6 +106,8 @@ public class TableLoad
 			npc.Rate05 = npcBinaryReader.ReadInt32();
 			npc.NPC_FileName = npcBinaryReader.ReadString();
 			npc.NPC_Prefab = npcBinaryReader.ReadString();
+
+			Table.NPC.Add(npc.Num, npc);
 		}
 		npcBinaryReader.Close();
 
@@ -122,6 +128,8 @@ public class TableLoad
 			enchant.AddCardOption = enchantBinaryReader.ReadInt32();
 			enchant.GamePrice = enchantBinaryReader.ReadInt32();
 			enchant.CashPrice = enchantBinaryReader.ReadInt32();
+
+			Table.Enchant.Add(enchant.Num, enchant);
 		}
 		enchantBinaryReader.Close();
 
@@ -139,6 +147,8 @@ public class TableLoad
 			grade.Color_B = gradeBinaryReader.ReadByte();
 			grade.Hex = gradeBinaryReader.ReadString();
 			grade.Sounds = gradeBinaryReader.ReadString();
+
+			Table.Grade.Add(grade.Num, grade);
 		}
 		gradeBinaryReader.Close();
 
@@ -155,6 +165,8 @@ public class TableLoad
 			tag.Item = tagBinaryReader.ReadString();
 			tag.Weapon = tagBinaryReader.ReadString();
 			tag.Armor = tagBinaryReader.ReadString();
+
+			Table.Tag.Add(tag.Num, tag);
 		}
 		tagBinaryReader.Close();
 
@@ -178,6 +190,8 @@ public class TableLoad
 			map.NPCBag01 = mapBinaryReader.ReadInt32();
 			map.NPCBag02 = mapBinaryReader.ReadInt32();
 			map.NPCBag03 = mapBinaryReader.ReadInt32();
+
+			Table.Map.Add(map.Num, map);
 		}
 		mapBinaryReader.Close();
 
