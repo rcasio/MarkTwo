@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using System.Threading.Tasks;
 // 참조 : http://msdn.microsoft.com/en-us/library/office/microsoft.office.interop.excel.aspx
 using Excel = Microsoft.Office.Interop.Excel;
+using System.IO;
 
 namespace MarkTwo
 {
@@ -111,6 +112,34 @@ namespace MarkTwo
             this.serverDBPath = this.ruleSheet.Range["Q14"].Value;
             this.clientDBPath = this.ruleSheet.Range["Q15"].Value;
             this.cshapFilePath = this.ruleSheet.Range["Q16"].Value;
+
+            // TODO : 서버 지원 시 서버 저장경로도 체크해야 함.
+
+            // 클라이언트 바이너리 파일 경로 검색
+            if (string.IsNullOrEmpty(this.clientDBPath))
+            {
+                dataManager.ShowCloseMSB("[테이블 규칙] 시트에서 \n[※ 클라이언트 ClientDB 저장경로 ]의 경로가 입력되어 있지 않습니다.");
+            }
+            else if (!Directory.Exists(Application.StartupPath.Replace("\\ADDesign", "") + "\\" + this.clientDBPath))
+            {
+                dataManager.ShowCloseMSB("[테이블 규칙] 시트에서 \n[※ 클라이언트 ClientDB 저장경로 ]의 폴더가 존재하지 않습니다.\n 폴더경로 : " + Application.StartupPath.Replace("\\ADDesign", "") + "\\" + this.clientDBPath);
+            }
+
+            SetRichText(rb, "");
+            SetRichText(rb, " - 클라이언트 ClientDB 저장경로 : " + Application.StartupPath.Replace("\\ADDesign", "") + "\\" + this.clientDBPath);
+
+            // C# 파일 경로 검색
+            if (string.IsNullOrEmpty(this.cshapFilePath))
+            {
+                dataManager.ShowCloseMSB("[테이블 규칙] 시트에서 \n[※ TableClass 및 TableConverter 등 파일 저장경로 ]의 경로가 입력되어 있지 않습니다.");
+            }
+            else if (!Directory.Exists(Application.StartupPath.Replace("\\ADDesign", "") + "\\" + this.cshapFilePath))
+            {
+                dataManager.ShowCloseMSB("[테이블 규칙] 시트에서 \n[※ TableClass 및 TableConverter 등 파일 저장경로 ]의 폴더가 존재하지 않습니다.\n 폴더경로 : " + Application.StartupPath.Replace("\\ADDesign", "") + "\\" + this.cshapFilePath);
+            }
+
+            SetRichText(rb, "");
+            SetRichText(rb, " - TableClass 및 TableConverter 등 파일 저장경로 : " + Application.StartupPath.Replace("\\ADDesign", "") + "\\" + this.cshapFilePath);
 
             if (this.isSpeedUp)
             {

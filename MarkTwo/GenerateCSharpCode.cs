@@ -33,19 +33,36 @@ namespace MarkTwo
         public List<string> totlaClientList; // 모든 클라이언트 테이블 리스트
         public Dictionary<string, SheetData> totalClientSheetDatas; // 클라이언트 최종 시트 데이터
         public Dictionary<string, SheetData> totalServerSheetDatas; // 클라이언트 최종 시트 데이터
-        
+
+        private string originalPath_TABLECONVERTER;
+        private string originalPath_TABLECLASSLIST;
+        private string originalPath_TABLETAGLIST;
+
+        private string targetPath_TABLECONVERTER;
+        private string targetPath_TABLECLASSLIST;
+        private string targetPath_TABLETAGLIST;
+
         // 최초 생성 시 기본적인 코드를 짜도록 한다.
         public GenerateCSharpCode(DataManager dataManager)
         {
-            this.dataManager = dataManager;
-            this.totlaClientList = this.dataManager.dataTableList.totlaClientList;
-            this.totalClientSheetDatas = this.dataManager.excelData.totalClientSheetDatas;
-            this.totalServerSheetDatas = this.dataManager.excelData.totalServerSheetDatas;
+            this.dataManager                = dataManager;
+            this.totlaClientList            = this.dataManager.dataTableList.totlaClientList;
+            this.totalClientSheetDatas      = this.dataManager.excelData.totalClientSheetDatas;
+            this.totalServerSheetDatas      = this.dataManager.excelData.totalServerSheetDatas;
 
-            this.tableConverter = new StreamWriter(new FileStream(this.Create_FilePath_TableConverter(), FileMode.Create));
-            this.tableClassList = new StreamWriter(new FileStream(this.Create_FilePath_TableClassList(), FileMode.Create));
-            this.tableTagList = new StreamWriter(new FileStream(this.Create_FilePath_TableTagList(), FileMode.Create));
+            this.originalPath_TABLECONVERTER     = Application.StartupPath + "\\" + TABLECONVERTER_FILENAME;  
+            this.originalPath_TABLECLASSLIST     = Application.StartupPath + "\\" + TABLECLASSLIST_FILENAME;  
+            this.originalPath_TABLETAGLIST       = Application.StartupPath + "\\" + TABLETAGLIST_FILENAME;  
 
+            // 타겟 패스를 정한다.
+            this.targetPath_TABLECONVERTER  = Application.StartupPath.Replace("\\ADDesign", "") + "\\" + this.dataManager.dataRule.cshapFilePath + "\\" + TABLECONVERTER_FILENAME;
+            this.targetPath_TABLECLASSLIST  = Application.StartupPath.Replace("\\ADDesign", "") + "\\" + this.dataManager.dataRule.cshapFilePath + "\\" + TABLECLASSLIST_FILENAME;
+            this.targetPath_TABLETAGLIST    = Application.StartupPath.Replace("\\ADDesign", "") + "\\" + this.dataManager.dataRule.cshapFilePath + "\\" + TABLETAGLIST_FILENAME;
+
+            this.tableConverter = new StreamWriter(new FileStream(this.originalPath_TABLECONVERTER, FileMode.Create));
+            this.tableClassList = new StreamWriter(new FileStream(this.originalPath_TABLECLASSLIST, FileMode.Create));
+            this.tableTagList = new StreamWriter(new FileStream(this.originalPath_TABLETAGLIST, FileMode.Create));
+            
             this.WriteTableConverter();     // TableConverter.cs를 작성한다.
             this.WriteTableClassList();     // TableClassList.cs를 작성한다.
             this.WriteTableTagList();       // TableTagList.cs를 작성한다.
@@ -281,9 +298,7 @@ namespace MarkTwo
                                     tagType = tagType.Replace(")", "");
                                 }
                             }
-
                             tableTagList.WriteLine("                " + tagType + ",");
-                            
                         }
                     }
 
@@ -345,15 +360,6 @@ namespace MarkTwo
             return rtype;
         }
         
-        // 파일 경로를 반환한다.
-        private string Create_FilePath_TableConverter() { return Application.StartupPath + "\\" + TABLECONVERTER_FILENAME; }
-
-        // 파일 경로를 반환한다.
-        private string Create_FilePath_TableClassList() { return Application.StartupPath + "\\" + TABLECLASSLIST_FILENAME; }
-
-        // 파일 경로를 반환한다.
-        private string Create_FilePath_TableTagList() { return Application.StartupPath + "\\" + TABLETAGLIST_FILENAME; }
-
         // 문자열을 편집할 때 사용됩니다.
         private string AddString(params string[] string_List)
         {
@@ -382,6 +388,16 @@ namespace MarkTwo
             tableConverter.Close();
             tableClassList.Close();
             tableTagList.Close();
+
+            // 파일을 이동시킨다.
+            if (File.Exists(this.targetPath_TABLECONVERTER)) File.Delete(this.targetPath_TABLECONVERTER); // 파일이 존재한다면 삭제한다.
+            File.Move(this.originalPath_TABLECONVERTER, this.targetPath_TABLECONVERTER);  // 파일을 이동시킨다.
+
+            if (File.Exists(this.targetPath_TABLECLASSLIST)) File.Delete(this.targetPath_TABLECLASSLIST); 
+            File.Move(this.originalPath_TABLECLASSLIST, this.targetPath_TABLECLASSLIST);  
+
+            if (File.Exists(this.targetPath_TABLETAGLIST)) File.Delete(this.targetPath_TABLETAGLIST); 
+            File.Move(this.originalPath_TABLETAGLIST, this.targetPath_TABLETAGLIST);  
         }
     }
 }
