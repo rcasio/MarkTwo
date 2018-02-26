@@ -36,7 +36,7 @@ namespace MarkTwo
                 return rowCount;
             }
         }
-
+        
         public List<int> fieldCommentList = new List<int>(); // 필드의 주석을 저장한다(필드 번호 순 ex) {2,7}이면 2열 7열이 주석필드)
         public List<int> rowCommentList = new List<int>(); // 행의 주석 번호를 저장한다.(행 번호 순 ex) {2,3}이면 2행 3행 주서행)
 
@@ -114,7 +114,9 @@ namespace MarkTwo
             {
                 SetTableLabel(label, this.name);
             }
-
+            
+            // 빠른 작업을 위해 Row -> Field 형식의 데이터 추출이 아닌 Field -> Row 데이터 추출 형식
+            // 이렇게 하지 않으면 Row Count에 따른 For문을 돌려야 하므로 속도 향상을 위해 Row-> Field 형식을 사용
             for (int column = 1; column <= this.totalColumnCount; column++) // 필드 카운트
             {
                 FieldData fieldData = new FieldData(this.dataManager); // 필드 데이터를 생성한다.
@@ -161,11 +163,11 @@ namespace MarkTwo
                                 else
                                 {
                                     // 파일 생성을 한다면
-                                    if (this.isCreateFile)
-                                    {
-                                        generateBinaryFile.Write(data, fieldData.dataType, this.name, row, column);
+                                    //if (this.isCreateFile)
+                                    //{
+                                        //generateBinaryFile.Write(data, fieldData.dataType, this.name, row, column);
                                         //WriteCallBack(data, fieldData.dataType, this.name, row, column);
-                                    }
+                                    //}
                                     
                                     fieldData.Add(data); // 데이터를 추가한다.
                                     srb(rb, "- 레이블 [" + column + "],[" + row + "] : " + data);
@@ -176,11 +178,11 @@ namespace MarkTwo
                                 if (!commentRowNums.Contains(row)) // 주석 행이 아닐 경우
                                 {
                                     // 파일 생성을 한다면
-                                    if (this.isCreateFile)
-                                    {
-                                        generateBinaryFile.Write(data, fieldData.dataType, this.name, row, column);
+                                    //if (this.isCreateFile)
+                                    //{
+                                        //generateBinaryFile.Write(data, fieldData.dataType, this.name, row, column);
                                         //WriteCallBack(data, fieldData.dataType, this.name, row, column);
-                                    }
+                                    //}
                                     
                                     fieldData.Add(data); // 데이터를 추가한다. 
                                     srb(rb, " - 레이블 [" + column + "],[" + row + "] : " + data);
@@ -198,7 +200,7 @@ namespace MarkTwo
                     if (SetProgressBar != null) // 프로그래스바가 할당되지 않는다면
                     {
                         // 잰행도 구하기
-                        int p = (int)(((double)(((column - 1) * this.totalRowCount) + row) / this.totalDataCount) * 1000);
+                        int p = (int)(((double)(((column - 1) * this.totalRowCount) + row) / this.totalDataCount) * 950);
 
                         SetProgressBar(progressBar, p); // 프록래스바에 표시한다.
                     }
@@ -211,10 +213,32 @@ namespace MarkTwo
             }
 
             srb(rb, "");
-            srb(rb, "====== [" + this.name + "]테이블 변환완료");
+            srb(rb, "====== [" + this.name + "] 테이블 추출완료");
+
+            srb(rb, "");
+            srb(rb, "- [" + this.name + "] 바이너리 작업 시작");
 
             if (this.isCreateFile)
             {
+                // 추출된 파일을 기반으로 바이너리 파일롭 변환시킨다.
+                int rn = totalRowCount - this.commentRowNums.Count - 3;
+                int fn = totalColumnCount - this.commentColumnNums.Count;
+
+                for (int i = 0; i < rn; i++)
+                {
+                    for (int j = 0; j < fn; j++)
+                    {
+                        string data = this.fieldDatas[this.fieldNameList[j]].contents[i];
+                        string dataType = this.fieldDatas[this.fieldNameList[j]].dataType;
+
+                        generateBinaryFile.Write(data, dataType, this.name, i, j);
+                    }
+                }
+                SetProgressBar(progressBar, 1000); // 프록래스바에 표시한다.
+
+                srb(rb, "");
+                srb(rb, "====== [" + this.name + "] 바이너리 작업 완료");
+
                 generateBinaryFile.Close(); // 바이너리 파일 스트림을 닫는다.
             }
         }

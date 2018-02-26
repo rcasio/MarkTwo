@@ -121,6 +121,8 @@ namespace MarkTwo
             // 테이블을 최초로 로딩하는 함수
             tableConverter.WriteLine("\tpublic TableLoad()");
             tableConverter.WriteLine("\t{");
+            tableConverter.WriteLine("\t\tMemoryStream stream;");
+            tableConverter.WriteLine("");
 
             IEnumerator<KeyValuePair<string, SheetData>> e = this.totalClientSheetDatas.GetEnumerator();
             while (e.MoveNext())
@@ -128,7 +130,7 @@ namespace MarkTwo
                 //m_TableConverter.WriteLine(AddString("\tTable.", e.Current.Key, " = new Dictionary<int, ", e.Current.Key, ">(", e.Current.Value.RowCount.ToString(), ")"));
                 tableConverter.WriteLine(AddString("\t\t// ", e.Current.Key));
                 tableConverter.WriteLine(AddString("\t\tTable.", e.Current.Key, " = new Dictionary<int, ", e.Current.Key, ">();"));
-                tableConverter.WriteLine(AddString("\t\tBinaryReader ", e.Current.Key.ToLower(), "BinaryReader = this.GetBinaryReader(\"", GenerateBinaryFile.clientBinaryFiles[e.Current.Key], "\");"));
+                tableConverter.WriteLine(AddString("\t\tBinaryReader ", e.Current.Key.ToLower(), "BinaryReader = this.GetBinaryReader(\"", GenerateBinaryFile.clientBinaryFiles[e.Current.Key], "\", out stream);"));
                 tableConverter.WriteLine("");
                 tableConverter.WriteLine(AddString("\t\tfor (int i = 0; i < ", e.Current.Value.RowCount.ToString(), "; i++)"));
                 tableConverter.WriteLine("\t\t{");
@@ -162,6 +164,7 @@ namespace MarkTwo
 
                 tableConverter.WriteLine("\t\t}");
                 tableConverter.WriteLine(AddString("\t\t", e.Current.Key.ToLower(), "BinaryReader.Close();"));
+                tableConverter.WriteLine("\t\tstream.Close();");
                 tableConverter.WriteLine("");
             }
         }
@@ -171,13 +174,17 @@ namespace MarkTwo
         /// </summary>
         private void WriteGetBinaryReader()
         {
-            tableConverter.WriteLine("\tprivate BinaryReader GetBinaryReader(string fileName)");
+            tableConverter.WriteLine("\tprivate BinaryReader GetBinaryReader(string fileName, out MemoryStream stream)");
             tableConverter.WriteLine("\t{");
-            tableConverter.WriteLine("\t\tTextAsset textasset = Resources.Load(fileName) as TextAsset;");
-            tableConverter.WriteLine("\t\tMemoryStream stream = new MemoryStream(textasset.bytes);");
-            tableConverter.WriteLine("\t\tBinaryReader binaryReader = new BinaryReader(stream);");
-            tableConverter.WriteLine("\t\tstream.Close();");
+            tableConverter.WriteLine("\t\tstring tableDBPath = null;");
+            tableConverter.WriteLine("\t\tif (Application.platform == RuntimePlatform.Android) { tableDBPath = \"jar: file://\" + Application.dataPath + \"!/assets/\" + fileName + \".bytes\"; } // Android Path");
+            tableConverter.WriteLine("\t\telse if (Application.platform == RuntimePlatform.IPhonePlayer) { tableDBPath = \"file://\" + Application.dataPath + \"/Raw/\" + fileName + \".bytes\"; } // IOS Path");
+            tableConverter.WriteLine("\t\telse { tableDBPath = \"file://\" + Application.dataPath + \"/StreamingAssets/\" + fileName + \".bytes\"; } // Editor PAth");
             tableConverter.WriteLine("");
+            tableConverter.WriteLine("\t\tWWW www = new WWW(tableDBPath);;");
+            tableConverter.WriteLine("");
+            tableConverter.WriteLine("\t\tstream = new MemoryStream(www.bytes);");
+            tableConverter.WriteLine("\t\tBinaryReader binaryReader = new BinaryReader(stream);");
             tableConverter.WriteLine("\t\treturn binaryReader;");
             tableConverter.WriteLine("\t}");
         }

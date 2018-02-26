@@ -17,21 +17,27 @@ public class Table
 
 public class TableLoad
 {
-	private BinaryReader GetBinaryReader(string fileName)
+	private BinaryReader GetBinaryReader(string fileName, out MemoryStream stream)
 	{
-		TextAsset textasset = Resources.Load(fileName) as TextAsset;
-		MemoryStream stream = new MemoryStream(textasset.bytes);
-		BinaryReader binaryReader = new BinaryReader(stream);
-		stream.Close();
+		string tableDBPath = null;
+		if (Application.platform == RuntimePlatform.Android) { tableDBPath = "jar: file://" + Application.dataPath + "!/assets/" + fileName + ".bytes"; } // Android Path
+		else if (Application.platform == RuntimePlatform.IPhonePlayer) { tableDBPath = "file://" + Application.dataPath + "/Raw/" + fileName + ".bytes"; } // IOS Path
+		else { tableDBPath = "file://" + Application.dataPath + "/StreamingAssets/" + fileName + ".bytes"; } // Editor PAth
 
+		WWW www = new WWW(tableDBPath);;
+
+		stream = new MemoryStream(www.bytes);
+		BinaryReader binaryReader = new BinaryReader(stream);
 		return binaryReader;
 	}
 
 	public TableLoad()
 	{
+		MemoryStream stream;
+
 		// Multilingual
 		Table.Multilingual = new Dictionary<int, Multilingual>();
-		BinaryReader multilingualBinaryReader = this.GetBinaryReader("Multilingual_Multilingual");
+		BinaryReader multilingualBinaryReader = this.GetBinaryReader("Multilingual_Multilingual", out stream);
 
 		for (int i = 0; i < 100; i++)
 		{
@@ -45,10 +51,11 @@ public class TableLoad
 			Table.Multilingual.Add(multilingual.Num, multilingual);
 		}
 		multilingualBinaryReader.Close();
+		stream.Close();
 
 		// PR
 		Table.PR = new Dictionary<int, PR>();
-		BinaryReader prBinaryReader = this.GetBinaryReader("PR_Client");
+		BinaryReader prBinaryReader = this.GetBinaryReader("PR_Client", out stream);
 
 		for (int i = 0; i < 19; i++)
 		{
@@ -63,10 +70,11 @@ public class TableLoad
 			Table.PR.Add(pr.Num, pr);
 		}
 		prBinaryReader.Close();
+		stream.Close();
 
 		// NPC
 		Table.NPC = new Dictionary<int, NPC>();
-		BinaryReader npcBinaryReader = this.GetBinaryReader("NPC_Client");
+		BinaryReader npcBinaryReader = this.GetBinaryReader("NPC_Client", out stream);
 
 		for (int i = 0; i < 23; i++)
 		{
@@ -110,10 +118,11 @@ public class TableLoad
 			Table.NPC.Add(npc.Num, npc);
 		}
 		npcBinaryReader.Close();
+		stream.Close();
 
 		// Enchant
 		Table.Enchant = new Dictionary<int, Enchant>();
-		BinaryReader enchantBinaryReader = this.GetBinaryReader("Enchant_Client");
+		BinaryReader enchantBinaryReader = this.GetBinaryReader("Enchant_Client", out stream);
 
 		for (int i = 0; i < 21; i++)
 		{
@@ -132,10 +141,11 @@ public class TableLoad
 			Table.Enchant.Add(enchant.Num, enchant);
 		}
 		enchantBinaryReader.Close();
+		stream.Close();
 
 		// Grade
 		Table.Grade = new Dictionary<int, Grade>();
-		BinaryReader gradeBinaryReader = this.GetBinaryReader("Grade_Client");
+		BinaryReader gradeBinaryReader = this.GetBinaryReader("Grade_Client", out stream);
 
 		for (int i = 0; i < 7; i++)
 		{
@@ -151,10 +161,11 @@ public class TableLoad
 			Table.Grade.Add(grade.Num, grade);
 		}
 		gradeBinaryReader.Close();
+		stream.Close();
 
 		// Tag
 		Table.Tag = new Dictionary<int, Tag>();
-		BinaryReader tagBinaryReader = this.GetBinaryReader("Tag_Client");
+		BinaryReader tagBinaryReader = this.GetBinaryReader("Tag_Client", out stream);
 
 		for (int i = 0; i < 15; i++)
 		{
@@ -169,10 +180,11 @@ public class TableLoad
 			Table.Tag.Add(tag.Num, tag);
 		}
 		tagBinaryReader.Close();
+		stream.Close();
 
 		// Map
 		Table.Map = new Dictionary<int, Map>();
-		BinaryReader mapBinaryReader = this.GetBinaryReader("Map_Client");
+		BinaryReader mapBinaryReader = this.GetBinaryReader("Map_Client", out stream);
 
 		for (int i = 0; i < 4; i++)
 		{
@@ -194,6 +206,7 @@ public class TableLoad
 			Table.Map.Add(map.Num, map);
 		}
 		mapBinaryReader.Close();
+		stream.Close();
 
     }
 }
