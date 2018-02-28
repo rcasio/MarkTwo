@@ -3,6 +3,8 @@
 
 카카오톡 오픈 채팅방 주소 https://open.kakao.com/o/gu27H4G
 
+샘플 : https://github.com/rcasio/MarkTwoSample.git
+
 ※ 서버 관련 기능은 현재 버전에서는 작동하지 않습니다. (차후 지원예정)
 
 버전 업데이트
