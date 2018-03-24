@@ -17,27 +17,32 @@ public class Table
 
 public class TableLoad
 {
-	private BinaryReader GetBinaryReader(string fileName, out MemoryStream stream)
+	public bool isLoad = false;
+
+	private string SetPath(string fileName)
 	{
 		string tableDBPath = null;
-		if (Application.platform == RuntimePlatform.Android) { tableDBPath = "jar: file://" + Application.dataPath + "!/assets/" + fileName + ".bytes"; } // Android Path
+
+		if (Application.platform == RuntimePlatform.Android) { tableDBPath = "jar:file://" + Application.dataPath + "!/assets/" + fileName + ".bytes"; } // Android Path
 		else if (Application.platform == RuntimePlatform.IPhonePlayer) { tableDBPath = "file://" + Application.dataPath + "/Raw/" + fileName + ".bytes"; } // IOS Path
 		else { tableDBPath = "file://" + Application.dataPath + "/StreamingAssets/" + fileName + ".bytes"; } // Editor PAth
 
-		WWW www = new WWW(tableDBPath);;
-
-		stream = new MemoryStream(www.bytes);
-		BinaryReader binaryReader = new BinaryReader(stream);
-		return binaryReader;
+		return tableDBPath;
 	}
 
-	public TableLoad()
+	public IEnumerator Load()
 	{
 		MemoryStream stream;
+		WWW www;
 
 		// Multilingual
+		www = new WWW(this.SetPath("Multilingual_Multilingual"));
+		yield return www;
+
+		stream = new MemoryStream(www.bytes);
+		BinaryReader multilingualBinaryReader = new BinaryReader(stream);
+
 		Table.Multilingual = new Dictionary<int, Multilingual>();
-		BinaryReader multilingualBinaryReader = this.GetBinaryReader("Multilingual_Multilingual", out stream);
 
 		for (int i = 0; i < 100; i++)
 		{
@@ -54,8 +59,13 @@ public class TableLoad
 		stream.Close();
 
 		// PR
+		www = new WWW(this.SetPath("PR_Client"));
+		yield return www;
+
+		stream = new MemoryStream(www.bytes);
+		BinaryReader prBinaryReader = new BinaryReader(stream);
+
 		Table.PR = new Dictionary<int, PR>();
-		BinaryReader prBinaryReader = this.GetBinaryReader("PR_Client", out stream);
 
 		for (int i = 0; i < 19; i++)
 		{
@@ -73,8 +83,13 @@ public class TableLoad
 		stream.Close();
 
 		// NPC
+		www = new WWW(this.SetPath("NPC_Client"));
+		yield return www;
+
+		stream = new MemoryStream(www.bytes);
+		BinaryReader npcBinaryReader = new BinaryReader(stream);
+
 		Table.NPC = new Dictionary<int, NPC>();
-		BinaryReader npcBinaryReader = this.GetBinaryReader("NPC_Client", out stream);
 
 		for (int i = 0; i < 23; i++)
 		{
@@ -121,8 +136,13 @@ public class TableLoad
 		stream.Close();
 
 		// Enchant
+		www = new WWW(this.SetPath("Enchant_Client"));
+		yield return www;
+
+		stream = new MemoryStream(www.bytes);
+		BinaryReader enchantBinaryReader = new BinaryReader(stream);
+
 		Table.Enchant = new Dictionary<int, Enchant>();
-		BinaryReader enchantBinaryReader = this.GetBinaryReader("Enchant_Client", out stream);
 
 		for (int i = 0; i < 21; i++)
 		{
@@ -144,8 +164,13 @@ public class TableLoad
 		stream.Close();
 
 		// Grade
+		www = new WWW(this.SetPath("Grade_Client"));
+		yield return www;
+
+		stream = new MemoryStream(www.bytes);
+		BinaryReader gradeBinaryReader = new BinaryReader(stream);
+
 		Table.Grade = new Dictionary<int, Grade>();
-		BinaryReader gradeBinaryReader = this.GetBinaryReader("Grade_Client", out stream);
 
 		for (int i = 0; i < 7; i++)
 		{
@@ -164,8 +189,13 @@ public class TableLoad
 		stream.Close();
 
 		// Tag
+		www = new WWW(this.SetPath("Tag_Client"));
+		yield return www;
+
+		stream = new MemoryStream(www.bytes);
+		BinaryReader tagBinaryReader = new BinaryReader(stream);
+
 		Table.Tag = new Dictionary<int, Tag>();
-		BinaryReader tagBinaryReader = this.GetBinaryReader("Tag_Client", out stream);
 
 		for (int i = 0; i < 15; i++)
 		{
@@ -183,8 +213,13 @@ public class TableLoad
 		stream.Close();
 
 		// Map
+		www = new WWW(this.SetPath("Map_Client"));
+		yield return www;
+
+		stream = new MemoryStream(www.bytes);
+		BinaryReader mapBinaryReader = new BinaryReader(stream);
+
 		Table.Map = new Dictionary<int, Map>();
-		BinaryReader mapBinaryReader = this.GetBinaryReader("Map_Client", out stream);
 
 		for (int i = 0; i < 4; i++)
 		{
@@ -208,5 +243,6 @@ public class TableLoad
 		mapBinaryReader.Close();
 		stream.Close();
 
+		this.isLoad = true;
     }
 }
