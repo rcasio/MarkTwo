@@ -24,6 +24,10 @@ namespace MarkTwo
         public List<Excel.Worksheet> clientsSheetList01 = new List<Excel.Worksheet>(); // 클라이언트 시트 리스트
         public List<string> clientList02 = new List<string>(); // 사용되는 테이블 리스트
         public List<Excel.Worksheet> clientsSheetList02 = new List<Excel.Worksheet>(); // 클라이언트 시트 리스트
+        public List<string> clientList03 = new List<string>(); // 사용되는 테이블 리스트
+        public List<Excel.Worksheet> clientsSheetList03 = new List<Excel.Worksheet>(); // 클라이언트 시트 리스트
+        public List<string> clientList04 = new List<string>(); // 사용되는 테이블 리스트
+        public List<Excel.Worksheet> clientsSheetList04 = new List<Excel.Worksheet>(); // 클라이언트 시트 리스트
 
         public List<string> serverList01 = new List<string>(); // 사용되는 클라이언트 리스트
         public List<Excel.Worksheet> serverSheetList01 = new List<Excel.Worksheet>(); // 서버 시트 리스트
@@ -74,10 +78,11 @@ namespace MarkTwo
                 Environment.Exit(0);
             }
 
-            SetExtreactionProgressBar(50);
+            SetExtreactionProgressBar(30);
             
             SetRichBox(richTextBox, "");
             SetRichBox(richTextBox, "클라이언트 스레드01 추가");
+
             // 클라이언트 스레드01 테이블리스트
             foreach (string sheetName in tableManagerSheet.get_Range("C8", "C50").Value)
             {
@@ -105,10 +110,11 @@ namespace MarkTwo
                 SetRichBox(richTextBox, "- 클라이언트 스레드01 시트 이름 : " + sheetName);
             }
 
-            SetExtreactionProgressBar(60);
+            SetExtreactionProgressBar(40);
             
             SetRichBox(richTextBox, "");
             SetRichBox(richTextBox, "클라이언트 스레드02 추가");
+
             // 클라이언트 스레드02 테이블리스트
             foreach (string sheetName in tableManagerSheet.get_Range("D8", "D50").Value)
             {
@@ -122,13 +128,13 @@ namespace MarkTwo
                 }
                 catch (Exception)
                 {
-                    MessageBox.Show("[테이블 규칙] 시트에서 [클라이언트 스레드02]에 정의되지 않는 테이블이 들어가 있습니다. \n\n오류 시트 이름 :" + sheetName);
+                    MessageBox.Show("[테이블 관리] 시트에서 [클라이언트 스레드02]에 정의되지 않는 테이블이 들어가 있습니다. \n\n오류 시트 이름 :" + sheetName);
                     Environment.Exit(0);
                 }
 
                 if (!clientList02.Contains(SheetName.Tag))
                 {
-                    MessageBox.Show("[테이블 규칙] 시트에서 [클라이언트 스레드02]에 Tag 테이블이 없습니다.");
+                    MessageBox.Show("[테이블 관리] 시트에서 [클라이언트 스레드02]에 Tag 테이블이 없습니다.");
                     Environment.Exit(0);
                 }
 
@@ -136,12 +142,72 @@ namespace MarkTwo
                 SetRichBox(richTextBox, "- 클라이언트 스레드02 시트 이름 : " + sheetName);
             }
 
+            SetExtreactionProgressBar(50);
+
+            // 클라이언트 스레드03 테이블리스트
+            foreach (string sheetName in tableManagerSheet.get_Range("E8", "E50").Value)
+            {
+                if (sheetName == null) break;
+
+                clientList03.Add(sheetName);
+                totlaClientList.Add(sheetName);
+
+                try
+                {
+                    this.clientsSheetList03.Add(sheets[sheetName] as Excel.Worksheet);
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("[테이블 관리] 시트에서 [클라이언트 스레드03]에 정의되지 않는 테이블이 들어가 있습니다. \n\n오류 시트 이름 :" + sheetName);
+                    Environment.Exit(0);
+                }
+
+                if (!clientList02.Contains(SheetName.Tag))
+                {
+                    MessageBox.Show("[테이블 관리] 시트에서 [클라이언트 스레드03]에 Tag 테이블이 없습니다.");
+                    Environment.Exit(0);
+                }
+
+                totalList.Add(sheetName);
+                SetRichBox(richTextBox, "- 클라이언트 스레드03 시트 이름 : " + sheetName);
+            }
+
+            SetExtreactionProgressBar(60);
+
+            // 클라이언트 스레드04 테이블리스트
+            foreach (string sheetName in tableManagerSheet.get_Range("F8", "F50").Value)
+            {
+                if (sheetName == null) break;
+
+                clientList04.Add(sheetName);
+                totlaClientList.Add(sheetName);
+
+                try
+                {
+                    this.clientsSheetList04.Add(sheets[sheetName] as Excel.Worksheet);
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("[테이블 관리] 시트에서 [클라이언트 스레드04]에 정의되지 않는 테이블이 들어가 있습니다. \n\n오류 시트 이름 :" + sheetName);
+                    Environment.Exit(0);
+                }
+
+                if (!clientList02.Contains(SheetName.Tag))
+                {
+                    MessageBox.Show("[테이블 관리] 시트에서 [클라이언트 스레드04]에 Tag 테이블이 없습니다.");
+                    Environment.Exit(0);
+                }
+
+                totalList.Add(sheetName);
+                SetRichBox(richTextBox, "- 클라이언트 스레드04 시트 이름 : " + sheetName);
+            }
+
             SetExtreactionProgressBar(70);
-            
+
             SetRichBox(richTextBox, "");
             SetRichBox(richTextBox, "서버 스레드01 추가");
             // 서버 스레드01 테이블리스트
-            foreach (string sheetName in tableManagerSheet.get_Range("E8", "E50").Value)
+            foreach (string sheetName in tableManagerSheet.get_Range("G8", "G50").Value)
             {
                 if (sheetName == null) break;
 
@@ -153,13 +219,13 @@ namespace MarkTwo
                 }
                 catch (Exception)
                 {
-                    MessageBox.Show("[테이블 규칙] 시트에서 [서버 스레드01]에 정의되지 않는 테이블이 들어가 있습니다. \n\n오류 시트 이름 :" + sheetName);
+                    MessageBox.Show("[테이블 관리] 시트에서 [서버 스레드01]에 정의되지 않는 테이블이 들어가 있습니다. \n\n오류 시트 이름 :" + sheetName);
                     Environment.Exit(0);
                 }
 
                 if (!serverList01.Contains(SheetName.PR))
                 {
-                    MessageBox.Show("[테이블 규칙] 시트에서 [서버 스레드01]에 PR 테이블이 없습니다.");
+                    MessageBox.Show("[테이블 관리] 시트에서 [서버 스레드01]에 PR 테이블이 없습니다.");
                     Environment.Exit(0);
                 }
 
@@ -172,7 +238,7 @@ namespace MarkTwo
             SetRichBox(richTextBox, "");
             SetRichBox(richTextBox, "서버 스레드02 추가");
             // 서버 스레드01 테이블리스트
-            foreach (string sheetName in tableManagerSheet.get_Range("F8", "F50").Value)
+            foreach (string sheetName in tableManagerSheet.get_Range("H8", "H50").Value)
             {
                 if (sheetName == null) break;
 
@@ -184,13 +250,13 @@ namespace MarkTwo
                 }
                 catch (Exception)
                 {
-                    MessageBox.Show("[테이블 규칙] 시트에서 [서버 스레드01]에 정의되지 않는 테이블이 들어가 있습니다. \n\n오류 시트 이름 :" + sheetName);
+                    MessageBox.Show("[테이블 관리] 시트에서 [서버 스레드02]에 정의되지 않는 테이블이 들어가 있습니다. \n\n오류 시트 이름 :" + sheetName);
                     Environment.Exit(0);
                 }
 
                 if (!serverList02.Contains(SheetName.Tag))
                 {
-                    MessageBox.Show("[테이블 규칙] 시트에서 [서버 스레드01]에 Tag 테이블이 없습니다.");
+                    MessageBox.Show("[테이블 관리] 시트에서 [서버 스레드02]에 Tag 테이블이 없습니다.");
                     Environment.Exit(0);
                 }
 

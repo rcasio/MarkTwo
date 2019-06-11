@@ -19,6 +19,8 @@ namespace MarkTwo
         private Thread multilingualThread; // 다국에 스레드01
         private Thread clientThread01; // 클라이언트 스레드01
         private Thread clientThread02; // 클라이언트 스레드02
+        private Thread clientThread03; // 클라이언트 스레드03
+        private Thread clientThread04; // 클라이언트 스레드04
         private Thread serverThread01; // 클라이언트 스레드01
         private Thread serverThread02; // 클라이언트 스레드02
 
@@ -28,6 +30,8 @@ namespace MarkTwo
         private Dictionary<string, SheetData> multilingualData = new Dictionary<string, SheetData>();
         private Dictionary<string, SheetData> clientData01 = new Dictionary<string, SheetData>();
         private Dictionary<string, SheetData> clientData02 = new Dictionary<string, SheetData>();
+        private Dictionary<string, SheetData> clientData03 = new Dictionary<string, SheetData>();
+        private Dictionary<string, SheetData> clientData04 = new Dictionary<string, SheetData>();
         private Dictionary<string, SheetData> serverData01 = new Dictionary<string, SheetData>();
         private Dictionary<string, SheetData> serverData02 = new Dictionary<string, SheetData>();
 
@@ -36,6 +40,8 @@ namespace MarkTwo
         private bool isExtractioneMultilingual = false;
         private bool isExtractionClient01 = false;
         private bool isExtractionClient02 = false;
+        private bool isExtractionClient03 = false;
+        private bool isExtractionClient04 = false;
         private bool isExtreactionServer01 = false;
         private bool isExtreactionServer02 = false;
 
@@ -51,6 +57,7 @@ namespace MarkTwo
             this.multilingualData = this.excelData.multilingualSheetDatas;
             this.clientData01 = this.excelData.client01SheetDatas;
             this.clientData02 = this.excelData.client02SheetDatas;
+            this.clientData03 = 
             this.serverData01 = this.excelData.server01SheetDats;
             this.serverData02 = this.excelData.server02SheetDats;
             
@@ -107,6 +114,28 @@ namespace MarkTwo
                 }
             ));
             this.clientThread02.Start();
+
+            // 클라이언트 스레드03
+            this.clientThread03 = new Thread(new ThreadStart(
+                () =>
+                {
+                    foreach (var key in this.clientData03.Keys)
+                    {
+                        // TODO : ConvertWindow.cs에서 이름을 변경한 뒤 변경된 이름 기준으로 작업할 것
+                        this.clientData03[key].Create(SetRichText,
+                                                      this.dataManager.converterWindow.ClientThread02Text,
+                                                      (p, s) => this.dataManager.converterWindow.SetProgressBar(p, s),
+                                                      this.dataManager.converterWindow.ClientThread02progressBar,
+                                                      (p, s) => this.dataManager.converterWindow.SetTableLabel(p, s),
+                                                      this.dataManager.converterWindow.ClientThread02TableLabel);
+                    }
+
+                    this.isExtractionClient03 = true;
+                }
+            ));
+            this.clientThread02.Start();
+
+            // TODO : 클라이언트 스레드04 만들 것
 
             // 서버 스레드01
             this.serverThread01 = new Thread(new ThreadStart(

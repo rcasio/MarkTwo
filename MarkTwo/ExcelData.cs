@@ -41,10 +41,12 @@ namespace MarkTwo
 
         public Dictionary<string, SheetData> multilingualSheetDatas = new Dictionary<string, SheetData>(); // 다국어 테이블
         
-        public Dictionary<string, SheetData> client01SheetDatas = new Dictionary<string, SheetData>(); // 클라이언트 시트 데이터
-        public Dictionary<string, SheetData> client02SheetDatas = new Dictionary<string, SheetData>(); // 클라이언트 시트 데이터
-        public Dictionary<string, SheetData> server01SheetDats = new Dictionary<string, SheetData>(); // 서버 시트 데이터
-        public Dictionary<string, SheetData> server02SheetDats = new Dictionary<string, SheetData>(); // 서버 시트 데이터
+        public Dictionary<string, SheetData> client01SheetDatas = new Dictionary<string, SheetData>();  // 클라이언트 시트 데이터
+        public Dictionary<string, SheetData> client02SheetDatas = new Dictionary<string, SheetData>();  // 클라이언트 시트 데이터
+        public Dictionary<string, SheetData> client03SheetDatas = new Dictionary<string, SheetData>();  // 클라이언트 시트 데이터
+        public Dictionary<string, SheetData> client04SheetDatas = new Dictionary<string, SheetData>();  // 클라이언트 시트 데이터
+        public Dictionary<string, SheetData> server01SheetDats  = new Dictionary<string, SheetData>();  // 서버 시트 데이터
+        public Dictionary<string, SheetData> server02SheetDats  = new Dictionary<string, SheetData>();  // 서버 시트 데이터
 
         public Dictionary<string, SheetData> totalClientSheetDatas = new Dictionary<string, SheetData>(); // 클라이언트 최종 시트 데이터
         public Dictionary<string, SheetData> totalServerSheetDatas = new Dictionary<string, SheetData>(); // 서버 최종 시트 데이터
@@ -117,7 +119,45 @@ namespace MarkTwo
                                                                 SheetType.Client));
                 SetRichBox(rb, "- 추출 완료 : " + sheetName);
             }
-            
+
+            SetRichBox(rb, "");
+            SetRichBox(rb, "클라이언트 데이터03 기반 정보 추출 시작");
+
+            for (int i = 0; i < this.dataTableList.clientList03.Count; i++)
+            {
+                string sheetName = this.dataTableList.clientList03[i];
+                SetRichBox(rb, "- 클라이언트 데이터03 기반 정보 추출 테이블 : " + sheetName);
+
+                client02SheetDatas.Add(sheetName, new SheetData(this.dataTableList.clientsSheetList03[i],
+                                                                sheetName,
+                                                                this.dataManager,
+                                                                this.dataRule,
+                                                                SetRichBox,
+                                                                this.dataManager.converterWindow.ExtreactionReadyText,
+                                                                true,
+                                                                SheetType.Client));
+                SetRichBox(rb, "- 추출 완료 : " + sheetName);
+            }
+
+            SetRichBox(rb, "");
+            SetRichBox(rb, "클라이언트 데이터04 기반 정보 추출 시작");
+
+            for (int i = 0; i < this.dataTableList.clientList04.Count; i++)
+            {
+                string sheetName = this.dataTableList.clientList04[i];
+                SetRichBox(rb, "- 클라이언트 데이터04 기반 정보 추출 테이블 : " + sheetName);
+
+                client02SheetDatas.Add(sheetName, new SheetData(this.dataTableList.clientsSheetList04[i],
+                                                                sheetName,
+                                                                this.dataManager,
+                                                                this.dataRule,
+                                                                SetRichBox,
+                                                                this.dataManager.converterWindow.ExtreactionReadyText,
+                                                                true,
+                                                                SheetType.Client));
+                SetRichBox(rb, "- 추출 완료 : " + sheetName);
+            }
+
             SetRichBox(rb, "");
             SetRichBox(rb, "서버 데이터01 기반 정보 추출 시작");
 

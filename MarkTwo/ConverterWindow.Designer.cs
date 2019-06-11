@@ -60,6 +60,14 @@
             this.ExtreactionReadyText = new System.Windows.Forms.RichTextBox();
             this.ClientDataCount = new System.Windows.Forms.Label();
             this.ServerDataCount = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.label6 = new System.Windows.Forms.Label();
+            this.richTextBox2 = new System.Windows.Forms.RichTextBox();
+            this.progressBar2 = new System.Windows.Forms.ProgressBar();
+            this.label7 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // StartButton
@@ -113,21 +121,21 @@
             // 
             this.MultiligualThreadText.Location = new System.Drawing.Point(429, 156);
             this.MultiligualThreadText.Name = "MultiligualThreadText";
-            this.MultiligualThreadText.Size = new System.Drawing.Size(375, 555);
+            this.MultiligualThreadText.Size = new System.Drawing.Size(375, 722);
             this.MultiligualThreadText.TabIndex = 47;
             this.MultiligualThreadText.Text = "";
             // 
             // ServerThread01Text
             // 
-            this.ServerThread01Text.Location = new System.Drawing.Point(824, 467);
+            this.ServerThread01Text.Location = new System.Drawing.Point(824, 682);
             this.ServerThread01Text.Name = "ServerThread01Text";
-            this.ServerThread01Text.Size = new System.Drawing.Size(357, 244);
+            this.ServerThread01Text.Size = new System.Drawing.Size(357, 196);
             this.ServerThread01Text.TabIndex = 63;
             this.ServerThread01Text.Text = "";
             // 
             // ServerThread01ProgressBar
             // 
-            this.ServerThread01ProgressBar.Location = new System.Drawing.Point(824, 437);
+            this.ServerThread01ProgressBar.Location = new System.Drawing.Point(824, 652);
             this.ServerThread01ProgressBar.Name = "ServerThread01ProgressBar";
             this.ServerThread01ProgressBar.Size = new System.Drawing.Size(357, 15);
             this.ServerThread01ProgressBar.TabIndex = 62;
@@ -136,7 +144,7 @@
             // 
             this.ServerThread01.AutoSize = true;
             this.ServerThread01.ForeColor = System.Drawing.Color.DarkGray;
-            this.ServerThread01.Location = new System.Drawing.Point(822, 416);
+            this.ServerThread01.Location = new System.Drawing.Point(822, 631);
             this.ServerThread01.Name = "ServerThread01";
             this.ServerThread01.Size = new System.Drawing.Size(81, 12);
             this.ServerThread01.TabIndex = 61;
@@ -146,7 +154,7 @@
             // 
             this.ClientThread01Text.Location = new System.Drawing.Point(824, 156);
             this.ClientThread01Text.Name = "ClientThread01Text";
-            this.ClientThread01Text.Size = new System.Drawing.Size(357, 244);
+            this.ClientThread01Text.Size = new System.Drawing.Size(357, 196);
             this.ClientThread01Text.TabIndex = 60;
             this.ClientThread01Text.Text = "";
             // 
@@ -169,15 +177,15 @@
             // 
             // ServerThread02Text
             // 
-            this.ServerThread02Text.Location = new System.Drawing.Point(1196, 470);
+            this.ServerThread02Text.Location = new System.Drawing.Point(1196, 685);
             this.ServerThread02Text.Name = "ServerThread02Text";
-            this.ServerThread02Text.Size = new System.Drawing.Size(356, 241);
+            this.ServerThread02Text.Size = new System.Drawing.Size(356, 193);
             this.ServerThread02Text.TabIndex = 69;
             this.ServerThread02Text.Text = "";
             // 
             // ServerThread02ProgressBar
             // 
-            this.ServerThread02ProgressBar.Location = new System.Drawing.Point(1196, 440);
+            this.ServerThread02ProgressBar.Location = new System.Drawing.Point(1196, 655);
             this.ServerThread02ProgressBar.Name = "ServerThread02ProgressBar";
             this.ServerThread02ProgressBar.Size = new System.Drawing.Size(356, 15);
             this.ServerThread02ProgressBar.TabIndex = 68;
@@ -186,7 +194,7 @@
             // 
             this.ServerThread02.AutoSize = true;
             this.ServerThread02.ForeColor = System.Drawing.Color.DarkGray;
-            this.ServerThread02.Location = new System.Drawing.Point(1194, 419);
+            this.ServerThread02.Location = new System.Drawing.Point(1194, 634);
             this.ServerThread02.Name = "ServerThread02";
             this.ServerThread02.Size = new System.Drawing.Size(81, 12);
             this.ServerThread02.TabIndex = 67;
@@ -196,7 +204,7 @@
             // 
             this.ClientThread02Text.Location = new System.Drawing.Point(1196, 156);
             this.ClientThread02Text.Name = "ClientThread02Text";
-            this.ClientThread02Text.Size = new System.Drawing.Size(356, 244);
+            this.ClientThread02Text.Size = new System.Drawing.Size(356, 196);
             this.ClientThread02Text.TabIndex = 66;
             this.ClientThread02Text.Text = "";
             // 
@@ -241,7 +249,7 @@
             // 
             this.ServerThread01TableLabel.AutoSize = true;
             this.ServerThread01TableLabel.ForeColor = System.Drawing.Color.DarkGray;
-            this.ServerThread01TableLabel.Location = new System.Drawing.Point(976, 416);
+            this.ServerThread01TableLabel.Location = new System.Drawing.Point(976, 631);
             this.ServerThread01TableLabel.Name = "ServerThread01TableLabel";
             this.ServerThread01TableLabel.Size = new System.Drawing.Size(145, 12);
             this.ServerThread01TableLabel.TabIndex = 73;
@@ -251,7 +259,7 @@
             // 
             this.ServerThread02TableLabel.AutoSize = true;
             this.ServerThread02TableLabel.ForeColor = System.Drawing.Color.DarkGray;
-            this.ServerThread02TableLabel.Location = new System.Drawing.Point(1346, 419);
+            this.ServerThread02TableLabel.Location = new System.Drawing.Point(1346, 634);
             this.ServerThread02TableLabel.Name = "ServerThread02TableLabel";
             this.ServerThread02TableLabel.Size = new System.Drawing.Size(145, 12);
             this.ServerThread02TableLabel.TabIndex = 74;
@@ -321,7 +329,7 @@
             this.ExtreactionReadyText.ReadOnly = true;
             this.ExtreactionReadyText.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.ExtreactionReadyText.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.ExtreactionReadyText.Size = new System.Drawing.Size(386, 585);
+            this.ExtreactionReadyText.Size = new System.Drawing.Size(386, 752);
             this.ExtreactionReadyText.TabIndex = 70;
             this.ExtreactionReadyText.Text = "";
             // 
@@ -345,12 +353,90 @@
             this.ServerDataCount.TabIndex = 81;
             this.ServerDataCount.Text = "0";
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.ForeColor = System.Drawing.Color.DarkGray;
+            this.label4.Location = new System.Drawing.Point(1346, 371);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(145, 12);
+            this.label4.TabIndex = 89;
+            this.label4.Text = "테이블 이름 [테이블이름]";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.ForeColor = System.Drawing.Color.DarkGray;
+            this.label5.Location = new System.Drawing.Point(976, 371);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(145, 12);
+            this.label5.TabIndex = 88;
+            this.label5.Text = "테이블 이름 [테이블이름]";
+            // 
+            // richTextBox1
+            // 
+            this.richTextBox1.Location = new System.Drawing.Point(1196, 422);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(356, 196);
+            this.richTextBox1.TabIndex = 87;
+            this.richTextBox1.Text = "";
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(1195, 392);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(357, 15);
+            this.progressBar1.TabIndex = 86;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.ForeColor = System.Drawing.Color.DarkGray;
+            this.label6.Location = new System.Drawing.Point(1194, 371);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(117, 12);
+            this.label6.TabIndex = 85;
+            this.label6.Text = "클라이언트02 스레드";
+            // 
+            // richTextBox2
+            // 
+            this.richTextBox2.Location = new System.Drawing.Point(824, 422);
+            this.richTextBox2.Name = "richTextBox2";
+            this.richTextBox2.Size = new System.Drawing.Size(357, 196);
+            this.richTextBox2.TabIndex = 84;
+            this.richTextBox2.Text = "";
+            // 
+            // progressBar2
+            // 
+            this.progressBar2.Location = new System.Drawing.Point(824, 392);
+            this.progressBar2.Name = "progressBar2";
+            this.progressBar2.Size = new System.Drawing.Size(357, 15);
+            this.progressBar2.TabIndex = 83;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.ForeColor = System.Drawing.Color.DarkGray;
+            this.label7.Location = new System.Drawing.Point(822, 371);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(117, 12);
+            this.label7.TabIndex = 82;
+            this.label7.Text = "클라이언트01 스레드";
+            // 
             // ConverterWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
-            this.ClientSize = new System.Drawing.Size(1574, 753);
+            this.ClientSize = new System.Drawing.Size(1574, 890);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.richTextBox1);
+            this.Controls.Add(this.progressBar1);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.richTextBox2);
+            this.Controls.Add(this.progressBar2);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.ServerDataCount);
             this.Controls.Add(this.ClientDataCount);
             this.Controls.Add(this.TimerLabel);
@@ -423,6 +509,14 @@
         public System.Windows.Forms.RichTextBox ExtreactionReadyText;
         public System.Windows.Forms.Label ClientDataCount;
         public System.Windows.Forms.Label ServerDataCount;
+        public System.Windows.Forms.Label label4;
+        public System.Windows.Forms.Label label5;
+        public System.Windows.Forms.RichTextBox richTextBox1;
+        public System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.Label label6;
+        public System.Windows.Forms.RichTextBox richTextBox2;
+        public System.Windows.Forms.ProgressBar progressBar2;
+        private System.Windows.Forms.Label label7;
     }
 }
 
