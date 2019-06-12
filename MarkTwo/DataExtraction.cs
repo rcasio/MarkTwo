@@ -57,7 +57,8 @@ namespace MarkTwo
             this.multilingualData = this.excelData.multilingualSheetDatas;
             this.clientData01 = this.excelData.client01SheetDatas;
             this.clientData02 = this.excelData.client02SheetDatas;
-            this.clientData03 = 
+            this.clientData03 = this.excelData.client03SheetDatas;
+            this.clientData04 = this.excelData.client04SheetDatas;
             this.serverData01 = this.excelData.server01SheetDats;
             this.serverData02 = this.excelData.server02SheetDats;
             
@@ -123,19 +124,37 @@ namespace MarkTwo
                     {
                         // TODO : ConvertWindow.cs에서 이름을 변경한 뒤 변경된 이름 기준으로 작업할 것
                         this.clientData03[key].Create(SetRichText,
-                                                      this.dataManager.converterWindow.ClientThread02Text,
+                                                      this.dataManager.converterWindow.ClientThread03Text,
                                                       (p, s) => this.dataManager.converterWindow.SetProgressBar(p, s),
-                                                      this.dataManager.converterWindow.ClientThread02progressBar,
+                                                      this.dataManager.converterWindow.ClientThread03progressBar,
                                                       (p, s) => this.dataManager.converterWindow.SetTableLabel(p, s),
-                                                      this.dataManager.converterWindow.ClientThread02TableLabel);
+                                                      this.dataManager.converterWindow.ClientThread03TableLabel);
                     }
 
                     this.isExtractionClient03 = true;
                 }
             ));
-            this.clientThread02.Start();
+            this.clientThread03.Start();
 
-            // TODO : 클라이언트 스레드04 만들 것
+            // 클라이언트 스레드04
+            this.clientThread04 = new Thread(new ThreadStart(
+                () =>
+                {
+                    foreach (var key in this.clientData04.Keys)
+                    {
+                        // TODO : ConvertWindow.cs에서 이름을 변경한 뒤 변경된 이름 기준으로 작업할 것
+                        this.clientData04[key].Create(SetRichText,
+                                                      this.dataManager.converterWindow.ClientThread04Text,
+                                                      (p, s) => this.dataManager.converterWindow.SetProgressBar(p, s),
+                                                      this.dataManager.converterWindow.ClientThread04progressBar,
+                                                      (p, s) => this.dataManager.converterWindow.SetTableLabel(p, s),
+                                                      this.dataManager.converterWindow.ClientThread04TableLabel);
+                    }
+
+                    this.isExtractionClient04 = true;
+                }
+            ));
+            this.clientThread04.Start();
 
             // 서버 스레드01
             this.serverThread01 = new Thread(new ThreadStart(
@@ -186,6 +205,8 @@ namespace MarkTwo
             if (this.isExtractioneMultilingual && 
                 this.isExtractionClient01 &&
                 this.isExtractionClient02 &&
+                this.isExtractionClient03 &&
+                this.isExtractionClient04 &&
                 this.isExtreactionServer01 &&
                 this.isExtreactionServer02)
             {
@@ -205,6 +226,8 @@ namespace MarkTwo
             this.multilingualThread.Abort();
             this.clientThread01.Abort();
             this.clientThread02.Abort();
+            this.clientThread03.Abort();
+            this.clientThread04.Abort();
             this.serverThread01.Abort();
             this.serverThread02.Abort();
 

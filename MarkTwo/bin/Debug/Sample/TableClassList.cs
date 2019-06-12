@@ -57,31 +57,6 @@ public class NPC
 }
 
 [System.Serializable] 
-public class Enchant
-{
-	public int Num;
-	public short Value;
-	public int Grade;
-	public int Rate;
-	public int AtkPercentage;
-	public int DefPercentage;
-	public int AddCardOption;
-	public int GamePrice;
-	public int CashPrice;
-}
-
-[System.Serializable] 
-public class Grade
-{
-	public int Num;
-	public byte Color_R;
-	public byte Color_G;
-	public byte Color_B;
-	public string Hex;
-	public string Sounds;
-}
-
-[System.Serializable] 
 public class Tag
 {
 	public int Num;
@@ -106,5 +81,30 @@ public class Map
 	public int NPCBag01;
 	public int NPCBag02;
 	public int NPCBag03;
+}
+
+[System.Serializable] 
+public class Enchant
+{
+	public int Num;
+	public short Value;
+	public int Grade;
+	public int Rate;
+	public int AtkPercentage;
+	public int DefPercentage;
+	public int AddCardOption;
+	public int GamePrice;
+	public int CashPrice;
+}
+
+[System.Serializable] 
+public class Grade
+{
+	public int Num;
+	public byte Color_R;
+	public byte Color_G;
+	public byte Color_B;
+	public string Hex;
+	public string Sounds;
 }
 

@@ -128,7 +128,7 @@ namespace MarkTwo
                 string sheetName = this.dataTableList.clientList03[i];
                 SetRichBox(rb, "- 클라이언트 데이터03 기반 정보 추출 테이블 : " + sheetName);
 
-                client02SheetDatas.Add(sheetName, new SheetData(this.dataTableList.clientsSheetList03[i],
+                client03SheetDatas.Add(sheetName, new SheetData(this.dataTableList.clientsSheetList03[i],
                                                                 sheetName,
                                                                 this.dataManager,
                                                                 this.dataRule,
@@ -147,7 +147,7 @@ namespace MarkTwo
                 string sheetName = this.dataTableList.clientList04[i];
                 SetRichBox(rb, "- 클라이언트 데이터04 기반 정보 추출 테이블 : " + sheetName);
 
-                client02SheetDatas.Add(sheetName, new SheetData(this.dataTableList.clientsSheetList04[i],
+                client04SheetDatas.Add(sheetName, new SheetData(this.dataTableList.clientsSheetList04[i],
                                                                 sheetName,
                                                                 this.dataManager,
                                                                 this.dataRule,

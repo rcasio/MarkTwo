@@ -60,14 +60,14 @@
             this.ExtreactionReadyText = new System.Windows.Forms.RichTextBox();
             this.ClientDataCount = new System.Windows.Forms.Label();
             this.ServerDataCount = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.label6 = new System.Windows.Forms.Label();
-            this.richTextBox2 = new System.Windows.Forms.RichTextBox();
-            this.progressBar2 = new System.Windows.Forms.ProgressBar();
-            this.label7 = new System.Windows.Forms.Label();
+            this.ClientThread04TableLabel = new System.Windows.Forms.Label();
+            this.ClientThread03TableLabel = new System.Windows.Forms.Label();
+            this.ClientThread04Text = new System.Windows.Forms.RichTextBox();
+            this.ClientThread04progressBar = new System.Windows.Forms.ProgressBar();
+            this.ClientThread04Label = new System.Windows.Forms.Label();
+            this.ClientThread03Text = new System.Windows.Forms.RichTextBox();
+            this.ClientThread03progressBar = new System.Windows.Forms.ProgressBar();
+            this.ClientThread03Label = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // StartButton
@@ -353,75 +353,76 @@
             this.ServerDataCount.TabIndex = 81;
             this.ServerDataCount.Text = "0";
             // 
-            // label4
+            // ClientThread04TableLabel
             // 
-            this.label4.AutoSize = true;
-            this.label4.ForeColor = System.Drawing.Color.DarkGray;
-            this.label4.Location = new System.Drawing.Point(1346, 371);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(145, 12);
-            this.label4.TabIndex = 89;
-            this.label4.Text = "테이블 이름 [테이블이름]";
+            this.ClientThread04TableLabel.AutoSize = true;
+            this.ClientThread04TableLabel.ForeColor = System.Drawing.Color.DarkGray;
+            this.ClientThread04TableLabel.Location = new System.Drawing.Point(1346, 371);
+            this.ClientThread04TableLabel.Name = "ClientThread04TableLabel";
+            this.ClientThread04TableLabel.Size = new System.Drawing.Size(145, 12);
+            this.ClientThread04TableLabel.TabIndex = 89;
+            this.ClientThread04TableLabel.Text = "테이블 이름 [테이블이름]";
             // 
-            // label5
+            // ClientThread03TableLabel
             // 
-            this.label5.AutoSize = true;
-            this.label5.ForeColor = System.Drawing.Color.DarkGray;
-            this.label5.Location = new System.Drawing.Point(976, 371);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(145, 12);
-            this.label5.TabIndex = 88;
-            this.label5.Text = "테이블 이름 [테이블이름]";
+            this.ClientThread03TableLabel.AutoSize = true;
+            this.ClientThread03TableLabel.ForeColor = System.Drawing.Color.DarkGray;
+            this.ClientThread03TableLabel.Location = new System.Drawing.Point(976, 371);
+            this.ClientThread03TableLabel.Name = "ClientThread03TableLabel";
+            this.ClientThread03TableLabel.Size = new System.Drawing.Size(145, 12);
+            this.ClientThread03TableLabel.TabIndex = 88;
+            this.ClientThread03TableLabel.Text = "테이블 이름 [테이블이름]";
             // 
-            // richTextBox1
+            // ClientThread04Text
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(1196, 422);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(356, 196);
-            this.richTextBox1.TabIndex = 87;
-            this.richTextBox1.Text = "";
+            this.ClientThread04Text.Location = new System.Drawing.Point(1196, 422);
+            this.ClientThread04Text.Name = "ClientThread04Text";
+            this.ClientThread04Text.Size = new System.Drawing.Size(356, 196);
+            this.ClientThread04Text.TabIndex = 87;
+            this.ClientThread04Text.Text = "";
             // 
-            // progressBar1
+            // ClientThread04progressBar
             // 
-            this.progressBar1.Location = new System.Drawing.Point(1195, 392);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(357, 15);
-            this.progressBar1.TabIndex = 86;
+            this.ClientThread04progressBar.Location = new System.Drawing.Point(1195, 392);
+            this.ClientThread04progressBar.Name = "ClientThread04progressBar";
+            this.ClientThread04progressBar.Size = new System.Drawing.Size(357, 15);
+            this.ClientThread04progressBar.TabIndex = 86;
             // 
-            // label6
+            // ClientThread04Label
             // 
-            this.label6.AutoSize = true;
-            this.label6.ForeColor = System.Drawing.Color.DarkGray;
-            this.label6.Location = new System.Drawing.Point(1194, 371);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(117, 12);
-            this.label6.TabIndex = 85;
-            this.label6.Text = "클라이언트02 스레드";
+            this.ClientThread04Label.AutoSize = true;
+            this.ClientThread04Label.ForeColor = System.Drawing.Color.DarkGray;
+            this.ClientThread04Label.Location = new System.Drawing.Point(1194, 371);
+            this.ClientThread04Label.Name = "ClientThread04Label";
+            this.ClientThread04Label.Size = new System.Drawing.Size(117, 12);
+            this.ClientThread04Label.TabIndex = 85;
+            this.ClientThread04Label.Text = "클라이언트04 스레드";
             // 
-            // richTextBox2
+            // ClientThread03Text
             // 
-            this.richTextBox2.Location = new System.Drawing.Point(824, 422);
-            this.richTextBox2.Name = "richTextBox2";
-            this.richTextBox2.Size = new System.Drawing.Size(357, 196);
-            this.richTextBox2.TabIndex = 84;
-            this.richTextBox2.Text = "";
+            this.ClientThread03Text.Location = new System.Drawing.Point(824, 422);
+            this.ClientThread03Text.Name = "ClientThread03Text";
+            this.ClientThread03Text.Size = new System.Drawing.Size(357, 196);
+            this.ClientThread03Text.TabIndex = 84;
+            this.ClientThread03Text.Text = "";
             // 
-            // progressBar2
+            // ClientThread03progressBar
             // 
-            this.progressBar2.Location = new System.Drawing.Point(824, 392);
-            this.progressBar2.Name = "progressBar2";
-            this.progressBar2.Size = new System.Drawing.Size(357, 15);
-            this.progressBar2.TabIndex = 83;
+            this.ClientThread03progressBar.Location = new System.Drawing.Point(824, 392);
+            this.ClientThread03progressBar.Name = "ClientThread03progressBar";
+            this.ClientThread03progressBar.Size = new System.Drawing.Size(357, 15);
+            this.ClientThread03progressBar.TabIndex = 83;
             // 
-            // label7
+            // ClientThread03Label
             // 
-            this.label7.AutoSize = true;
-            this.label7.ForeColor = System.Drawing.Color.DarkGray;
-            this.label7.Location = new System.Drawing.Point(822, 371);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(117, 12);
-            this.label7.TabIndex = 82;
-            this.label7.Text = "클라이언트01 스레드";
+            this.ClientThread03Label.AutoSize = true;
+            this.ClientThread03Label.ForeColor = System.Drawing.Color.DarkGray;
+            this.ClientThread03Label.Location = new System.Drawing.Point(822, 371);
+            this.ClientThread03Label.Name = "ClientThread03Label";
+            this.ClientThread03Label.Size = new System.Drawing.Size(117, 12);
+            this.ClientThread03Label.TabIndex = 82;
+            this.ClientThread03Label.Text = "클라이언트03 스레드";
+            this.ClientThread03Label.Click += new System.EventHandler(this.label7_Click);
             // 
             // ConverterWindow
             // 
@@ -429,14 +430,14 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(1574, 890);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.richTextBox1);
-            this.Controls.Add(this.progressBar1);
-            this.Controls.Add(this.label6);
-            this.Controls.Add(this.richTextBox2);
-            this.Controls.Add(this.progressBar2);
-            this.Controls.Add(this.label7);
+            this.Controls.Add(this.ClientThread04TableLabel);
+            this.Controls.Add(this.ClientThread03TableLabel);
+            this.Controls.Add(this.ClientThread04Text);
+            this.Controls.Add(this.ClientThread04progressBar);
+            this.Controls.Add(this.ClientThread04Label);
+            this.Controls.Add(this.ClientThread03Text);
+            this.Controls.Add(this.ClientThread03progressBar);
+            this.Controls.Add(this.ClientThread03Label);
             this.Controls.Add(this.ServerDataCount);
             this.Controls.Add(this.ClientDataCount);
             this.Controls.Add(this.TimerLabel);
@@ -509,14 +510,14 @@
         public System.Windows.Forms.RichTextBox ExtreactionReadyText;
         public System.Windows.Forms.Label ClientDataCount;
         public System.Windows.Forms.Label ServerDataCount;
-        public System.Windows.Forms.Label label4;
-        public System.Windows.Forms.Label label5;
-        public System.Windows.Forms.RichTextBox richTextBox1;
-        public System.Windows.Forms.ProgressBar progressBar1;
-        private System.Windows.Forms.Label label6;
-        public System.Windows.Forms.RichTextBox richTextBox2;
-        public System.Windows.Forms.ProgressBar progressBar2;
-        private System.Windows.Forms.Label label7;
+        public System.Windows.Forms.Label ClientThread04TableLabel;
+        public System.Windows.Forms.Label ClientThread03TableLabel;
+        public System.Windows.Forms.RichTextBox ClientThread04Text;
+        public System.Windows.Forms.ProgressBar ClientThread04progressBar;
+        private System.Windows.Forms.Label ClientThread04Label;
+        public System.Windows.Forms.RichTextBox ClientThread03Text;
+        public System.Windows.Forms.ProgressBar ClientThread03progressBar;
+        private System.Windows.Forms.Label ClientThread03Label;
     }
 }
 
