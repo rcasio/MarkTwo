@@ -229,6 +229,16 @@ namespace MarkTwo
             ClientThread02progressBar.Maximum = 1000;
             ClientThread02progressBar.Value = 0;
 
+            ClientThread03progressBar.Style = ProgressBarStyle.Continuous;
+            ClientThread03progressBar.Minimum = 0;
+            ClientThread03progressBar.Maximum = 1000;
+            ClientThread03progressBar.Value = 0;
+
+            ClientThread04progressBar.Style = ProgressBarStyle.Continuous;
+            ClientThread04progressBar.Minimum = 0;
+            ClientThread04progressBar.Maximum = 1000;
+            ClientThread04progressBar.Value = 0;
+
             ServerThread01ProgressBar.Style = ProgressBarStyle.Continuous;
             ServerThread01ProgressBar.Minimum = 0;
             ServerThread01ProgressBar.Maximum = 1000;

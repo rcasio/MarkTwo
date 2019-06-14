@@ -190,59 +190,6 @@ public class TableLoad
 		mapBinaryReader.Close();
 		stream.Close();
 
-		// Enchant
-		www = new WWW(this.SetPath("Enchant_Client"));
-		yield return www;
-
-		stream = new MemoryStream(www.bytes);
-		BinaryReader enchantBinaryReader = new BinaryReader(stream);
-
-		Table.Enchant = new Dictionary<int, Enchant>();
-
-		for (int i = 0; i < 21; i++)
-		{
-			Enchant enchant = new Enchant();
-
-			enchant.Num = enchantBinaryReader.ReadInt32();
-			enchant.Value = enchantBinaryReader.ReadInt16();
-			enchant.Grade = enchantBinaryReader.ReadInt32();
-			enchant.Rate = enchantBinaryReader.ReadInt32();
-			enchant.AtkPercentage = enchantBinaryReader.ReadInt32();
-			enchant.DefPercentage = enchantBinaryReader.ReadInt32();
-			enchant.AddCardOption = enchantBinaryReader.ReadInt32();
-			enchant.GamePrice = enchantBinaryReader.ReadInt32();
-			enchant.CashPrice = enchantBinaryReader.ReadInt32();
-
-			Table.Enchant.Add(enchant.Num, enchant);
-		}
-		enchantBinaryReader.Close();
-		stream.Close();
-
-		// Grade
-		www = new WWW(this.SetPath("Grade_Client"));
-		yield return www;
-
-		stream = new MemoryStream(www.bytes);
-		BinaryReader gradeBinaryReader = new BinaryReader(stream);
-
-		Table.Grade = new Dictionary<int, Grade>();
-
-		for (int i = 0; i < 7; i++)
-		{
-			Grade grade = new Grade();
-
-			grade.Num = gradeBinaryReader.ReadInt32();
-			grade.Color_R = gradeBinaryReader.ReadByte();
-			grade.Color_G = gradeBinaryReader.ReadByte();
-			grade.Color_B = gradeBinaryReader.ReadByte();
-			grade.Hex = gradeBinaryReader.ReadString();
-			grade.Sounds = gradeBinaryReader.ReadString();
-
-			Table.Grade.Add(grade.Num, grade);
-		}
-		gradeBinaryReader.Close();
-		stream.Close();
-
 		this.isLoad = true;
     }
 }
