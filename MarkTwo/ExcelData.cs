@@ -45,6 +45,13 @@ namespace MarkTwo
         public Dictionary<string, SheetData> client02SheetDatas = new Dictionary<string, SheetData>();  // 클라이언트 시트 데이터
         public Dictionary<string, SheetData> client03SheetDatas = new Dictionary<string, SheetData>();  // 클라이언트 시트 데이터
         public Dictionary<string, SheetData> client04SheetDatas = new Dictionary<string, SheetData>();  // 클라이언트 시트 데이터
+        public Dictionary<string, SheetData> client05SheetDatas = new Dictionary<string, SheetData>();  // 클라이언트 시트 데이터
+        public Dictionary<string, SheetData> client06SheetDatas = new Dictionary<string, SheetData>();  // 클라이언트 시트 데이터
+        public Dictionary<string, SheetData> client07SheetDatas = new Dictionary<string, SheetData>();  // 클라이언트 시트 데이터
+        public Dictionary<string, SheetData> client08SheetDatas = new Dictionary<string, SheetData>();  // 클라이언트 시트 데이터
+        public Dictionary<string, SheetData> client09SheetDatas = new Dictionary<string, SheetData>();  // 클라이언트 시트 데이터
+        public Dictionary<string, SheetData> client10SheetDatas = new Dictionary<string, SheetData>();  // 클라이언트 시트 데이터
+
         public Dictionary<string, SheetData> server01SheetDats  = new Dictionary<string, SheetData>();  // 서버 시트 데이터
         public Dictionary<string, SheetData> server02SheetDats  = new Dictionary<string, SheetData>();  // 서버 시트 데이터
 
@@ -148,6 +155,120 @@ namespace MarkTwo
                 SetRichBox(rb, "- 클라이언트 데이터04 기반 정보 추출 테이블 : " + sheetName);
 
                 client04SheetDatas.Add(sheetName, new SheetData(this.dataTableList.clientsSheetList04[i],
+                                                                sheetName,
+                                                                this.dataManager,
+                                                                this.dataRule,
+                                                                SetRichBox,
+                                                                this.dataManager.converterWindow.ExtreactionReadyText,
+                                                                true,
+                                                                SheetType.Client));
+                SetRichBox(rb, "- 추출 완료 : " + sheetName);
+            }
+
+            SetRichBox(rb, "");
+            SetRichBox(rb, "클라이언트 데이터05 기반 정보 추출 시작");
+
+            for (int i = 0; i < this.dataTableList.clientList05.Count; i++)
+            {
+                string sheetName = this.dataTableList.clientList05[i];
+                SetRichBox(rb, "- 클라이언트 데이터05 기반 정보 추출 테이블 : " + sheetName);
+
+                client05SheetDatas.Add(sheetName, new SheetData(this.dataTableList.clientsSheetList05[i],
+                                                                sheetName,
+                                                                this.dataManager,
+                                                                this.dataRule,
+                                                                SetRichBox,
+                                                                this.dataManager.converterWindow.ExtreactionReadyText,
+                                                                true,
+                                                                SheetType.Client));
+                SetRichBox(rb, "- 추출 완료 : " + sheetName);
+            }
+
+            SetRichBox(rb, "");
+            SetRichBox(rb, "클라이언트 데이터06 기반 정보 추출 시작");
+
+            for (int i = 0; i < this.dataTableList.clientList06.Count; i++)
+            {
+                string sheetName = this.dataTableList.clientList06[i];
+                SetRichBox(rb, "- 클라이언트 데이터06 기반 정보 추출 테이블 : " + sheetName);
+
+                client06SheetDatas.Add(sheetName, new SheetData(this.dataTableList.clientsSheetList06[i],
+                                                                sheetName,
+                                                                this.dataManager,
+                                                                this.dataRule,
+                                                                SetRichBox,
+                                                                this.dataManager.converterWindow.ExtreactionReadyText,
+                                                                true,
+                                                                SheetType.Client));
+                SetRichBox(rb, "- 추출 완료 : " + sheetName);
+            }
+
+            SetRichBox(rb, "");
+            SetRichBox(rb, "클라이언트 데이터07 기반 정보 추출 시작");
+
+            for (int i = 0; i < this.dataTableList.clientList07.Count; i++)
+            {
+                string sheetName = this.dataTableList.clientList07[i];
+                SetRichBox(rb, "- 클라이언트 데이터07 기반 정보 추출 테이블 : " + sheetName);
+
+                client07SheetDatas.Add(sheetName, new SheetData(this.dataTableList.clientsSheetList07[i],
+                                                                sheetName,
+                                                                this.dataManager,
+                                                                this.dataRule,
+                                                                SetRichBox,
+                                                                this.dataManager.converterWindow.ExtreactionReadyText,
+                                                                true,
+                                                                SheetType.Client));
+                SetRichBox(rb, "- 추출 완료 : " + sheetName);
+            }
+
+            SetRichBox(rb, "");
+            SetRichBox(rb, "클라이언트 데이터08 기반 정보 추출 시작");
+
+            for (int i = 0; i < this.dataTableList.clientList08.Count; i++)
+            {
+                string sheetName = this.dataTableList.clientList08[i];
+                SetRichBox(rb, "- 클라이언트 데이터08 기반 정보 추출 테이블 : " + sheetName);
+
+                client08SheetDatas.Add(sheetName, new SheetData(this.dataTableList.clientsSheetList08[i],
+                                                                sheetName,
+                                                                this.dataManager,
+                                                                this.dataRule,
+                                                                SetRichBox,
+                                                                this.dataManager.converterWindow.ExtreactionReadyText,
+                                                                true,
+                                                                SheetType.Client));
+                SetRichBox(rb, "- 추출 완료 : " + sheetName);
+            }
+
+            SetRichBox(rb, "");
+            SetRichBox(rb, "클라이언트 데이터09 기반 정보 추출 시작");
+
+            for (int i = 0; i < this.dataTableList.clientList09.Count; i++)
+            {
+                string sheetName = this.dataTableList.clientList09[i];
+                SetRichBox(rb, "- 클라이언트 데이터09 기반 정보 추출 테이블 : " + sheetName);
+
+                client09SheetDatas.Add(sheetName, new SheetData(this.dataTableList.clientsSheetList09[i],
+                                                                sheetName,
+                                                                this.dataManager,
+                                                                this.dataRule,
+                                                                SetRichBox,
+                                                                this.dataManager.converterWindow.ExtreactionReadyText,
+                                                                true,
+                                                                SheetType.Client));
+                SetRichBox(rb, "- 추출 완료 : " + sheetName);
+            }
+
+            SetRichBox(rb, "");
+            SetRichBox(rb, "클라이언트 데이터10 기반 정보 추출 시작");
+
+            for (int i = 0; i < this.dataTableList.clientList10.Count; i++)
+            {
+                string sheetName = this.dataTableList.clientList10[i];
+                SetRichBox(rb, "- 클라이언트 데이터10 기반 정보 추출 테이블 : " + sheetName);
+
+                client10SheetDatas.Add(sheetName, new SheetData(this.dataTableList.clientsSheetList10[i],
                                                                 sheetName,
                                                                 this.dataManager,
                                                                 this.dataRule,

@@ -18,7 +18,7 @@ namespace TagManager
 		// PR 테이블은 개별 변수를 정의하기 위한 테이블입니다.
 		public class PR
 		{
-			public const float TableVersion = 0.327f; // 테이블버전 ( Num : 1 )
+			public const float TableVersion = 0.328f; // 테이블버전 ( Num : 1 )
 			public const int TestNum = 1; // 테스트 ( Num : 2 )
 			public const int InitSkillPoint = 0; // 스킬 초기화 ( Num : 100 )
 
