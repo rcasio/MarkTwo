@@ -16,7 +16,8 @@ namespace MarkTwo
         private DataRule dataRule;
         private DataTableList dataTableList;
 
-        private int totalClientData; // 클라이언트 데이터 카운트
+        // 클라이언트 데이터 카운트
+        private int totalClientData; 
         public int TotalClientData {
             get
             {
@@ -27,7 +28,9 @@ namespace MarkTwo
                 return this.totalClientData;
             }
         }
-        private int totalServerData; // 서버 데이터 카운트
+
+        // 서버 데이터 카운트
+        private int totalServerData; 
         public int TotalServerData {
             get
             {

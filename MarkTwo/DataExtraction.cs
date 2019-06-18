@@ -71,23 +71,23 @@ namespace MarkTwo
         public DataExtraction(DataManager dataManager, Action<RichTextBox, string> SetRichText, Action<ProgressBar, int> SetProgressBar, Action NextAction)
         {
             this.dataManager = dataManager;
-            this.excelData = dataManager.excelData;
-            this.NextAction = NextAction;
+            this.excelData   = dataManager.excelData;
+            this.NextAction  = NextAction;
 
             // 데이터를 할당한다.
             this.multilingualData = this.excelData.multilingualSheetDatas;
-            this.clientData01 = this.excelData.client01SheetDatas;
-            this.clientData02 = this.excelData.client02SheetDatas;
-            this.clientData03 = this.excelData.client03SheetDatas;
-            this.clientData04 = this.excelData.client04SheetDatas;
-            this.clientData05 = this.excelData.client05SheetDatas;
-            this.clientData06 = this.excelData.client06SheetDatas;
-            this.clientData07 = this.excelData.client07SheetDatas;
-            this.clientData08 = this.excelData.client08SheetDatas;
-            this.clientData09 = this.excelData.client09SheetDatas;
-            this.clientData10 = this.excelData.client10SheetDatas;
-            this.serverData01 = this.excelData.server01SheetDats;
-            this.serverData02 = this.excelData.server02SheetDats;
+            this.clientData01     = this.excelData.client01SheetDatas;
+            this.clientData02     = this.excelData.client02SheetDatas;
+            this.clientData03     = this.excelData.client03SheetDatas;
+            this.clientData04     = this.excelData.client04SheetDatas;
+            this.clientData05     = this.excelData.client05SheetDatas;
+            this.clientData06     = this.excelData.client06SheetDatas;
+            this.clientData07     = this.excelData.client07SheetDatas;
+            this.clientData08     = this.excelData.client08SheetDatas;
+            this.clientData09     = this.excelData.client09SheetDatas;
+            this.clientData10     = this.excelData.client10SheetDatas;
+            this.serverData01     = this.excelData.server01SheetDats;
+            this.serverData02     = this.excelData.server02SheetDats;
             
             // 다국어 스레드
             this.multilingualThread = new Thread(new ThreadStart(
@@ -381,6 +381,13 @@ namespace MarkTwo
             this.clientThread02.Abort();
             this.clientThread03.Abort();
             this.clientThread04.Abort();
+            this.clientThread05.Abort();
+            this.clientThread06.Abort();
+            this.clientThread07.Abort();
+            this.clientThread08.Abort();
+            this.clientThread09.Abort();
+            this.clientThread10.Abort();
+
             this.serverThread01.Abort();
             this.serverThread02.Abort();
 
