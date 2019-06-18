@@ -338,6 +338,30 @@ namespace MarkTwo
             e = this.client02SheetDatas.GetEnumerator();
             while(e.MoveNext()) this.totalClientSheetDatas.Add(e.Current.Key, e.Current.Value);
 
+            e = this.client03SheetDatas.GetEnumerator();
+            while (e.MoveNext()) this.totalClientSheetDatas.Add(e.Current.Key, e.Current.Value);
+
+            e = this.client04SheetDatas.GetEnumerator();
+            while (e.MoveNext()) this.totalClientSheetDatas.Add(e.Current.Key, e.Current.Value);
+
+            e = this.client05SheetDatas.GetEnumerator();
+            while (e.MoveNext()) this.totalClientSheetDatas.Add(e.Current.Key, e.Current.Value);
+
+            e = this.client06SheetDatas.GetEnumerator();
+            while (e.MoveNext()) this.totalClientSheetDatas.Add(e.Current.Key, e.Current.Value);
+
+            e = this.client07SheetDatas.GetEnumerator();
+            while (e.MoveNext()) this.totalClientSheetDatas.Add(e.Current.Key, e.Current.Value);
+
+            e = this.client08SheetDatas.GetEnumerator();
+            while (e.MoveNext()) this.totalClientSheetDatas.Add(e.Current.Key, e.Current.Value);
+
+            e = this.client09SheetDatas.GetEnumerator();
+            while (e.MoveNext()) this.totalClientSheetDatas.Add(e.Current.Key, e.Current.Value);
+
+            e = this.client10SheetDatas.GetEnumerator();
+            while (e.MoveNext()) this.totalClientSheetDatas.Add(e.Current.Key, e.Current.Value);
+
             // totalServerSheetDatas 설정
             e = this.server01SheetDats.GetEnumerator();
             while (e.MoveNext()) this.totalServerSheetDatas.Add(e.Current.Key, e.Current.Value);

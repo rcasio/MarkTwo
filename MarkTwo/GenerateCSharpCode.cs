@@ -61,7 +61,7 @@ namespace MarkTwo
 
             this.tableConverter = new StreamWriter(new FileStream(this.originalPath_TABLECONVERTER, FileMode.Create));
             this.tableClassList = new StreamWriter(new FileStream(this.originalPath_TABLECLASSLIST, FileMode.Create));
-            this.tableTagList = new StreamWriter(new FileStream(this.originalPath_TABLETAGLIST, FileMode.Create));
+            this.tableTagList   = new StreamWriter(new FileStream(this.originalPath_TABLETAGLIST, FileMode.Create));
             
             this.WriteTableConverter();     // TableConverter.cs를 작성한다.
             this.WriteTableClassList();     // TableClassList.cs를 작성한다.

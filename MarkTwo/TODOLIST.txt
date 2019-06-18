@@ -1,4 +1,7 @@
-1. 엑셀 시트별로 변경사항 체크 한후 변경된 것만 빌드할 것(강제 빌드도 가능)
+1. 변경된 시트는"테이블관리" 시트에서 색상이 변경되며, 
+2. 변경된 색상으로 테이블을 빌드한다.
+3. 강제 빌드도 제공
+
 https://www.extendoffice.com/ko/documents/excel/3884-excel-monitor-cell-changes.html
 
 1. 최적화를 위해 RichText를 라벨로 변경 (RichText가 무거움)
