@@ -1,3 +1,5 @@
+1. 엑셀 시트별로 변경사항 체크 한후 변경된 것만 빌드할 것(강제 빌드도 가능)
+https://www.extendoffice.com/ko/documents/excel/3884-excel-monitor-cell-changes.html
 
 1. 최적화를 위해 RichText를 라벨로 변경 (RichText가 무거움)
 2. Json 포멧으로 추출
