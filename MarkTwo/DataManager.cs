@@ -31,13 +31,13 @@ namespace MarkTwo
         List<string> rowFirstColumns = new List<string>();
 
         //======== 데이터 관리 부분 
-        public Excel.Application excelApp; // 엑셀 어플리 케이션
-        public Excel.Workbook workBook; // 워크 북
-        public Excel.Sheets sheets; // 시트들
+        public Excel.Application excelApp;       // 엑셀 어플리 케이션
+        public Excel.Workbook    workBook;       // 워크 북
+        public Excel.Sheets      sheets;         // 시트들
         
-        public Excel.Worksheet ruleSheet; // [테이블_규칙] 시트
-        public Excel.Worksheet dataTableSheet; // 테이블 관리 시트
-        public Excel.Worksheet dataTypeSheet; // 테이블 관리 시트
+        public Excel.Worksheet   ruleSheet;      // [테이블_규칙] 시트
+        public Excel.Worksheet   dataTableSheet; // 테이블 관리 시트
+        public Excel.Worksheet   dataTypeSheet;  // 테이블 관리 시트
 
         public static ExcelData clientExcelData; // 클라이언트 엑셀 데이터
         public static ExcelData serverExcelData; // 서버 엑셀 데이터
@@ -45,10 +45,10 @@ namespace MarkTwo
         //TODO : 스레드 풀은 멀티랭귀어 테이블이 중점적으로 할당되는지(최우선 순위)를 테스트 한 다음에 진행하도록 한다.
         List<Thread> threadSheets = new List<Thread>(6); // 최대 6개의 스레드를 지원하도록 한다.
 
-        public DataRule dataRule; // [테이블_규칙] 시트
-        public DataType dataType; // 데이터 타입
-        public DataTableList dataTableList; // 데이터 리스트
-        public ExcelData excelData; // 엑셀 데이타
+        public DataRule       dataRule;       // [테이블_규칙] 시트
+        public DataType       dataType;       // 데이터 타입
+        public DataTableList  dataTableList;  // 데이터 리스트
+        public ExcelData      excelData;      // 엑셀 데이타
         public DataExtraction dataExtraction; // 데이터 추출
 
         public DataManager(ConverterWindow converterWindow)

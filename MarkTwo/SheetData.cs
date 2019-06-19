@@ -162,13 +162,6 @@ namespace MarkTwo
                                 }
                                 else
                                 {
-                                    // 파일 생성을 한다면
-                                    //if (this.isCreateFile)
-                                    //{
-                                        //generateBinaryFile.Write(data, fieldData.dataType, this.name, row, column);
-                                        //WriteCallBack(data, fieldData.dataType, this.name, row, column);
-                                    //}
-                                    
                                     fieldData.Add(data); // 데이터를 추가한다.
                                     srb(rb, "- 레이블 [" + column + "],[" + row + "] : " + data);
                                 }
@@ -177,13 +170,6 @@ namespace MarkTwo
                             {
                                 if (!commentRowNums.Contains(row)) // 주석 행이 아닐 경우
                                 {
-                                    // 파일 생성을 한다면
-                                    //if (this.isCreateFile)
-                                    //{
-                                        //generateBinaryFile.Write(data, fieldData.dataType, this.name, row, column);
-                                        //WriteCallBack(data, fieldData.dataType, this.name, row, column);
-                                    //}
-                                    
                                     fieldData.Add(data); // 데이터를 추가한다. 
                                     srb(rb, " - 레이블 [" + column + "],[" + row + "] : " + data);
                                 }
