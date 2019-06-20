@@ -124,6 +124,8 @@ namespace MarkTwo
                 srb(rb, "");
                 srb(rb, "필드 정보");
 
+                // TODO : Cell 대신 Range를 사용해서 대량의 데이터를 읽어오도록 한다.
+
                 for (int row = 1; row <= this.totalRowCount; row++) // 로우 카운트
                 {
                     string data = (this.workSheet.Cells[row, column] as Excel.Range).Text; // 해당 레이블의 데이터를 추출한다.

@@ -1,3 +1,9 @@
+1. Cell 대신 Range를 사용해서 대량의 데이터를 읽어와서 처리하도록 한다.
+	- http://www.csharpstudy.com/Practical/Prac-excel.aspxExcel.Range 
+	- SheetData.cs 
+	- 127 Line
+
+
 1. 변경된 시트는"테이블관리" 시트에서 색상이 변경되며, 
 2. 변경된 색상으로 테이블을 빌드한다.
 3. 강제 빌드도 제공
