@@ -304,6 +304,9 @@ public class TableLoad
 			test01.Num = test01BinaryReader.ReadInt32();
 			test01.Test2 = test01BinaryReader.ReadSingle();
 			test01.Test3 = test01BinaryReader.ReadInt32();
+			test01.Test4 = test01BinaryReader.ReadInt32();
+			test01.Test5 = test01BinaryReader.ReadInt32();
+			test01.Test6 = test01BinaryReader.ReadInt32();
 
 			Table.Test01.Add(test01.Num, test01);
 		}

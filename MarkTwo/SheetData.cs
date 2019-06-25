@@ -36,7 +36,9 @@ namespace MarkTwo
                 return rowCount;
             }
         }
-        
+
+        public object[,] sheetdata; // 추출된 시트 데이터
+
         public List<int> fieldCommentList = new List<int>(); // 필드의 주석을 저장한다(필드 번호 순 ex) {2,7}이면 2열 7열이 주석필드)
         public List<int> rowCommentList = new List<int>(); // 행의 주석 번호를 저장한다.(행 번호 순 ex) {2,3}이면 2행 3행 주서행)
 
@@ -81,6 +83,12 @@ namespace MarkTwo
             this.totalRowCount = this.workSheet.Cells.Find("*", Type.Missing, Excel.XlFindLookIn.xlValues, Excel.XlLookAt.xlWhole, Excel.XlSearchOrder.xlByColumns, Excel.XlSearchDirection.xlPrevious, false, false, Type.Missing).Row;
 
             this.totalDataCount = this.totalColumnCount * this.totalRowCount; // 데이터 카운트
+
+
+            // 워크시트에서 한번에 불러온다.(직접 워크 시트에서 데이터를 하나씩 불러오는 것보다 빠름)
+            Excel.Range rng = this.workSheet.UsedRange;
+
+            this.sheetdata = rng.Value; // 추출된 데이터를 넣는다.
         }
 
         public void Create(Action<RichTextBox, string> SetRichTextBox,
@@ -124,11 +132,10 @@ namespace MarkTwo
                 srb(rb, "");
                 srb(rb, "필드 정보");
 
-                // TODO : Cell 대신 Range를 사용해서 대량의 데이터를 읽어오도록 한다.
-
                 for (int row = 1; row <= this.totalRowCount; row++) // 로우 카운트
                 {
-                    string data = (this.workSheet.Cells[row, column] as Excel.Range).Text; // 해당 레이블의 데이터를 추출한다.
+                    string data = this.sheetdata[row, column]?.ToString() ?? "";
+                    //string data = (this.workSheet.Cells[row, column] as Excel.Range).Text; // 해당 레이블의 데이터를 추출한다.
 
                     if (!data.StartsWith(this.dataRule.commentFieldMark))  // 필드 주석 "&" 이 아닐 경우
                     {
@@ -194,6 +201,7 @@ namespace MarkTwo
                     }
                 }
 
+                // TODO : 동일한 필드 이름이 있을 경우 예외처리하기
                 if (!commentColumnNums.Contains(column)) // 주석 필드가 아니라면
                 {
                     fieldDatas.Add(fieldData.name, fieldData); // 필드 데이터스에 등록한다.

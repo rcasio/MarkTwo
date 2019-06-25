@@ -141,6 +141,9 @@ public class Test01
 	public int Num;
 	public float Test2;
 	public int Test3;
+	public int Test4;
+	public int Test5;
+	public int Test6;
 }
 
 [System.Serializable] 
