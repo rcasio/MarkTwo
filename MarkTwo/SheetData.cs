@@ -201,7 +201,6 @@ namespace MarkTwo
                     }
                 }
 
-                // TODO : 동일한 필드 이름이 있을 경우 예외처리하기
                 if (!commentColumnNums.Contains(column)) // 주석 필드가 아니라면
                 {
                     fieldDatas.Add(fieldData.name, fieldData); // 필드 데이터스에 등록한다.
@@ -247,7 +246,11 @@ namespace MarkTwo
         {
             if (string.IsNullOrEmpty(data))
             {
-                MessageBox.Show("[" + tableName + "] 테이블 첫번째 행의 [" + columnNum + "] 번째 필드 데이터가 입력되어 있지 않습니다.", "엑셀 필드 오류");
+                MessageBox.Show($"테이블 이름 : {tableName}\n\n" +
+                                $"행 : 1\n" +
+                                $"필드 : {this.GetIntToExcelColumn(columnNum)}\n",
+                                "필드 기획 이름 없음");
+
                 this.Close();
             }
         }
@@ -261,7 +264,23 @@ namespace MarkTwo
             // 데이터가 없을 경우
             if (string.IsNullOrEmpty(data))
             {
-                MessageBox.Show("[" + tableName + "] 테이블 두번째 행\n[" + columnNum + "] 번째 필드의 필드이름이 입력되어 있지 않습니다.", "엑셀 필드 오류");
+                MessageBox.Show($"테이블 이름 : {tableName}\n\n" +
+                                $"행 : 2\n" +
+                                $"필드 : {this.GetIntToExcelColumn(columnNum)}\n",
+                                "필드 프로그램 이름 없음");
+
+                this.Close();
+            }
+
+            // 필드 이름 중복
+            if (this.fieldNameList.Contains(data))
+            {
+                MessageBox.Show($"테이블 이름 : {tableName}\n\n" +
+                                $"행 : 2\n" +
+                                $"필드 : {this.GetIntToExcelColumn(columnNum)}\n" +
+                                $"중복 필드 이름 : {data}",
+                                "필드 이름 중복");
+                
                 this.Close();
             }
         }
@@ -278,15 +297,54 @@ namespace MarkTwo
                 // 데이터가 없을 경우
                 if (string.IsNullOrEmpty(data))
                 {
-                    MessageBox.Show("[" + tableName + "] 테이블 세번째 행\n[" + columnNum + "] 번째 필드의 필드 자료형이 입력되어 있지 않습니다.", "엑셀 필드 오류");
+                    MessageBox.Show($"테이블 이름 : {tableName}\n\n" +
+                                    $"행 : 3\n" +
+                                    $"필드 : {this.GetIntToExcelColumn(columnNum)}\n",
+                                    "자료형이 없음");
+
+                    //MessageBox.Show("[" + tableName + "] 테이블 세번째 행\n[" + columnNum + "] 번째 필드의 필드 자료형이 입력되어 있지 않습니다.", "엑셀 필드 오류");
                     this.Close();
                 }
                 else if (!this.dataManager.dataType.CheckMySQLType(data)) // 타입이 다를 경우
                 {
-                    MessageBox.Show("[" + tableName + "] 테이블 세번째 행의 [" + columnNum + "] 번째 자료형이 [" + data + "]로 잘못 입력되어 있습니다.\n\n※ [테이블 규칙] 시트의 MSSSQL 자료형을 및 Tag의 타입을 참조하시기 바랍니다.", "엑셀 데이터타입 입력 오류");
+                    MessageBox.Show($"테이블 이름 : {tableName}\n\n" +
+                                    $"행 : 3\n" +
+                                    $"필드 : {this.GetIntToExcelColumn(columnNum)}\n" +
+                                    $"입력된 자료형 : {data}",
+                                    "자료형 이름 오류");
+
+                    //MessageBox.Show("[" + tableName + "] 테이블 세번째 행의 [" + columnNum + "] 번째 자료형이 [" + data + "]로 잘못 입력되어 있습니다.\n\n※ [테이블 규칙] 시트의 MSSSQL 자료형을 및 Tag의 타입을 참조하시기 바랍니다.", "엑셀 데이터타입 입력 오류");
                     this.Close();
                 }
             }
+        }
+
+        // 숫자를 엑셀 영문자 컬럼으로 변경  
+        public string GetIntToExcelColumn(int colIndex)
+        {
+            if (colIndex <= 26) return Convert.ToChar(colIndex + 64).ToString();
+
+            int div = colIndex / 26;
+            int mod = colIndex % 26;
+            if (mod == 0) { mod = 26; div--; }
+            return GetIntToExcelColumn(div) + GetIntToExcelColumn(mod);
+        }
+
+        // 엑셀 영문자 컬럼을 순서 숫자로 변경  
+        public int GetExcelColumnToInt(string colName)
+        {
+            int[] digits = new int[colName.Length];
+            for (int i = 0; i < colName.Length; ++i)
+            {
+                digits[i] = Convert.ToInt32(colName[i]) - 64;
+            }
+            int mul = 1; int res = 0;
+            for (int pos = digits.Length - 1; pos >= 0; --pos)
+            {
+                res += digits[pos] * mul;
+                mul *= 26;
+            }
+            return res;
         }
 
         public void Close()

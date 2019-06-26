@@ -297,16 +297,52 @@ public class TableLoad
 
 		Table.Test01 = new Dictionary<int, Test01>();
 
-		for (int i = 0; i < 3; i++)
+		for (int i = 0; i < 23; i++)
 		{
 			Test01 test01 = new Test01();
 
 			test01.Num = test01BinaryReader.ReadInt32();
-			test01.Test2 = test01BinaryReader.ReadSingle();
-			test01.Test3 = test01BinaryReader.ReadInt32();
-			test01.Test4 = test01BinaryReader.ReadInt32();
-			test01.Test5 = test01BinaryReader.ReadInt32();
-			test01.Test6 = test01BinaryReader.ReadInt32();
+			test01.test = test01BinaryReader.ReadInt32();
+			test01.test1 = test01BinaryReader.ReadInt32();
+			test01.gashaponID_1_prob = test01BinaryReader.ReadInt32();
+			test01.gashaponID_1_minSelectCount = test01BinaryReader.ReadInt32();
+			test01.gashaponID_1_maxSelectCount = test01BinaryReader.ReadInt32();
+			test01.gashaponID_2 = test01BinaryReader.ReadInt32();
+			test01.gashaponID_2_prob = test01BinaryReader.ReadInt32();
+			test01.gashaponID_2_minSelectCount = test01BinaryReader.ReadInt32();
+			test01.gashaponID_2_maxSelectCount = test01BinaryReader.ReadInt32();
+			test01.gashaponID_3 = test01BinaryReader.ReadInt32();
+			test01.gashaponID_3_prob = test01BinaryReader.ReadInt32();
+			test01.gashaponID_3_minSelectCount = test01BinaryReader.ReadInt32();
+			test01.gashaponID_3_maxSelectCount = test01BinaryReader.ReadInt32();
+			test01.gashaponID_4 = test01BinaryReader.ReadInt32();
+			test01.gashaponID_4_prob = test01BinaryReader.ReadInt32();
+			test01.gashaponID_4_minSelectCount = test01BinaryReader.ReadInt32();
+			test01.gashaponID_4_maxSelectCount = test01BinaryReader.ReadInt32();
+			test01.gashaponID_5 = test01BinaryReader.ReadInt32();
+			test01.gashaponID_5_prob = test01BinaryReader.ReadInt32();
+			test01.gashaponID_5_minSelectCount = test01BinaryReader.ReadInt32();
+			test01.gashaponID_5_maxSelectCount = test01BinaryReader.ReadInt32();
+			test01.gashaponID_6 = test01BinaryReader.ReadInt32();
+			test01.gashaponID_6_prob = test01BinaryReader.ReadInt32();
+			test01.gashaponID_6_minSelectCount = test01BinaryReader.ReadInt32();
+			test01.gashaponID_6_maxSelectCount = test01BinaryReader.ReadInt32();
+			test01.gashaponID_7 = test01BinaryReader.ReadInt32();
+			test01.gashaponID_7_prob = test01BinaryReader.ReadInt32();
+			test01.gashaponID_7_minSelectCount = test01BinaryReader.ReadInt32();
+			test01.gashaponID_7_maxSelectCount = test01BinaryReader.ReadInt32();
+			test01.gashaponID_8 = test01BinaryReader.ReadInt32();
+			test01.gashaponID_8_prob = test01BinaryReader.ReadInt32();
+			test01.gashaponID_8_minSelectCount = test01BinaryReader.ReadInt32();
+			test01.gashaponID_8_maxSelectCount = test01BinaryReader.ReadInt32();
+			test01.gashaponID_9 = test01BinaryReader.ReadInt32();
+			test01.gashaponID_9_prob = test01BinaryReader.ReadInt32();
+			test01.gashaponID_9_minSelectCount = test01BinaryReader.ReadInt32();
+			test01.gashaponID_9_maxSelectCount = test01BinaryReader.ReadInt32();
+			test01.gashaponID_10 = test01BinaryReader.ReadInt32();
+			test01.gashaponID_10_prob = test01BinaryReader.ReadInt32();
+			test01.gashaponID_10_minSelectCount = test01BinaryReader.ReadInt32();
+			test01.gashaponID_10_maxSelectCount = test01BinaryReader.ReadInt32();
 
 			Table.Test01.Add(test01.Num, test01);
 		}

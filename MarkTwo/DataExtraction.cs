@@ -376,19 +376,32 @@ namespace MarkTwo
         public void CloseThreads() // 스레드를 닫는다.
         {
             // 스레드 종료
+            this.multilingualThread.Interrupt();
             this.multilingualThread.Abort();
+            this.clientThread01.Interrupt();
             this.clientThread01.Abort();
+            this.clientThread02.Interrupt();
             this.clientThread02.Abort();
+            this.clientThread03.Interrupt();
             this.clientThread03.Abort();
+            this.clientThread04.Interrupt();
             this.clientThread04.Abort();
+            this.clientThread05.Interrupt();
             this.clientThread05.Abort();
+            this.clientThread06.Interrupt();
             this.clientThread06.Abort();
+            this.clientThread07.Interrupt();
             this.clientThread07.Abort();
+            this.clientThread08.Interrupt();
             this.clientThread08.Abort();
+            this.clientThread09.Interrupt();
             this.clientThread09.Abort();
+            this.clientThread10.Interrupt();
             this.clientThread10.Abort();
 
+            this.serverThread01.Interrupt();
             this.serverThread01.Abort();
+            this.serverThread02.Interrupt();
             this.serverThread02.Abort();
 
             // 스레드 체커 종료

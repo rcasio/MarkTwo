@@ -139,11 +139,47 @@ public class ConquerorLevel
 public class Test01
 {
 	public int Num;
-	public float Test2;
-	public int Test3;
-	public int Test4;
-	public int Test5;
-	public int Test6;
+	public int test;
+	public int test1;
+	public int gashaponID_1_prob;
+	public int gashaponID_1_minSelectCount;
+	public int gashaponID_1_maxSelectCount;
+	public int gashaponID_2;
+	public int gashaponID_2_prob;
+	public int gashaponID_2_minSelectCount;
+	public int gashaponID_2_maxSelectCount;
+	public int gashaponID_3;
+	public int gashaponID_3_prob;
+	public int gashaponID_3_minSelectCount;
+	public int gashaponID_3_maxSelectCount;
+	public int gashaponID_4;
+	public int gashaponID_4_prob;
+	public int gashaponID_4_minSelectCount;
+	public int gashaponID_4_maxSelectCount;
+	public int gashaponID_5;
+	public int gashaponID_5_prob;
+	public int gashaponID_5_minSelectCount;
+	public int gashaponID_5_maxSelectCount;
+	public int gashaponID_6;
+	public int gashaponID_6_prob;
+	public int gashaponID_6_minSelectCount;
+	public int gashaponID_6_maxSelectCount;
+	public int gashaponID_7;
+	public int gashaponID_7_prob;
+	public int gashaponID_7_minSelectCount;
+	public int gashaponID_7_maxSelectCount;
+	public int gashaponID_8;
+	public int gashaponID_8_prob;
+	public int gashaponID_8_minSelectCount;
+	public int gashaponID_8_maxSelectCount;
+	public int gashaponID_9;
+	public int gashaponID_9_prob;
+	public int gashaponID_9_minSelectCount;
+	public int gashaponID_9_maxSelectCount;
+	public int gashaponID_10;
+	public int gashaponID_10_prob;
+	public int gashaponID_10_minSelectCount;
+	public int gashaponID_10_maxSelectCount;
 }
 
 [System.Serializable] 
