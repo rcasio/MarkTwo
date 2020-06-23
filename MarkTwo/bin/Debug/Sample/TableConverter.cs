@@ -2,21 +2,23 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using UnityEngine.Networking;
 using System;
+using TableDB;
 
 public class Table
 {
-	public static Dictionary<int, Multilingual> Multilingual;
-	public static Dictionary<int, PR> PR;
-	public static Dictionary<int, Tag> Tag;
-	public static Dictionary<int, NPC> NPC;
-	public static Dictionary<int, Map> Map;
-	public static Dictionary<int, Enchant> Enchant;
-	public static Dictionary<int, Grade> Grade;
-	public static Dictionary<int, ConquerorLevel> ConquerorLevel;
-	public static Dictionary<int, Test01> Test01;
-	public static Dictionary<int, Test02> Test02;
-	public static Dictionary<int, Test03> Test03;
+	public static Dictionary<int, TableDB.Multilingual> Multilingual;
+	public static Dictionary<int, TableDB.PR> PR;
+	public static Dictionary<int, TableDB.Tag> Tag;
+	public static Dictionary<int, TableDB.NPC> NPC;
+	public static Dictionary<int, TableDB.Map> Map;
+	public static Dictionary<int, TableDB.Enchant> Enchant;
+	public static Dictionary<int, TableDB.Grade> Grade;
+	public static Dictionary<int, TableDB.ConquerorLevel> ConquerorLevel;
+	public static Dictionary<int, TableDB.Test01> Test01;
+	public static Dictionary<int, TableDB.Test02> Test02;
+	public static Dictionary<int, TableDB.Test03> Test03;
 }
 
 public class TableLoad
@@ -29,7 +31,7 @@ public class TableLoad
 
 		if (Application.platform == RuntimePlatform.Android) { tableDBPath = "jar:file://" + Application.dataPath + "!/assets/" + fileName + ".bytes"; } // Android Path
 		else if (Application.platform == RuntimePlatform.IPhonePlayer) { tableDBPath = "file://" + Application.dataPath + "/Raw/" + fileName + ".bytes"; } // IOS Path
-		else { tableDBPath = "file://" + Application.dataPath + "/StreamingAssets/" + fileName + ".bytes"; } // Editor PAth
+		else { tableDBPath = Path.Combine(Application.streamingAssetsPath, fileName + ".bytes"); } // Editor PAth
 
 		return tableDBPath;
 	}
@@ -37,20 +39,20 @@ public class TableLoad
 	public IEnumerator Load()
 	{
 		MemoryStream stream;
-		WWW www;
+		UnityWebRequest www;
 
 		// Multilingual
-		www = new WWW(this.SetPath("Multilingual_Multilingual"));
-		yield return www;
+		www = UnityWebRequest.Get(this.SetPath("Multilingual_Multilingual"));
+		yield return www.SendWebRequest();
 
-		stream = new MemoryStream(www.bytes);
+		stream = new MemoryStream(www.downloadHandler.data);
 		BinaryReader multilingualBinaryReader = new BinaryReader(stream);
 
-		Table.Multilingual = new Dictionary<int, Multilingual>();
+		Table.Multilingual = new Dictionary<int, TableDB.Multilingual > ();
 
 		for (int i = 0; i < 100; i++)
 		{
-			Multilingual multilingual = new Multilingual();
+			TableDB.Multilingual multilingual = new TableDB.Multilingual();
 
 			multilingual.Num = multilingualBinaryReader.ReadInt32();
 			multilingual.Kor = multilingualBinaryReader.ReadString();
@@ -63,17 +65,17 @@ public class TableLoad
 		stream.Close();
 
 		// PR
-		www = new WWW(this.SetPath("PR_Client"));
-		yield return www;
+		www = UnityWebRequest.Get(this.SetPath("PR_Client"));
+		yield return www.SendWebRequest();
 
-		stream = new MemoryStream(www.bytes);
+		stream = new MemoryStream(www.downloadHandler.data);
 		BinaryReader prBinaryReader = new BinaryReader(stream);
 
-		Table.PR = new Dictionary<int, PR>();
+		Table.PR = new Dictionary<int, TableDB.PR > ();
 
 		for (int i = 0; i < 19; i++)
 		{
-			PR pr = new PR();
+			TableDB.PR pr = new TableDB.PR();
 
 			pr.Num = prBinaryReader.ReadInt32();
 			pr.Type = prBinaryReader.ReadString();
@@ -87,17 +89,17 @@ public class TableLoad
 		stream.Close();
 
 		// Tag
-		www = new WWW(this.SetPath("Tag_Client"));
-		yield return www;
+		www = UnityWebRequest.Get(this.SetPath("Tag_Client"));
+		yield return www.SendWebRequest();
 
-		stream = new MemoryStream(www.bytes);
+		stream = new MemoryStream(www.downloadHandler.data);
 		BinaryReader tagBinaryReader = new BinaryReader(stream);
 
-		Table.Tag = new Dictionary<int, Tag>();
+		Table.Tag = new Dictionary<int, TableDB.Tag > ();
 
 		for (int i = 0; i < 15; i++)
 		{
-			Tag tag = new Tag();
+			TableDB.Tag tag = new TableDB.Tag();
 
 			tag.Num = tagBinaryReader.ReadInt32();
 			tag.Type = tagBinaryReader.ReadString();
@@ -111,17 +113,17 @@ public class TableLoad
 		stream.Close();
 
 		// NPC
-		www = new WWW(this.SetPath("NPC_Client"));
-		yield return www;
+		www = UnityWebRequest.Get(this.SetPath("NPC_Client"));
+		yield return www.SendWebRequest();
 
-		stream = new MemoryStream(www.bytes);
+		stream = new MemoryStream(www.downloadHandler.data);
 		BinaryReader npcBinaryReader = new BinaryReader(stream);
 
-		Table.NPC = new Dictionary<int, NPC>();
+		Table.NPC = new Dictionary<int, TableDB.NPC > ();
 
 		for (int i = 0; i < 23; i++)
 		{
-			NPC npc = new NPC();
+			TableDB.NPC npc = new TableDB.NPC();
 
 			npc.Num = npcBinaryReader.ReadInt32();
 			npc.Property = npcBinaryReader.ReadInt32();
@@ -164,17 +166,17 @@ public class TableLoad
 		stream.Close();
 
 		// Map
-		www = new WWW(this.SetPath("Map_Client"));
-		yield return www;
+		www = UnityWebRequest.Get(this.SetPath("Map_Client"));
+		yield return www.SendWebRequest();
 
-		stream = new MemoryStream(www.bytes);
+		stream = new MemoryStream(www.downloadHandler.data);
 		BinaryReader mapBinaryReader = new BinaryReader(stream);
 
-		Table.Map = new Dictionary<int, Map>();
+		Table.Map = new Dictionary<int, TableDB.Map > ();
 
 		for (int i = 0; i < 4; i++)
 		{
-			Map map = new Map();
+			TableDB.Map map = new TableDB.Map();
 
 			map.Num = mapBinaryReader.ReadInt32();
 			map.ChapterNum = mapBinaryReader.ReadInt32();
@@ -195,17 +197,17 @@ public class TableLoad
 		stream.Close();
 
 		// Enchant
-		www = new WWW(this.SetPath("Enchant_Client"));
-		yield return www;
+		www = UnityWebRequest.Get(this.SetPath("Enchant_Client"));
+		yield return www.SendWebRequest();
 
-		stream = new MemoryStream(www.bytes);
+		stream = new MemoryStream(www.downloadHandler.data);
 		BinaryReader enchantBinaryReader = new BinaryReader(stream);
 
-		Table.Enchant = new Dictionary<int, Enchant>();
+		Table.Enchant = new Dictionary<int, TableDB.Enchant > ();
 
 		for (int i = 0; i < 21; i++)
 		{
-			Enchant enchant = new Enchant();
+			TableDB.Enchant enchant = new TableDB.Enchant();
 
 			enchant.Num = enchantBinaryReader.ReadInt32();
 			enchant.Value = enchantBinaryReader.ReadInt16();
@@ -223,17 +225,17 @@ public class TableLoad
 		stream.Close();
 
 		// Grade
-		www = new WWW(this.SetPath("Grade_Client"));
-		yield return www;
+		www = UnityWebRequest.Get(this.SetPath("Grade_Client"));
+		yield return www.SendWebRequest();
 
-		stream = new MemoryStream(www.bytes);
+		stream = new MemoryStream(www.downloadHandler.data);
 		BinaryReader gradeBinaryReader = new BinaryReader(stream);
 
-		Table.Grade = new Dictionary<int, Grade>();
+		Table.Grade = new Dictionary<int, TableDB.Grade > ();
 
 		for (int i = 0; i < 7; i++)
 		{
-			Grade grade = new Grade();
+			TableDB.Grade grade = new TableDB.Grade();
 
 			grade.Num = gradeBinaryReader.ReadInt32();
 			grade.Color_R = gradeBinaryReader.ReadByte();
@@ -248,17 +250,17 @@ public class TableLoad
 		stream.Close();
 
 		// ConquerorLevel
-		www = new WWW(this.SetPath("ConquerorLevel_Client"));
-		yield return www;
+		www = UnityWebRequest.Get(this.SetPath("ConquerorLevel_Client"));
+		yield return www.SendWebRequest();
 
-		stream = new MemoryStream(www.bytes);
+		stream = new MemoryStream(www.downloadHandler.data);
 		BinaryReader conquerorlevelBinaryReader = new BinaryReader(stream);
 
-		Table.ConquerorLevel = new Dictionary<int, ConquerorLevel>();
+		Table.ConquerorLevel = new Dictionary<int, TableDB.ConquerorLevel > ();
 
 		for (int i = 0; i < 20; i++)
 		{
-			ConquerorLevel conquerorlevel = new ConquerorLevel();
+			TableDB.ConquerorLevel conquerorlevel = new TableDB.ConquerorLevel();
 
 			conquerorlevel.Num = conquerorlevelBinaryReader.ReadInt32();
 			conquerorlevel.Level = conquerorlevelBinaryReader.ReadSingle();
@@ -289,21 +291,21 @@ public class TableLoad
 		stream.Close();
 
 		// Test01
-		www = new WWW(this.SetPath("Test01_Client"));
-		yield return www;
+		www = UnityWebRequest.Get(this.SetPath("Test01_Client"));
+		yield return www.SendWebRequest();
 
-		stream = new MemoryStream(www.bytes);
+		stream = new MemoryStream(www.downloadHandler.data);
 		BinaryReader test01BinaryReader = new BinaryReader(stream);
 
-		Table.Test01 = new Dictionary<int, Test01>();
+		Table.Test01 = new Dictionary<int, TableDB.Test01 > ();
 
 		for (int i = 0; i < 23; i++)
 		{
-			Test01 test01 = new Test01();
+			TableDB.Test01 test01 = new TableDB.Test01();
 
 			test01.Num = test01BinaryReader.ReadInt32();
 			test01.test = test01BinaryReader.ReadInt32();
-			test01.test1 = test01BinaryReader.ReadInt32();
+			test01.test22 = test01BinaryReader.ReadInt32();
 			test01.gashaponID_1_prob = test01BinaryReader.ReadInt32();
 			test01.gashaponID_1_minSelectCount = test01BinaryReader.ReadInt32();
 			test01.gashaponID_1_maxSelectCount = test01BinaryReader.ReadInt32();
@@ -350,17 +352,17 @@ public class TableLoad
 		stream.Close();
 
 		// Test02
-		www = new WWW(this.SetPath("Test02_Client"));
-		yield return www;
+		www = UnityWebRequest.Get(this.SetPath("Test02_Client"));
+		yield return www.SendWebRequest();
 
-		stream = new MemoryStream(www.bytes);
+		stream = new MemoryStream(www.downloadHandler.data);
 		BinaryReader test02BinaryReader = new BinaryReader(stream);
 
-		Table.Test02 = new Dictionary<int, Test02>();
+		Table.Test02 = new Dictionary<int, TableDB.Test02 > ();
 
 		for (int i = 0; i < 3; i++)
 		{
-			Test02 test02 = new Test02();
+			TableDB.Test02 test02 = new TableDB.Test02();
 
 			test02.Num = test02BinaryReader.ReadInt32();
 			test02.Test2 = test02BinaryReader.ReadSingle();
@@ -372,17 +374,17 @@ public class TableLoad
 		stream.Close();
 
 		// Test03
-		www = new WWW(this.SetPath("Test03_Client"));
-		yield return www;
+		www = UnityWebRequest.Get(this.SetPath("Test03_Client"));
+		yield return www.SendWebRequest();
 
-		stream = new MemoryStream(www.bytes);
+		stream = new MemoryStream(www.downloadHandler.data);
 		BinaryReader test03BinaryReader = new BinaryReader(stream);
 
-		Table.Test03 = new Dictionary<int, Test03>();
+		Table.Test03 = new Dictionary<int, TableDB.Test03 > ();
 
 		for (int i = 0; i < 3; i++)
 		{
-			Test03 test03 = new Test03();
+			TableDB.Test03 test03 = new TableDB.Test03();
 
 			test03.Num = test03BinaryReader.ReadInt32();
 			test03.Test2 = test03BinaryReader.ReadSingle();

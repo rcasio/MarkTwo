@@ -73,21 +73,26 @@ namespace MarkTwo
         private void WriteTableClassList()
         {
             IEnumerator<KeyValuePair<string, SheetData>> e = this.totalClientSheetDatas.GetEnumerator();
+
+            tableClassList.WriteLine("namespace TableDB");
+            tableClassList.WriteLine("{");
+
             while (e.MoveNext())
             {
                 // 테이블 단위의 개별 클래스를 만든다.
-                tableClassList.WriteLine("[System.Serializable] "); // 에디터에서 확인할 수 있게 [System.Serializable]을 하도록 한다.
-                tableClassList.WriteLine("public class " + e.Current.Key);
-                tableClassList.WriteLine("{");
+                tableClassList.WriteLine("\t[System.Serializable] "); // 에디터에서 확인할 수 있게 [System.Serializable]을 하도록 한다.
+                tableClassList.WriteLine("\tpublic class " + e.Current.Key);
+                tableClassList.WriteLine("\t{");
                 
                 for (int i = 0; i < e.Current.Value.fieldNameList.Count; i++)
                 {
-                    tableClassList.WriteLine(AddString("\tpublic ", this.ChangeType(e.Current.Value.fieldDataTypeList[i]), " ", e.Current.Value.fieldNameList[i], ";"));
+                    tableClassList.WriteLine(AddString("\t\tpublic ", this.ChangeType(e.Current.Value.fieldDataTypeList[i]), " ", e.Current.Value.fieldNameList[i], ";"));
                 }
 
-                tableClassList.WriteLine("}");
+                tableClassList.WriteLine("\t}");
                 tableClassList.WriteLine("");
             }
+            tableClassList.WriteLine("}");
         }
 
         // TableConverter.cs를 작성한다.
@@ -97,7 +102,9 @@ namespace MarkTwo
             tableConverter.WriteLine("using System.Collections;");
             tableConverter.WriteLine("using System.Collections.Generic;");
             tableConverter.WriteLine("using System.IO;");
+            tableConverter.WriteLine("using UnityEngine.Networking;");
             tableConverter.WriteLine("using System;");
+            tableConverter.WriteLine("using TableDB;");
 
             tableConverter.WriteLine("");
             tableConverter.WriteLine("public class Table");
@@ -106,7 +113,7 @@ namespace MarkTwo
             // 테이블 시트를 담을 클래스 리스트를 선언한다.
             foreach (string sheetName in this.totlaClientList)
             {
-                tableConverter.WriteLine(AddString("\tpublic static Dictionary<int, ", sheetName, "> ", sheetName, ";"));
+                tableConverter.WriteLine(AddString("\tpublic static Dictionary<int, ", "TableDB." + sheetName, "> ", sheetName, ";"));
             }
             
             tableConverter.WriteLine("}");
@@ -121,7 +128,7 @@ namespace MarkTwo
             tableConverter.WriteLine("");
             tableConverter.WriteLine("\t\tif (Application.platform == RuntimePlatform.Android) { tableDBPath = \"jar:file://\" + Application.dataPath + \"!/assets/\" + fileName + \".bytes\"; } // Android Path");
             tableConverter.WriteLine("\t\telse if (Application.platform == RuntimePlatform.IPhonePlayer) { tableDBPath = \"file://\" + Application.dataPath + \"/Raw/\" + fileName + \".bytes\"; } // IOS Path");
-            tableConverter.WriteLine("\t\telse { tableDBPath = \"file://\" + Application.dataPath + \"/StreamingAssets/\" + fileName + \".bytes\"; } // Editor PAth");
+            tableConverter.WriteLine("\t\telse { tableDBPath = Path.Combine(Application.streamingAssetsPath, fileName + \".bytes\"); } // Editor PAth");
             tableConverter.WriteLine("");
             tableConverter.WriteLine("\t\treturn tableDBPath;");
             tableConverter.WriteLine("\t}");
@@ -129,24 +136,24 @@ namespace MarkTwo
             tableConverter.WriteLine("\tpublic IEnumerator Load()");
             tableConverter.WriteLine("\t{");
             tableConverter.WriteLine("\t\tMemoryStream stream;");
-            tableConverter.WriteLine("\t\tWWW www;");
+            tableConverter.WriteLine("\t\tUnityWebRequest www;");
             tableConverter.WriteLine("");
 
             IEnumerator<KeyValuePair<string, SheetData>> e = this.totalClientSheetDatas.GetEnumerator();
             while (e.MoveNext())
             {
                 tableConverter.WriteLine(AddString("\t\t// ", e.Current.Key));
-                tableConverter.WriteLine(AddString("\t\twww = new WWW(this.SetPath(\"", GenerateBinaryFile.clientBinaryFiles[e.Current.Key],"\"));"));
-                tableConverter.WriteLine(AddString("\t\tyield return www;"));
+                tableConverter.WriteLine(AddString("\t\twww = UnityWebRequest.Get(this.SetPath(\"",GenerateBinaryFile.clientBinaryFiles[e.Current.Key],"\"));"));
+                tableConverter.WriteLine(AddString("\t\tyield return www.SendWebRequest();"));
                 tableConverter.WriteLine("");
-                tableConverter.WriteLine("\t\tstream = new MemoryStream(www.bytes);");
+                tableConverter.WriteLine("\t\tstream = new MemoryStream(www.downloadHandler.data);");
                 tableConverter.WriteLine(AddString("\t\tBinaryReader ", e.Current.Key.ToLower(), "BinaryReader = new BinaryReader(stream);"));
                 tableConverter.WriteLine("");
-                tableConverter.WriteLine(AddString("\t\tTable.", e.Current.Key, " = new Dictionary<int, ", e.Current.Key, ">();"));
+                tableConverter.WriteLine(AddString("\t\tTable.", e.Current.Key, " = new Dictionary<int, ", "TableDB.", e.Current.Key, " > ();"));
                 tableConverter.WriteLine("");
                 tableConverter.WriteLine(AddString("\t\tfor (int i = 0; i < ", e.Current.Value.RowCount.ToString(), "; i++)"));
                 tableConverter.WriteLine("\t\t{");
-                tableConverter.WriteLine(AddString("\t\t\t", e.Current.Key, " ", e.Current.Key.ToLower(), " = new ", e.Current.Key, "();"));
+                tableConverter.WriteLine(AddString("\t\t\t", "TableDB.", e.Current.Key, " ", e.Current.Key.ToLower(), " = new ", "TableDB.", e.Current.Key, "();"));
                 tableConverter.WriteLine("");
 
                 // 필드에 따른 데이터를 설정한다.

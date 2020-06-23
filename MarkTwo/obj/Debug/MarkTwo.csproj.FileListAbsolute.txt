@@ -70,3 +70,22 @@ C:\Users\rcasi\OneDrive\WorkTool\MarkTwo\MarkTwo\MarkTwo\obj\Debug\MarkTwo.Prope
 C:\Users\rcasi\OneDrive\WorkTool\MarkTwo\MarkTwo\MarkTwo\obj\Debug\MarkTwo.csproj.GenerateResource.cache
 C:\Users\rcasi\OneDrive\WorkTool\MarkTwo\MarkTwo\MarkTwo\obj\Debug\MarkTwo.csproj.CoreCompileInputs.cache
 C:\Users\rcasi\OneDrive\WorkTool\MarkTwo\MarkTwo\MarkTwo\obj\Debug\MarkTwo.csproj.CopyComplete
+D:\002 Tool\MarkTwo\packages\MarkTwo\obj\Debug\MarkTwo.exe
+D:\002 Tool\MarkTwo\packages\MarkTwo\obj\Debug\MarkTwo.pdb
+D:\002 Tool\MarkTwo\packages\MarkTwo\bin\Debug\MarkTwo.exe.config
+D:\002 Tool\MarkTwo\packages\MarkTwo\bin\Debug\MarkTwo.exe
+D:\002 Tool\MarkTwo\packages\MarkTwo\bin\Debug\MarkTwo.pdb
+D:\002 Tool\MarkTwo\packages\MarkTwo\bin\Debug\BookSleeve.dll
+D:\002 Tool\MarkTwo\packages\MarkTwo\bin\Debug\Newtonsoft.Json.dll
+D:\002 Tool\MarkTwo\packages\MarkTwo\bin\Debug\Resque.dll
+D:\002 Tool\MarkTwo\packages\MarkTwo\bin\Debug\Resque.RedisClient.Booksleeve.dll
+D:\002 Tool\MarkTwo\packages\MarkTwo\bin\Debug\BookSleeve.pdb
+D:\002 Tool\MarkTwo\packages\MarkTwo\bin\Debug\BookSleeve.xml
+D:\002 Tool\MarkTwo\packages\MarkTwo\bin\Debug\Newtonsoft.Json.xml
+D:\002 Tool\MarkTwo\packages\MarkTwo\obj\Debug\MarkTwo.csprojAssemblyReference.cache
+D:\002 Tool\MarkTwo\packages\MarkTwo\obj\Debug\MarkTwo.csproj.ResolveComReference.cache
+D:\002 Tool\MarkTwo\packages\MarkTwo\obj\Debug\MarkTwo.ConverterWindow.resources
+D:\002 Tool\MarkTwo\packages\MarkTwo\obj\Debug\MarkTwo.Properties.Resources.resources
+D:\002 Tool\MarkTwo\packages\MarkTwo\obj\Debug\MarkTwo.csproj.GenerateResource.cache
+D:\002 Tool\MarkTwo\packages\MarkTwo\obj\Debug\MarkTwo.csproj.CoreCompileInputs.cache
+D:\002 Tool\MarkTwo\packages\MarkTwo\obj\Debug\MarkTwo.csproj.CopyComplete
